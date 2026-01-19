@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT 參數對照表</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --sidebar-width: 280px; --edit-bg: #fff4e5; }
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background: #f4f7f9; margin: 0; display: flex; overflow: hidden; }
+        
+        /* 側欄導覽 */
+        .sidebar { width: var(--sidebar-width); background: var(--primary); color: white; height: 100vh; display: flex; flex-direction: column; flex-shrink: 0; transition: 0.3s; z-index: 2000; }
+        .sidebar.collapsed { margin-left: -280px; }
+        .sidebar-header { padding: 25px 20px; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-menu { flex: 1; overflow-y: auto; padding: 10px 0; }
+        .menu-item { padding: 15px 20px; cursor: pointer; color: rgba(255,255,255,0.7); border-left: 5px solid transparent; font-size: 15px; transition: 0.2s; }
+        .menu-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .menu-item.active { background: rgba(255,255,255,0.15); color: white; border-left-color: var(--accent); }
+        .admin-section { padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+
+        /* 主內容區 */
+        .main-wrapper { flex: 1; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; z-index: 100; }
+        .top-bar { background: white; padding: 12px 20px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .content-section { padding: 20px; display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.3s; }
+        
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; position: relative; }
+        .query-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 10px; }
+        label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #555; }
+        
+        /* 選單樣式：強制顯示與撐開 */
+        select, input { width: 100% !important; height: 48px; display: block !important; padding: 0 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; background: white; box-sizing: border-box; cursor: pointer; }
+        
+        /* 表格樣式 */
+        .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #eee; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; text-align: center; }
+        th { background: #f8fafc; padding: 15px 10px; color: #64748b; font-size: 13px; border-bottom: 2px solid #edf2f7; }
+        td { padding: 22px 10px; border-bottom: 1px solid #f1f5f9; font-size: 24px; font-weight: 800; color: #1a202c; }
+        .editing .editable { background: #fff4e5; border: 1px solid #f39c12 !important; cursor: pointer; }
+
+        /* 數值視覺樣式 */
+        .val-mid { font-size: 26px; font-weight: 800; display: block; line-height: 1.1; }
+        .val-range { font-size: 12px; color: #7f8c8d; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; font-weight: normal; }
+
+        /* 板內槽色塊標籤 (Tab 3) */
+        .fine-box { display: flex; align-items: center; gap: 15px; }
+        .fine-select { width: 220px !important; }
+        .color-badge { display: inline-flex; align-items: center; justify-content: center; padding: 10px 25px; border-radius: 8px; font-size: 20px; font-weight: 900; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); box-shadow: 0 4px 6px rgba(0,0,0,0.1); min-width: 120px; }
+
+        /* 備註列表 (Tab 6) */
+        .note-list { list-style: none; padding: 0; }
+        .note-list li { padding: 12px; border-bottom: 1px solid #edf2f7; line-height: 1.6; color: #4a5568; }
+        .note-list b { color: #2c3e50; margin-right: 5px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">RT 參數對照查詢</div>
+        <div class="sidebar-menu">
+            <div class="menu-item active" onclick="switchTab('tab-query')">🔍 參數中值查詢</div>
+            <div class="menu-item" onclick="switchTab('tab-stack')">📊 疊板片數對照表</div>
+            <div class="menu-item" onclick="switchTab('tab-fine')">🔧 粗沖後細切-板內槽</div>
+            <div class="menu-item" onclick="switchTab('tab-feed')">🚀 鑽孔進刀速對照表</div>
+            <div class="menu-item" onclick="switchTab('tab-life')">⏳ 切刀壽命規定</div>
+            <div class="menu-item" onclick="switchTab('tab-note')">📝 備註事項</div>
+        </div>
+        <div class="admin-section">
+            <button style="background:#34495e; color:white; width:100%; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold;" id="btnAdmin" onclick="toggleAdmin()">⚙️ 管理模式</button>
+            <button style="background:#e74c3c; color:white; width:100%; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; display:none;" id="btnExit" onclick="toggleAdmin()">🚪 退出管理</button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="top-bar">
+            <span style="cursor:pointer; font-size:24px; margin-right:15px; color:#2c3e50;" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">☰</span>
+            <h3 id="currentTitle" style="margin:0; color:#2c3e50;">參數中值查詢</h3>
+        </div>
+
+        <!-- 頁面 1: 參數中值查詢 -->
+        <section id="tab-query" class="content-section active">
+            <div class="card">
+                <div class="query-row">
+                    <div class="input-box"><label>類型</label><select id="typeSelect" onchange="updateSizeList(); runQuery()"></select></div>
+                    <div class="input-box"><label>尺寸</label><select id="sizeSelect" onchange="runQuery()"></select></div>
+                </div>
+                <div class="table-wrap">
+                    <table id="mainTable">
+                        <thead><tr><th>轉速 (S)</th><th>進刀 (F)</th><th>壽命 (N)</th><th>補償 (D)</th><th>檯面速度 (F0X)</th></tr></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 頁面 2: 疊板對照表 -->
+        <section id="tab-stack" class="content-section">
+            <div class="card">
+                <div class="query-row">
+                    <div class="input-box"><label>最小切刀直徑 mil (mm)</label><select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"></select></div>
+                    <div class="input-box"><label>成品板厚</label><select id="stkThickSel" onchange="runStackQuery()"></select></div>
+                </div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div style="background:#f8fafc; padding:25px; border-radius:12px; text-align:center; border:1px solid #edf2f7;"><span style="font-size:13px; color:#64748b; display:block; margin-bottom:10px; font-weight:bold;">建議疊板片數</span><span id="stkResCount" style="font-size:36px; font-weight:800; color:#2b6cb0;">--</span></div>
+                <div style="background:#f8fafc; padding:25px; border-radius:12px; text-align:center; border:1px solid #edf2f7;"><span style="font-size:13px; color:#64748b; display:block; margin-bottom:10px; font-weight:bold;">最大疊板厚度 mil (mm)</span><span id="stkResMax" style="font-size:22px; font-weight:800; color:#1a202c;">--</span></div>
+            </div>
+        </section>
+
+        <!-- 頁面 3: 板內槽 (含大型色塊標籤) -->
+        <section id="tab-fine" class="content-section">
+            <div class="card">
+                <div class="input-box" style="margin-bottom:20px;"><label>尺寸 mil (mm)</label>
+                    <div class="fine-box"><select id="fineSizeSel" class="fine-select" onchange="runFineQuery()"></select><div id="fineBadge" class="color-badge">--</div></div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>轉速 (S)<br><small>中值 (範圍)</small></th><th>進刀速 (F)<br><small>中值 (範圍)</small></th><th>檯面速度 (F)<br><small>中值 (範圍)</small></th><th>補償值 (D)<br><small>可調整範圍</small></th></tr></thead>
+                        <tbody id="fineTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 頁面 4: 鑽孔進刀速 -->
+        <section id="tab-feed" class="content-section">
+            <div class="card">
+                <div class="input-box" style="margin-bottom:20px;"><label>鑽頭直徑 inch (mm)</label><select id="feedSizeSel" style="width:300px;" onchange="runFeedQuery()"></select></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>轉速 (S)<br><small>參考值 (範圍)</small></th>
+                                <th style="background:#ebf8ff; color:#2b6cb0;">導引孔 (F)<br><small>參考值 (範圍)</small></th>
+                                <th style="background:#f0fff4; color:#2f855a;">二次孔 (F)<br><small>參考值 (範圍)</small></th>
+                                <th>壽命 (N)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 頁面 5: 切刀壽命規定 -->
+        <section id="tab-life" class="content-section">
+            <div class="card">
+                <div class="query-row">
+                    <div class="input-box"><label>1. 選擇直徑 inch (mm)</label><select id="lifeSizeSel" onchange="updateLifeTypeList()"></select></div>
+                    <div class="input-box"><label>2. 選擇型態</label><select id="lifeTypeSel" onchange="runLifeQuery()"></select></div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:50%;">普通材質</th>
+                                <th style="background:#fff7ed; color:#c2410c; border-bottom: 2px solid #fdba74;">高階材質 (HITG, LK, EM526等)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lifeTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 頁面 6: 備註事項 -->
+        <section id="tab-note" class="content-section">
+            <div class="card">
+                <ul class="note-list">
+                    <li><b>1.</b> HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。</li>
+                    <li><b>2.</b> <b>切內槽為銅面：</b>切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。</li>
+                    <li><b>3.</b> 藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。</li>
+                    <li><b>4.</b> 粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。</li>
+                    <li><b>5.</b> 粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。</li>
+                    <li><b>6.</b> 清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。</li>
+                    <li><b>7.</b> 清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。</li>
+                    <li><b>8.</b> H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。</li>
+                    <li><b>9.</b> C66料號外型 62 mil 切刀壽命上限設定 300 INCH。</li>
+                    <li><b>10.</b> 39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。</li>
+                    <li><b>11.</b> C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+<script>
+    const colorMap = { "土黃色":"#D4A017", "蘋果綠":"#8DB600", "醬紅色":"#800000", "黑色":"#000000", "深藍色":"#00008B", "咖啡色":"#6F4E37", "青色":"#00CED1", "柑紅色":"#FF4500", "淡紫色":"#E6E6FA", "墨綠色":"#006400", "粉紅色":"#FF69B4", "白色":"#C0C0C0", "棕紅色":"#A52A2A", "淡梨色":"#F0EAD6", "深紫色":"#800080", "淡橘色":"#FFB84D", "卡其色":"#F0E68C", "淡藍色":"#ADD8E6", "灰色":"#808080", "凍黃色":"#F0E68C", "胭脂紅":"#C71585", "天藍色":"#87CEEB", "桃紅色":"#FF69B4", "大紅色":"#FF0000", "松樹綠":"#01796F" };
+
+    // --- Tab 1 Data ---
+    let toolData = {
+        "0.0197": { FF:["40","10","50","0.0098","10"], AA:["40","10","50","0.0098","10"], RD:["40","10","50","0.0098","8"], G42:["40","7","30","0.0098","8"], OR:["40","10","50","0.0103","10"] },
+        "0.0197 CB": { FF:["40","10","150","0.0098","10"], AA:["40","10","150","0.0098","10"], RD:["40","10","150","0.0098","8"], G42:["40","7","75","0.0098","8"], OR:["40","10","150","0.0103","10"] },
+        "0.0236": { FF:["40","10","50","0.0118","10"], AA:["40","10","50","0.0118","10"], RD:["40","10","50","0.0118","8"], G42:["40","7","30","0.0118","8"], OR:["40","10","50","0.0123","10"] },
+        "0.0236 CB": { FF:["40","10","150","0.0118","10"], AA:["40","10","150","0.0118","10"], RD:["40","10","150","0.0118","8"], G42:["40","7","75","0.0118","8"], OR:["40","10","150","0.0123","10"] },
+        "0.031": { FF:["33","12","100","0.0155","12"], AA:["30","20","300","0.0155","30"], RD:["30","10","90","0.0155","10"], G42:["33","10","50","0.0155","10"], OR:["30","12","90","0.0160","10"], RDL:["-30","10","90","0.0155","10"] },
+        "0.035": { FF:["33","12","100","0.0175","12"], AA:["30","20","300","0.0175","30"], RD:["30","10","90","0.0175","10"], G42:["33","10","50","0.0175","10"], OR:["30","12","90","0.0180","10"] },
+        "0.039": { FF:["33","12","200","0.0195","12"], AA:["30","20","300","0.0195","30"], RD:["30","10","200","0.0195","10"], G42:["32","10","50","0.0195","10"], OR:["30","12","200","0.0200","10"], RDL:["-30","10","160","0.0195","10"] },
+        "0.039 CB": { FF:["33","12","700","0.0195","12"], AA:["30","20","700","0.0195","30"], RD:["30","10","700","0.0195","10"], G42:["32","10","150","0.0195","10"], OR:["30","12","700","0.0200","10"] },
+        "0.039 LCB": { FF:["33","12","300","0.0195","12"], AA:["30","20","300","0.0195","30"], RD:["30","10","300","0.0195","10"], G42:["32","10","300","0.0195","10"], OR:["30","12","300","0.0200","10"] },
+        "0.047": { FF:["32","12","200","0.0235","12"], AA:["30","30","370","0.0235","30"], RD:["30","10","200","0.0235","10"], G42:["32","10","80","0.0235","10"], OR:["30","15","200","0.0240","10"] },
+        "0.047 CB": { FF:["32","12","300","0.0235","12"], AA:["30","30","300","0.0235","30"], RD:["30","10","300","0.0235","10"], G42:["32","10","300","0.0235","10"], OR:["30","15","300","0.0240","10"] },
+        "0.055": { FF:["32","15","420","0.0275","50"], AA:["30","35","420","0.0275","50"], RD:["30","10","200","0.0275","10"], G42:["30","10","80","0.0275","10"], OR:["30","15","200","0.0280","10"] },
+        "0.059": { FF:["32","20","420","0.0295","50"], AA:["30","35","420","0.0295","50"], RD:["28","10","250","0.0295","10"], G42:["30","10","80","0.0295","10"], OR:["30","20","250","0.0302","10"] },
+        "0.062": { FF:["32","30","520","0.0315","50"], AA:["28","40","520","0.0315","50"], RD:["23","5","350","0.0315","10"], G42:["28","5","100","0.0315","10"], OR:["28","30","350","0.0322","10"] },
+        "0.079": { FF:["32","30","700","0.0395","50"], AA:["28","40","700","0.0395","50"], RD:["22","5","400","0.0395","10"], G42:["28","5","100","0.0395","10"], OR:["28","30","400","0.0405","10"] },
+        "0.093": { FF:["32","30","1020","0.0465","50"], AA:["28","40","1020","0.0465","50"], RD:["22","5","400","0.0465","10"], G42:["25","5","100","0.0465","10"], OR:["28","30","800","0.0485","10"] },
+        "小於0.1260(不含)": { DA:["30","10","1500","--","10"], DAFF:["30","30","1500","--","10"] },
+        "大於0.1260(含)": { DA:["20","10","1500","--","10"], DAFF:["20","10","1500","--","10"] }
+    };
+
+    const stackingRules = {
+        "15.7 (0.40)": { max: "40 (1.02)", options: {"9~10":4, "11~13":3, "14~20":2, "21~40":1} },
+        "19.7 (0.50)": { max: "66 (1.68)", options: {"10~16":4, "17~22":3, "23~33":2, "34~66":1} },
+        "19.7 LCBRD (0.50)": { max: "86 (2.18)", options: {"10~17":5, "18~21":4, "22~28":3, "29~43":2, "44~86":1} },
+        "23.6 (0.60)": { max: "88 (2.24)", options: {"15~22":4, "23~29":3, "30~44":2, "45~88":1} },
+        "23.6 LCBRD (0.60)": { max: "108 (2.74)", options: {"15~21":5, "22~27":4, "28~36":3, "37~54":2, "55~108":1} },
+        "31~35 (0.80-0.90)": { max: "122 (2.74)", options: {"9~12":10, "13":9, "14~15":8, "16~17":7, "18~20":6, "21~24":5, "25~30":4, "31~40":3, "41~61":2, "62~122":1} },
+        "35 LRD (0.90)": { max: "170 (4.32)", options: {"15~21":8, "22~24":7, "25~28":6, "29~34":5, "35~42":4, "43~56":3, "57~85":2} },
+        "39~55 (0.10-1.40)": { max: "205 (5.21)", options: {"15~22":8, "23~25":7, "26~30":6, "31~37":5, "38~47":4, "48~64":3, "65~99":2} },
+        "59~98 (1.50-2.50)": { max: "259 (6.6)", options: {"15~18":12, "19~22":10, "23~28":8, "29~33":7, "34~39":6, "40~47":5, "48~60":4, "61~81":3} },
+        "39~47 LCBRD (1.00-1.20)": { max: "263 (6.7)", options: {"15~18":12, "19~22":10, "23~28":8, "29~33":7, "34~39":6, "40~47":5, "48~60":4, "61~68":3} }
+    };
+
+    const fineCutData = [
+        { label: "0.0197\" (土黃色)", s:["40","30~45"], f:["8","5~10"], t:["8","5~10"], d:["0.0098","+/-0.003\""], color:"土黃色" },
+        { label: "0.0197\" LCBRD (蘋果綠)", s:["45","40~55"], f:["8","5~10"], t:["8","5~10"], d:["0.0098","+/-0.003\""], color:"蘋果綠" },
+        { label: "0.0236\" (醬紅色)", s:["40","30~45"], f:["8","5~10"], t:["8","5~10"], d:["0.0118","+/-0.003\""], color:"醬紅色" },
+        { label: "0.0236\" LCBRD (黑色)", s:["40","30~50"], f:["8","5~10"], t:["8","5~10"], d:["0.0118","+/-0.003\""], color:"黑色" },
+        { label: "0.031\" (深藍色)", s:["30","25~40"], f:["15","10~20"], t:["10","10~20"], d:["0.0155","+/-0.003\""], color:"深藍色" },
+        { label: "0.031\" CBRD (咖啡色)", s:["55","40~55"], f:["15","10~20"], t:["10","10~20"], d:["0.0155","+/-0.003\""], color:"咖啡色" },
+        { label: "0.031\" (逆)漢台 (青色)", s:["-30","-30"], f:["10","5~10"], t:["10","10~20"], d:["0.0155","+/-0.003\""], color:"青色" },
+        { label: "0.035\" (柑紅色)", s:["30","20~40"], f:["15","10~20"], t:["10","10~20"], d:["0.0175","+/-0.003\""], color:"柑紅色" },
+        { label: "0.035\" LRD (淡紫色)", s:["30","20~40"], f:["15","10~20"], t:["10","10~20"], d:["0.0175","+/-0.003\""], color:"淡紫色" },
+        { label: "0.039\" (墨綠色)", s:["30","25~40"], f:["15","10~20"], t:["10","10~20"], d:["0.0195","+/-0.003\""], color:"墨綠色" },
+        { label: "0.039\" CBRD (粉紅色)", s:["35","25~50"], f:["15","10~20"], t:["10","10~20"], d:["0.0195","+/-0.003\""], color:"粉紅色" },
+        { label: "0.039\" (逆)尖點 (白色)", s:["-30","-25~-40"], f:["10","10~20"], t:["10","10~20"], d:["0.0195","+/-0.003\""], color:"白色" },
+        { label: "0.0039\" LCBRD (棕紅色)", s:["35","25~50"], f:["15","10~20"], t:["10","10~20"], d:["0.0195","+/-0.003\""], color:"棕紅色" },
+        { label: "0.043\" (淡梨色)", s:["30","25~40"], f:["15","10~20"], t:["10","10~20"], d:["0.0215","+/-0.003\""], color:"淡梨色" },
+        { label: "0.047\" (深紫色)", s:["30","20~40"], f:["28","10~30"], t:["20","10~25"], d:["0.0235","+/-0.003\""], color:"深紫色" },
+        { label: "0.062\" (凍黃色)", s:["30","18~35"], f:["35","10~40"], t:["25","10~30"], d:["0.0315","+/-0.003\""], color:"凍黃色" },
+        { label: "0.098\" (松樹綠)", s:["28","18~30"], f:["35","10~40"], t:["40","10~45"], d:["0.0490","+/-0.003\""], color:"松樹綠" }
+    ];
+
+    const feedData = [ { label: "0.0279\" 以下", s:["30","20~40"], pF:["20","10~20"], sF:["10","10~20"], life: "1500" }, { label: "0.0280\"~0.0429\"", s:["30","20~40"], pF:["30","10~30"], sF:["10","10~20"], life: "1500" }, { label: "0.0430\"~0.0865\"", s:["30","20~40"], pF:["40","10~40"], sF:["10","10~20"], life: "1500" }, { label: "0.0866\"~0.1014\"", s:["25","20~35"], pF:["50","10~50"], sF:["10","10~20"], life: "1500" }, { label: "0.1015\"~0.1259\"", s:["25","20~35"], pF:["40","10~40"], sF:["10","10~20"], life: "1500" }, { label: "0.1260\"~0.1456\"", s:["20","15~25"], pF:["20","10~20"], sF:["10","10~20"], life: "1500" }, { label: "0.1457\" 以上", s:["20","15~25"], pF:["10","10~15"], sF:["10","10~20"], life: "1500" } ];
+
+    const toolLifeRules = {
+        "0.0197\" (0.500mm)": { "鍍膜刀": [["150","100~150"],["150","100~150"]], "一般刀": [["50","10~50"],["30","10~50"]] },
+        "0.0236\" (0.600mm)": { "鍍膜刀": [["150","100~150"],["150","100~150"]], "一般刀": [["50","10~50"],["30","10~50"]] },
+        "0.031\" (0.800mm)": { "鍍膜刀": [["450","300~450"],["300","250~300"]], "一般刀": [["300","260~300"],["100","60~100"]] },
+        "0.031\" 逆轉刀 (0.800mm)": { "一般刀": [["90","90"],["90","90"]] },
+        "0.035\" (0.900mm)": { "一般刀": [["300","260~300"],["100","60~100"]], "長刃刀": [["300","260~300"],["100","60~100"]] },
+        "0.039\" (1.000mm)": { "鍍膜刀": [["1000","700~1000"],["700","600~700"]], "一般刀": [["300","260~300"],["200","120~200"]] },
+        "0.039\" 逆轉刀 (1.000mm)": { "一般刀": [["160","160"],["160","160"]] },
+        "0.043\" (1.100mm)": { "一般刀": [["300","260~300"],["100","60~100"]] },
+        "0.047\" (1.200mm)": { "鍍膜刀": [["1000","700~1000"],["700","600~700"]], "一般刀": [["370","330~370"],["200","120~200"]] },
+        "0.051\"~0.059\" (1.300-1.500mm)": { "一般刀": [["370~420","330~420"],["140~250","100~250"]] },
+        "0.062\"~0.075\" (1.600-1.900mm)": { "一般刀": [["520","480~520"],["320~400","280~400"]] },
+        "0.079\" (內槽)": { "一般刀": [["700","580~700"],["620","400~620"]] },
+        "0.079\" (外型)": { "一般刀": [["620","580~620"],["420","380~420"]] },
+        "0.093\" (內槽)": { "一般刀": [["620","580~620"],["420","380~420"]] },
+        "0.093\" (外型)": { "一般刀": [["1020","980~1020"],["820","780~820"]] },
+        "0.098\" (內槽)": { "一般刀": [["520","480~520"],["320","280~320"]] }
+    };
+
+    let isEditing = false;
+
+    // --- DOM helper (避免 innerHTML 造成含 " 的 option value 破版/無法選取) ---
+    function setSelectOptions(selectEl, values, getLabel) {
+        selectEl.innerHTML = "";
+        values.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = String(v);
+            opt.textContent = getLabel ? getLabel(v) : String(v);
+            selectEl.appendChild(opt);
+        });
+    }
+
+    // --- 各頁面切換 ---
+    function switchTab(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.currentTarget.classList.add('active');
+        document.getElementById('currentTitle').innerText = event.currentTarget.innerText;
+    }
+
+    // --- Tab 1 查詢 ---
+    function updateSizeList() {
+        const t = document.getElementById('typeSelect').value;
+        const valid = Object.keys(toolData).filter(s => toolData[s][t] !== undefined);
+        document.getElementById('sizeSelect').innerHTML = valid.sort().map(s => `<option value="${s}">${s}</option>`).join('');
+        runQuery();
+    }
+    function runQuery() {
+        const s = document.getElementById('sizeSelect').value, t = document.getElementById('typeSelect').value;
+        if (!s || !toolData[s][t]) return;
+        document.getElementById('tableBody').innerHTML = '<tr>' + toolData[s][t].map((v, i) => `<td class="${isEditing?'editable':''}" onclick="editField('${s}','${t}',${i})">${v}</td>`).join('') + '</tr>';
+    }
+
+    // --- Tab 2 疊板 ---
+    function updateStackThickList() {
+        const s = document.getElementById('stkSizeSel').value;
+        document.getElementById('stkThickSel').innerHTML = Object.keys(stackingRules[s].options).map(t => `<option value="${t}">${t}</option>`).join('');
+        runStackQuery();
+    }
+    function runStackQuery() {
+        const s = document.getElementById('stkSizeSel').value, r = document.getElementById('stkThickSel').value;
+        document.getElementById('stkResMax').innerText = stackingRules[s].max;
+        document.getElementById('stkResCount').innerText = stackingRules[s].options[r] + " 片";
+    }
+
+    // --- Tab 3 細切 ---
+    function runFineQuery() {
+        const i = document.getElementById('fineSizeSel').value, d = fineCutData[i], b = document.getElementById('fineBadge');
+        b.innerText = d.color; b.style.backgroundColor = colorMap[d.color] || '#eee';
+        document.getElementById('fineTableBody').innerHTML = `<tr><td><span class="val-mid">${d.s[0]}</span><span class="val-range">${d.s[1]}</span></td><td><span class="val-mid">${d.f[0]}</span><span class="val-range">${d.f[1]}</span></td><td><span class="val-mid">${d.t[0]}</span><span class="val-range">${d.t[1]}</span></td><td><span class="val-mid">${d.d[0]}</span><span class="val-range">${d.d[1]}</span></td></tr>`;
+    }
+
+    // --- Tab 4 進刀 ---
+    function runFeedQuery() {
+        const i = document.getElementById('feedSizeSel').value, d = feedData[i];
+        document.getElementById('feedTableBody').innerHTML = `<tr><td><span class="val-mid">${d.s[0]}</span><span class="val-range">${d.s[1]}</span></td><td style="background:#ebf8ff;"><span class="val-mid" style="color:#2b6cb0;">${d.pF[0]}</span><span class="val-range">${d.pF[1]}</span></td><td style="background:#f0fff4;"><span class="val-mid" style="color:#2f855a;">${d.sF[0]}</span><span class="val-range">${d.sF[1]}</span></td><td><span class="val-mid">${d.life}</span></td></tr>`;
+    }
+
+    // --- Tab 5 切刀壽命 (徹底修復型態連動) ---
+    function updateLifeTypeList() {
+        const sizeSel = document.getElementById('lifeSizeSel');
+        const typeSel = document.getElementById('lifeTypeSel');
+        const selectedSize = sizeSel.value;
+        
+        // 取得該尺寸對應的所有型態選項
+        const types = Object.keys(toolLifeRules[selectedSize] || {});
+
+        // 以 DOM API 建立 option，避免字元造成 HTML attribute 解析錯誤
+        setSelectOptions(typeSel, types);
+        
+        // 生成型態後立即執行查詢
+        runLifeQuery();
+    }
+    
+    function runLifeQuery() {
+        const sizeSel = document.getElementById('lifeSizeSel');
+        const typeSel = document.getElementById('lifeTypeSel');
+        const s = sizeSel.value;
+        const t = typeSel.value;
+        
+        if (!s || !t || !toolLifeRules[s] || !toolLifeRules[s][t]) return;
+        
+        const d = toolLifeRules[s][t];
+        document.getElementById('lifeTableBody').innerHTML = `<tr>
+            <td><span class="val-mid">${d[0][0]}</span><span class="val-range">${d[0][1]}</span></td>
+            <td style="background:#fff7ed;"><span class="val-mid" style="color:#c2410c;">${d[1][0]}</span><span class="val-range">${d[1][1]}</span></td>
+        </tr>`;
+    }
+
+    // --- Admin ---
+    function toggleAdmin() {
+        if(!isEditing) { if(prompt("密碼:") !== "YPD14-RT") return; isEditing = true; 
+        document.getElementById('btnAdmin').style.display = 'none'; document.getElementById('btnExit').style.display = 'block'; }
+        else { isEditing = false; document.getElementById('btnAdmin').style.display = 'block'; document.getElementById('btnExit').style.display = 'none'; }
+        runQuery();
+    }
+    function editField(s, t, i) { if(isEditing) { const n = prompt("新值:", toolData[s][t][i]); if(n) {toolData[s][t][i]=n; runQuery();}} }
+
+    window.onload = () => { 
+        document.getElementById('typeSelect').innerHTML = `<optgroup label="主要工序"><option value="FF">粗切 (FF)</option><option value="AA">粗切 (AA) 清粉</option><option value="RD">內槽 (RD)、阻抗條 (CP)</option><option value="G42">封閉槽、二次孔、耳朵槽、葫蘆孔、金手指 (G42)</option><option value="OR">外型 (OR)、裁開 (HA)</option></optgroup><optgroup label="特殊工序"><option value="RDL">內槽 (RDL) 逆轉刀</option><option value="DA">導引孔 (DA)</option><option value="DAFF">粗切導引孔 (DA FF)</option></optgroup>`;
+        updateSizeList();
+        document.getElementById('stkSizeSel').innerHTML = Object.keys(stackingRules).map(s => `<option value="${s}">${s}</option>`).join('');
+        updateStackThickList();
+        document.getElementById('fineSizeSel').innerHTML = fineCutData.map((d, i) => `<option value="${i}">${d.label}</option>`).join('');
+        runFineQuery();
+        document.getElementById('feedSizeSel').innerHTML = feedData.map((d, i) => `<option value="${i}">${d.label}</option>`).join('');
+        runFeedQuery();
+        
+        // 初始化第五分頁（用 DOM API，確保像 0.035" 這種含 " 的值不會破壞 option）
+        const lifeSel = document.getElementById('lifeSizeSel');
+        setSelectOptions(lifeSel, Object.keys(toolLifeRules));
+        updateLifeTypeList();
+    };
+</script>
+</body>
+</html>
