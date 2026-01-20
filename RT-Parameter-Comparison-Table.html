@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RT 參數對照表 (全頁面統一版)</title>
+    <title>RT 參數對照表 (類型編輯版)</title>
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --sidebar-width: 280px; --edit-bg: #fff4e5; }
         
-        /* 全域設定：修正寬度計算問題 */
+        /* 全域設定 */
         * { box-sizing: border-box; } 
 
         body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background: #f4f7f9; margin: 0; display: flex; overflow: hidden; }
@@ -52,7 +52,7 @@
 
         /* 板內槽色塊標籤 */
         .fine-box { display: flex; align-items: center; gap: 15px; }
-        .fine-select-wrapper { flex: 1; min-width: 200px; } /* 讓選單區塊彈性伸縮 */
+        .fine-select-wrapper { flex: 1; min-width: 200px; }
         .color-badge { display: inline-flex; align-items: center; justify-content: center; padding: 10px 25px; border-radius: 8px; font-size: 20px; font-weight: 900; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); box-shadow: 0 4px 6px rgba(0,0,0,0.1); min-width: 120px; }
 
         /* 備註列表 */
@@ -80,7 +80,6 @@
           .val-mid { font-size: 22px; }
           .val-range { font-size: 12px; }
           
-          /* Tab3 色塊：在手機上垂直排列 */
           .fine-box { flex-direction: column; align-items: stretch; gap: 10px; }
           .fine-select-wrapper { width: 100%; }
           .color-badge { width: 100%; min-width: unset; font-size: 18px; padding: 10px 14px; }
@@ -93,7 +92,7 @@
           .val-mid { font-size: 20px; }
         }
 
-        /* ===== Mobile Picker (Unified for ALL tabs) ===== */
+        /* ===== Mobile Picker ===== */
         .mobile-only { display: none; }
         .picker-btn { width: 100%; height: 52px; border-radius: 10px; border: 1px solid #ddd; background: #fff; font-size: 17px; text-align: left; padding: 0 12px; cursor: pointer; box-sizing: border-box; position: relative; }
         .picker-btn::after { content: "▾"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 16px; }
@@ -110,7 +109,6 @@
         select:focus, input:focus, textarea:focus, button:focus { outline: none; box-shadow: none; }
         
         @media (max-width: 900px) {
-          /* 所有使用自製 Picker 的區塊，都隱藏原生 select */
           .input-box select, .fine-select-wrapper select { display: none !important; }
           .input-box .mobile-only, .fine-select-wrapper .mobile-only { display: block !important; }
         }
@@ -124,6 +122,7 @@
         .btn { border:none; border-radius:10px; padding:8px 12px; font-weight:800; cursor:pointer; font-size: 14px; transition: 0.2s; white-space: nowrap; }
         .btn-primary{ background:#2563eb; color:#fff; }
         .btn-success{ background:#10b981; color:#fff; }
+        .btn-warning{ background:#f59e0b; color:#fff; } /* New Warning Button for Rename */
         .btn-ghost{ background:#f1f5f9; color:#0f172a; }
         .btn-danger{ background:#fee2e2; color:#ef4444; }
         .btn-danger:hover { background: #ef4444; color: white; }
@@ -222,10 +221,15 @@
                 <div id="adminPanel-query" class="admin-panel">
                     <div class="admin-hint">
                         - 拖曳「☰」可調整尺寸順序。<br>
-                        - 直接編輯「尺寸 Key」可重新命名尺寸。
+                        - 管理類型：可新增全新類型、修改目前類型名稱或刪除。
                     </div>
                     <div class="admin-actions-row">
                         <button class="btn btn-primary" onclick="adminParamAddSize()">＋ 新增尺寸</button>
+                        <div style="border-left: 1px solid #cbd5e1; padding-left: 10px; margin-left: 5px; display: flex; gap: 8px;">
+                            <button class="btn btn-ghost" onclick="adminParamAddType()">＋ 新增類型</button>
+                            <button class="btn btn-ghost" onclick="adminParamRenameType()">✎ 修改名稱</button>
+                            <button class="btn btn-danger" onclick="adminParamDeleteType()">🗑️ 刪除類型</button>
+                        </div>
                     </div>
                     <div class="admin-table-wrap">
                         <table class="admin-table">
@@ -352,7 +356,7 @@
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr><th style="width:50%;">普通材質</th><th style="background:#fff7ed; color:#c2410c; border-bottom: 2px solid #fdba74;">HITG、LK、RF、HF、EM390及EM526材質</th></tr>
+                            <tr><th style="width:50%;">普通材質</th><th style="background:#fff7ed; color:#c2410c; border-bottom: 2px solid #fdba74;">其他材質</th></tr>
                         </thead>
                         <tbody id="lifeTableBody"></tbody>
                     </table>
@@ -363,6 +367,7 @@
                     <div class="admin-actions-row">
                         <button type="button" class="btn btn-primary" onclick="adminLifeAddSize()">＋ 新增直徑</button>
                         <button type="button" class="btn btn-danger" onclick="adminLifeDeleteSize()">刪除目前直徑</button>
+                        <button type="button" class="btn btn-warning" onclick="adminLifeRenameSize()">✎ 修改直徑名稱</button>
                         <button type="button" class="btn btn-ghost" onclick="adminLifeOpenReorder()">⇅ 調整直徑順序</button>
                         <button type="button" class="btn btn-ghost" onclick="adminLifeAddType()">＋ 新增型態</button>
                     </div>
@@ -421,6 +426,23 @@
 
 <script>
     const colorMap = { "土黃色":"#D4A017", "蘋果綠":"#8DB600", "醬紅色":"#800000", "黑色":"#000000", "深藍色":"#00008B", "咖啡色":"#6F4E37", "青色":"#00CED1", "柑紅色":"#FF4500", "淡紫色":"#E6E6FA", "墨綠色":"#006400", "粉紅色":"#FF69B4", "白色":"#C0C0C0", "棕紅色":"#A52A2A", "淡梨色":"#F0EAD6", "深紫色":"#800080", "淡橘色":"#FFB84D", "卡其色":"#F0E68C", "淡藍色":"#ADD8E6", "灰色":"#808080", "凍黃色":"#F0E68C", "胭脂紅":"#C71585", "天藍色":"#87CEEB", "桃紅色":"#FF69B4", "大紅色":"#FF0000", "松樹綠":"#01796F" };
+
+    // --- Type Definitions (Dynamic) ---
+    // This allows users to add new types.
+    let typeDefs = [
+        { group: "主要工序", options: [
+            { v: "FF", t: "粗切 (FF)" },
+            { v: "AA", t: "粗切 (AA) 清粉" },
+            { v: "RD", t: "內槽 (RD)、阻抗條 (CP)" },
+            { v: "G42", t: "封閉槽、二次孔、耳朵槽、葫蘆孔、金手指 (G42)" },
+            { v: "OR", t: "外型 (OR)、裁開 (HA)" }
+        ]},
+        { group: "特殊工序", options: [
+            { v: "RDL", t: "內槽 (RDL) 逆轉刀" },
+            { v: "DA", t: "導引孔 (DA)" },
+            { v: "DAFF", t: "粗切導引孔 (DA FF)" }
+        ]}
+    ];
 
     // --- Data Source ---
     let toolData = {
@@ -599,6 +621,116 @@
         syncPickerButtons(); // Update buttons
         adminRefreshAll();
     }
+    
+    // --- Render Types from typeDefs ---
+    function renderTypeSelect() {
+        const sel = document.getElementById('typeSelect');
+        const oldVal = sel.value;
+        sel.innerHTML = '';
+        
+        typeDefs.forEach(group => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = group.group;
+            group.options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.v;
+                option.textContent = opt.t;
+                optgroup.appendChild(option);
+            });
+            sel.appendChild(optgroup);
+        });
+        
+        if (oldVal) sel.value = oldVal;
+        // If empty selection, select first available
+        if (!sel.value && sel.options.length > 0) sel.selectedIndex = 0;
+        
+        updateSizeList(); // refresh dependent size list
+    }
+
+    // --- Tab 1 Admin: Add/Rename/Delete Type ---
+    function adminParamAddType() {
+        const groupName = prompt("請輸入新類型的「群組名稱」（例如：特殊工序）：", "自訂工序");
+        if (!groupName) return;
+        
+        const typeCode = prompt("請輸入「類型代碼」（例如：LD）：");
+        if (!typeCode) return;
+        
+        // Check uniqueness of code
+        let exists = false;
+        typeDefs.forEach(g => {
+            if (g.options.find(o => o.v === typeCode)) exists = true;
+        });
+        if (exists) { alert('此代碼已存在！'); return; }
+
+        const typeLabel = prompt("請輸入「類型顯示名稱」（例如：雷射鑽孔 (LD)）：", typeCode);
+        if (!typeLabel) return;
+
+        // Find or create group
+        let group = typeDefs.find(g => g.group === groupName);
+        if (!group) {
+            group = { group: groupName, options: [] };
+            typeDefs.push(group);
+        }
+        
+        group.options.push({ v: typeCode, t: typeLabel });
+        renderTypeSelect();
+        
+        // Select new type
+        document.getElementById('typeSelect').value = typeCode;
+        updateSizeList();
+        
+        alert(`類型 ${typeLabel} 已新增。請接著新增尺寸數據。`);
+    }
+
+    function adminParamRenameType() {
+        const sel = document.getElementById('typeSelect');
+        const code = sel.value;
+        if (!code) return;
+        
+        // Find current label
+        let currentLabel = "";
+        let groupRef = null;
+        let optRef = null;
+        
+        typeDefs.forEach(g => {
+            const opt = g.options.find(o => o.v === code);
+            if (opt) {
+                currentLabel = opt.t;
+                groupRef = g;
+                optRef = opt;
+            }
+        });
+        
+        const newLabel = prompt("請輸入新的顯示名稱：", currentLabel);
+        if (newLabel && newLabel !== currentLabel) {
+            optRef.t = newLabel;
+            renderTypeSelect();
+            sel.value = code; // restore selection
+            syncPickerButtons();
+        }
+    }
+
+    function adminParamDeleteType() {
+        const sel = document.getElementById('typeSelect');
+        const code = sel.value;
+        if (!code) return;
+        
+        if (!confirm(`確定刪除類型 ${code} 嗎？這不會刪除已存在的詳細數據，但會從選單中隱藏。`)) return;
+        
+        // Remove from typeDefs
+        typeDefs.forEach((g, gIdx) => {
+            const idx = g.options.findIndex(o => o.v === code);
+            if (idx !== -1) {
+                g.options.splice(idx, 1);
+                // If group empty, remove group? Optional.
+                if (g.options.length === 0) typeDefs.splice(gIdx, 1);
+            }
+        });
+        
+        renderTypeSelect();
+    }
+
+
     function runQuery() {
         const s = document.getElementById('sizeSelect').value, t = document.getElementById('typeSelect').value;
         if (!s || !toolData[s] || !toolData[s][t]) {
@@ -1055,6 +1187,42 @@
         updateLifeTypeList();
     }
 
+    // --- Tab 5: Rename Diameter ---
+    function adminLifeRenameSize() {
+        const sel = document.getElementById('lifeSizeSel');
+        const oldName = sel.value;
+        if (!oldName) return;
+
+        const newName = prompt("請輸入新的直徑名稱：", oldName);
+        if (newName && newName !== oldName) {
+            if (toolLifeRules[newName]) {
+                alert("此直徑名稱已存在！");
+                return;
+            }
+            
+            // Reconstruct object to preserve order or append? 
+            // Usually append or re-sort. Here we append to end or keep object order implicitly.
+            // But we want to REPLACE the key in place? Objects in JS are insertion ordered (mostly).
+            // Let's create a new object.
+            
+            const newRules = {};
+            Object.keys(toolLifeRules).forEach(k => {
+                if (k === oldName) {
+                    newRules[newName] = toolLifeRules[oldName];
+                } else {
+                    newRules[k] = toolLifeRules[k];
+                }
+            });
+            toolLifeRules = newRules;
+            
+            // Refresh
+            setSelectOptions(sel, Object.keys(toolLifeRules));
+            sel.value = newName;
+            updateLifeTypeList();
+            syncPickerButtons();
+        }
+    }
+
     // 直徑排序
     function adminLifeOpenReorder() {
         const tbody = document.getElementById('reorderTbody');
@@ -1130,10 +1298,10 @@
 
 
     // --- Persistence & Utils ---
-    const STORAGE_KEY = 'rt_param_bundle_v8_unified'; 
-    const STORAGE_VERDATE_KEY = 'rt_param_version_date_v8';
+    const STORAGE_KEY = 'rt_param_bundle_v9_all_picker'; 
+    const STORAGE_VERDATE_KEY = 'rt_param_version_date_v9';
 
-    function getBundle(){ return { toolData, stackingRules, fineCutData, feedData, toolLifeRules, notesData }; }
+    function getBundle(){ return { toolData, stackingRules, fineCutData, feedData, toolLifeRules, notesData, typeDefs }; }
     function setBundle(b){
         if(!b) return;
         if(b.toolData) toolData = b.toolData;
@@ -1142,6 +1310,7 @@
         if(b.feedData) feedData = b.feedData;
         if(b.toolLifeRules) toolLifeRules = b.toolLifeRules;
         if(b.notesData) notesData = b.notesData;
+        if(b.typeDefs) typeDefs = b.typeDefs;
     }
     function loadFromStorage(){
         try{
@@ -1166,9 +1335,7 @@
     function applyJsonChanges(){
         try{
             setBundle(JSON.parse(document.getElementById('adminJson').value));
-            // Refresh All UI
-            document.getElementById('typeSelect').innerHTML = `<optgroup label="主要工序"><option value="FF">粗切 (FF)</option><option value="AA">粗切 (AA) 清粉</option><option value="RD">內槽 (RD)、阻抗條 (CP)</option><option value="G42">封閉槽、二次孔、耳朵槽、葫蘆孔、金手指 (G42)</option><option value="OR">外型 (OR)、裁開 (HA)</option></optgroup><optgroup label="特殊工序"><option value="RDL">內槽 (RDL) 逆轉刀</option><option value="DA">導引孔 (DA)</option><option value="DAFF">粗切導引孔 (DA FF)</option></optgroup>`;
-            updateSizeList();
+            renderTypeSelect(); // Important refresh
             document.getElementById('stkSizeSel').innerHTML = Object.keys(stackingRules).map(s => `<option value="${s}">${s}</option>`).join('');
             updateStackThickList();
             updateFineSel(); runFineQuery();
@@ -1177,6 +1344,7 @@
             updateLifeTypeList();
             renderNotes();
             adminRefreshAll();
+            syncPickerButtons();
             closeAdminModal();
             alert('變更已套用 (請記得保存)');
         }catch(e){ alert('JSON 錯誤: '+e.message); }
@@ -1188,24 +1356,20 @@
         
         // 將記憶體中最新的資料寫回 HTML 原始碼字串
         html = html.replace(/let toolData = \{[\s\S]*?\};/, `let toolData = ${JSON.stringify(toolData)};`);
+        html = html.replace(/let typeDefs = \[[\s\S]*?\];/, `let typeDefs = ${JSON.stringify(typeDefs)};`); // Save TypeDefs
         html = html.replace(/let stackingRules = \{[\s\S]*?\};/, `let stackingRules = ${JSON.stringify(stackingRules)};`);
         html = html.replace(/let fineCutData = \[[\s\S]*?\];/, `let fineCutData = ${JSON.stringify(fineCutData)};`);
         html = html.replace(/let feedData = \[[\s\S]*?\];/, `let feedData = ${JSON.stringify(feedData)};`);
         html = html.replace(/let toolLifeRules = \{[\s\S]*?\};/, `let toolLifeRules = ${JSON.stringify(toolLifeRules)};`);
         html = html.replace(/let notesData = \[[\s\S]*?\];/, `let notesData = ${JSON.stringify(notesData)};`);
         
-        // 重置介面狀態 (隱藏管理面板)，確保下載後的檔案開啟時是乾淨的檢視模式
-        // 1. 隱藏所有 active 的 admin-panel
+        // 重置介面狀態
         html = html.replace(/class="admin-panel\s+active"/g, 'class="admin-panel" style="display:none;"');
-        // 2. 確保 display: block 的 panel 也被隱藏
         html = html.replace(/style="display:\s*block;"/g, 'style="display:none;"');
-        // 3. 隱藏 Admin Bar
         html = html.replace(/id="adminBar"\s+style="display:\s*flex;"/, 'id="adminBar" style="display: none;"');
-        // 4. 重置 Admin 按鈕顯示狀態
         html = html.replace(/id="btnAdmin"\s+style="display:\s*none;"/, 'id="btnAdmin" style="display: block;"');
         html = html.replace(/id="btnExit"\s+style="display:\s*block;"/, 'id="btnExit" style="display: none;"');
         
-        // 建立下載
         const blob = new Blob([html], {type: 'text/html'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -1220,13 +1384,10 @@
         const ids = ['typeSelect', 'sizeSelect', 'stkSizeSel', 'stkThickSel', 'fineSizeSel', 'feedSizeSel', 'lifeSizeSel', 'lifeTypeSel'];
         ids.forEach(id => {
             const sel = document.getElementById(id);
-            const btn = document.getElementById(id + 'Btn'); // Try ID convention
-            const lifeBtn = document.getElementById(id === 'lifeSizeSel' ? 'lifeSizeBtn' : (id === 'lifeTypeSel' ? 'lifeTypeBtn' : null)); // Handle Tab 5 old naming
+            const btn = document.getElementById(id + 'Btn') || (id === 'lifeSizeSel' ? document.getElementById('lifeSizeBtn') : document.getElementById('lifeTypeBtn'));
             
-            const targetBtn = btn || lifeBtn;
-            
-            if (sel && targetBtn) {
-                targetBtn.textContent = sel.options[sel.selectedIndex]?.textContent || '請選擇';
+            if (sel && btn) {
+                btn.textContent = sel.options[sel.selectedIndex]?.textContent || '請選擇';
             }
         });
     }
@@ -1255,23 +1416,26 @@
 
     window.onload = () => {
         loadFromStorage();
-        // Init Tab 1
-        document.getElementById('typeSelect').innerHTML = `<optgroup label="主要工序"><option value="FF">粗切 (FF)</option><option value="AA">粗切 (AA) 清粉</option><option value="RD">內槽 (RD)、阻抗條 (CP)</option><option value="G42">封閉槽、二次孔、耳朵槽、葫蘆孔、金手指 (G42)</option><option value="OR">外型 (OR)、裁開 (HA)</option></optgroup><optgroup label="特殊工序"><option value="RDL">內槽 (RDL) 逆轉刀</option><option value="DA">導引孔 (DA)</option><option value="DAFF">粗切導引孔 (DA FF)</option></optgroup>`;
-        updateSizeList();
+        renderTypeSelect(); // Init Tab 1
+        
         // Init Tab 2
         document.getElementById('stkSizeSel').innerHTML = Object.keys(stackingRules).map(s => `<option value="${s}">${s}</option>`).join('');
         updateStackThickList();
+        
         // Init Tab 3
         updateFineSel(); runFineQuery();
+        
         // Init Tab 4
         updateFeedSel(); runFeedQuery();
+        
         // Init Tab 5
         setSelectOptions(document.getElementById('lifeSizeSel'), Object.keys(toolLifeRules));
         updateLifeTypeList();
+        
         // Init Tab 6
         renderNotes();
         
-        syncPickerButtons(); // Initial Sync
+        syncPickerButtons(); // Initial Sync for buttons
     };
 
     // Close sidebar on click outside
