@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RT 參數對照表 (修正版)</title>
+    <title>RT 參數對照表 (全頁面統一版)</title>
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --sidebar-width: 280px; --edit-bg: #fff4e5; }
         
-        /* 全域設定：修正寬度計算問題 (解決圖二色塊超出問題的核心) */
+        /* 全域設定：修正寬度計算問題 */
         * { box-sizing: border-box; } 
 
         body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background: #f4f7f9; margin: 0; display: flex; overflow: hidden; }
@@ -43,7 +43,6 @@
         .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #eee; margin-top: 15px; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; text-align: center; }
         th { background: #f8fafc; padding: 15px 10px; color: #64748b; font-size: 13px; border-bottom: 2px solid #edf2f7; }
-        /* 修正文字換行問題: white-space: nowrap */
         td { padding: 22px 10px; border-bottom: 1px solid #f1f5f9; font-size: 24px; font-weight: 800; color: #1a202c; white-space: nowrap; }
         .editing .editable { background: #fff4e5; border: 1px solid #f39c12 !important; cursor: pointer; }
 
@@ -53,7 +52,7 @@
 
         /* 板內槽色塊標籤 */
         .fine-box { display: flex; align-items: center; gap: 15px; }
-        .fine-select { width: 220px !important; }
+        .fine-select-wrapper { flex: 1; min-width: 200px; } /* 讓選單區塊彈性伸縮 */
         .color-badge { display: inline-flex; align-items: center; justify-content: center; padding: 10px 25px; border-radius: 8px; font-size: 20px; font-weight: 900; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); box-shadow: 0 4px 6px rgba(0,0,0,0.1); min-width: 120px; }
 
         /* 備註列表 */
@@ -81,9 +80,9 @@
           .val-mid { font-size: 22px; }
           .val-range { font-size: 12px; }
           
-          /* Tab3 色塊：在手機不要太佔位 */
+          /* Tab3 色塊：在手機上垂直排列 */
           .fine-box { flex-direction: column; align-items: stretch; gap: 10px; }
-          .fine-select { width: 100% !important; }
+          .fine-select-wrapper { width: 100%; }
           .color-badge { width: 100%; min-width: unset; font-size: 18px; padding: 10px 14px; }
         }
 
@@ -94,7 +93,7 @@
           .val-mid { font-size: 20px; }
         }
 
-        /* ===== Mobile Picker ===== */
+        /* ===== Mobile Picker (Unified for ALL tabs) ===== */
         .mobile-only { display: none; }
         .picker-btn { width: 100%; height: 52px; border-radius: 10px; border: 1px solid #ddd; background: #fff; font-size: 17px; text-align: left; padding: 0 12px; cursor: pointer; box-sizing: border-box; position: relative; }
         .picker-btn::after { content: "▾"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 16px; }
@@ -111,9 +110,9 @@
         select:focus, input:focus, textarea:focus, button:focus { outline: none; box-shadow: none; }
         
         @media (max-width: 900px) {
-          /* 修正點：強制隱藏原生 select，避免重複出現 */
-          #tab-life select { display: none !important; }
-          #tab-life .mobile-only { display: block !important; }
+          /* 所有使用自製 Picker 的區塊，都隱藏原生 select */
+          .input-box select, .fine-select-wrapper select { display: none !important; }
+          .input-box .mobile-only, .fine-select-wrapper .mobile-only { display: block !important; }
         }
 
         /* ===== Admin UI (Global) ===== */
@@ -202,8 +201,16 @@
         <section id="tab-query" class="content-section active">
             <div class="card">
                 <div class="query-row">
-                    <div class="input-box"><label>類型</label><select id="typeSelect" onchange="updateSizeList();"></select></div>
-                    <div class="input-box"><label>尺寸</label><select id="sizeSelect" onchange="runQuery()"></select></div>
+                    <div class="input-box">
+                        <label>類型</label>
+                        <select id="typeSelect" onchange="updateSizeList();"></select>
+                        <button type="button" class="picker-btn mobile-only" id="typeSelectBtn" onclick="openPicker('typeSelect','選擇類型')"></button>
+                    </div>
+                    <div class="input-box">
+                        <label>尺寸</label>
+                        <select id="sizeSelect" onchange="runQuery()"></select>
+                        <button type="button" class="picker-btn mobile-only" id="sizeSelectBtn" onclick="openPicker('sizeSelect','選擇尺寸')"></button>
+                    </div>
                 </div>
                 <div class="table-wrap">
                     <table id="mainTable">
@@ -233,8 +240,16 @@
         <section id="tab-stack" class="content-section">
             <div class="card">
                 <div class="query-row">
-                    <div class="input-box"><label>最小切刀直徑 mil (mm)</label><select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"></select></div>
-                    <div class="input-box"><label>成品板厚</label><select id="stkThickSel" onchange="runStackQuery()"></select></div>
+                    <div class="input-box">
+                        <label>最小切刀直徑 mil (mm)</label>
+                        <select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"></select>
+                        <button type="button" class="picker-btn mobile-only" id="stkSizeSelBtn" onclick="openPicker('stkSizeSel','選擇直徑')"></button>
+                    </div>
+                    <div class="input-box">
+                        <label>成品板厚</label>
+                        <select id="stkThickSel" onchange="runStackQuery()"></select>
+                        <button type="button" class="picker-btn mobile-only" id="stkThickSelBtn" onclick="openPicker('stkThickSel','選擇板厚')"></button>
+                    </div>
                 </div>
                 <div id="adminPanel-stack" class="admin-panel">
                     <div class="admin-hint">可編輯與拖曳排序規則。</div>
@@ -257,8 +272,15 @@
 
         <section id="tab-fine" class="content-section">
             <div class="card">
-                <div class="input-box" style="margin-bottom:20px;"><label>尺寸 mil (mm)</label>
-                    <div class="fine-box"><select id="fineSizeSel" class="fine-select" onchange="runFineQuery()"></select><div id="fineBadge" class="color-badge">--</div></div>
+                <div class="input-box" style="margin-bottom:20px;">
+                    <label>尺寸 mil (mm)</label>
+                    <div class="fine-box">
+                        <div class="fine-select-wrapper">
+                            <select id="fineSizeSel" onchange="runFineQuery()"></select>
+                            <button type="button" class="picker-btn mobile-only" id="fineSizeSelBtn" onclick="openPicker('fineSizeSel','選擇尺寸')"></button>
+                        </div>
+                        <div id="fineBadge" class="color-badge">--</div>
+                    </div>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -284,7 +306,11 @@
 
         <section id="tab-feed" class="content-section">
             <div class="card">
-                <div class="input-box" style="margin-bottom:20px;"><label>鑽頭直徑 inch (mm)</label><select id="feedSizeSel" style="width:300px;" onchange="runFeedQuery()"></select></div>
+                <div class="input-box" style="margin-bottom:20px;">
+                    <label>鑽頭直徑 inch (mm)</label>
+                    <select id="feedSizeSel" style="width:300px;" onchange="runFeedQuery()"></select>
+                    <button type="button" class="picker-btn mobile-only" id="feedSizeSelBtn" onclick="openPicker('feedSizeSel','選擇直徑')"></button>
+                </div>
                 <div class="table-wrap">
                     <table>
                         <thead>
@@ -570,6 +596,7 @@
         sel.innerHTML = valid.map(s => `<option value="${s}">${s}</option>`).join('');
         if(valid.includes(oldVal)) sel.value = oldVal;
         runQuery();
+        syncPickerButtons(); // Update buttons
         adminRefreshAll();
     }
     function runQuery() {
@@ -580,6 +607,7 @@
         }
         const d = toolData[s][t];
         document.getElementById('tableBody').innerHTML = `<tr><td>${d[0]}</td><td>${d[1]}</td><td>${d[2]}</td><td>${d[3]}</td><td>${d[4]??'-'}</td></tr>`;
+        syncPickerButtons();
     }
 
     // --- Tab 2 Logic ---
@@ -590,12 +618,14 @@
         const sel = document.getElementById('stkThickSel');
         sel.innerHTML = Object.keys(opts).map(t => `<option value="${t}">${t}</option>`).join('');
         runStackQuery();
+        syncPickerButtons();
     }
     function runStackQuery() {
         const s = document.getElementById('stkSizeSel').value, r = document.getElementById('stkThickSel').value;
         if(!stackingRules[s]) return;
         document.getElementById('stkResMax').innerText = stackingRules[s].max;
         document.getElementById('stkResCount').innerText = (stackingRules[s].options[r] || '--') + " 片";
+        syncPickerButtons();
     }
 
     // --- Tab 3 Logic ---
@@ -604,6 +634,7 @@
         if(!d) return;
         b.innerText = d.color; b.style.backgroundColor = colorMap[d.color] || '#eee';
         document.getElementById('fineTableBody').innerHTML = `<tr><td><span class="val-mid">${d.s[0]}</span><span class="val-range">${d.s[1]}</span></td><td><span class="val-mid">${d.f[0]}</span><span class="val-range">${d.f[1]}</span></td><td><span class="val-mid">${d.t[0]}</span><span class="val-range">${d.t[1]}</span></td><td><span class="val-mid">${d.d[0]}</span><span class="val-range">${d.d[1]}</span></td></tr>`;
+        syncPickerButtons();
     }
 
     // --- Tab 4 Logic ---
@@ -611,6 +642,7 @@
         const i = document.getElementById('feedSizeSel').value, d = feedData[i];
         if(!d) return;
         document.getElementById('feedTableBody').innerHTML = `<tr><td><span class="val-mid">${d.s[0]}</span><span class="val-range">${d.s[1]}</span></td><td style="background:#ebf8ff;"><span class="val-mid" style="color:#2b6cb0;">${d.pF[0]}</span><span class="val-range">${d.pF[1]}</span></td><td style="background:#f0fff4;"><span class="val-mid" style="color:#2f855a;">${d.sF[0]}</span><span class="val-range">${d.sF[1]}</span></td><td><span class="val-mid">${d.life}</span></td></tr>`;
+        syncPickerButtons();
     }
 
     // --- Tab 5 Logic ---
@@ -1098,8 +1130,8 @@
 
 
     // --- Persistence & Utils ---
-    const STORAGE_KEY = 'rt_param_bundle_v7_final_fix'; 
-    const STORAGE_VERDATE_KEY = 'rt_param_version_date_v7';
+    const STORAGE_KEY = 'rt_param_bundle_v8_unified'; 
+    const STORAGE_VERDATE_KEY = 'rt_param_version_date_v8';
 
     function getBundle(){ return { toolData, stackingRules, fineCutData, feedData, toolLifeRules, notesData }; }
     function setBundle(b){
@@ -1185,11 +1217,20 @@
     // --- Mobile Picker ---
     let _pickerSelectId = null;
     function syncPickerButtons() {
-        const s1 = document.getElementById('lifeSizeSel'), s2 = document.getElementById('lifeTypeSel');
-        const b1 = document.getElementById('lifeSizeBtn'), b2 = document.getElementById('lifeTypeBtn');
-        if (s1 && b1) b1.textContent = s1.options[s1.selectedIndex]?.textContent || '請選擇';
-        if (s2 && b2) b2.textContent = s2.options[s2.selectedIndex]?.textContent || '請選擇';
+        const ids = ['typeSelect', 'sizeSelect', 'stkSizeSel', 'stkThickSel', 'fineSizeSel', 'feedSizeSel', 'lifeSizeSel', 'lifeTypeSel'];
+        ids.forEach(id => {
+            const sel = document.getElementById(id);
+            const btn = document.getElementById(id + 'Btn'); // Try ID convention
+            const lifeBtn = document.getElementById(id === 'lifeSizeSel' ? 'lifeSizeBtn' : (id === 'lifeTypeSel' ? 'lifeTypeBtn' : null)); // Handle Tab 5 old naming
+            
+            const targetBtn = btn || lifeBtn;
+            
+            if (sel && targetBtn) {
+                targetBtn.textContent = sel.options[sel.selectedIndex]?.textContent || '請選擇';
+            }
+        });
     }
+    
     function openPicker(sid, title) {
         if (!window.matchMedia('(max-width: 900px)').matches) return;
         const sel = document.getElementById(sid);
@@ -1229,6 +1270,8 @@
         updateLifeTypeList();
         // Init Tab 6
         renderNotes();
+        
+        syncPickerButtons(); // Initial Sync
     };
 
     // Close sidebar on click outside
