@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RT 參數對照表</title>
+    <title>RT 參數對照表 (完美同步版)</title>
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --sidebar-width: 280px; --edit-bg: #fff4e5; }
         * { box-sizing: border-box; } 
@@ -69,9 +69,7 @@
           .fine-box { flex-direction: column; align-items: stretch; gap: 10px; }
           .fine-select-wrapper { width: 100%; }
           .color-badge { width: 100%; min-width: unset; font-size: 18px; padding: 10px 14px; }
-          .input-box select, .fine-select-wrapper select { display: none !important; }
-          /* FIX: allow native selects in 疊板片數對照表 on mobile */
-          #tab-stack .input-box select { display: block !important; }
+          .input-box select, .fine-select-wrapper select { display: none !important; } 
 
           .input-box .mobile-only, .fine-select-wrapper .mobile-only { display: block !important; }
         }
@@ -364,8 +362,16 @@
         <section id="tab-stack" class="content-section">
             <div class="card">
                 <div class="query-row">
-                    <div class="input-box"><label>最小切刀直徑 mil (mm)</label><select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"><option value="15.7 (0.40)">15.7 (0.40)</option><option value="19.7 (0.50)">19.7 (0.50)</option><option value="19.7 LCBRD (0.50)">19.7 LCBRD (0.50)</option><option value="23.6 (0.60)">23.6 (0.60)</option><option value="23.6 LCBRD (0.60)">23.6 LCBRD (0.60)</option><option value="31~35 (0.80-0.90)">31~35 (0.80-0.90)</option><option value="35 LRD (0.90)">35 LRD (0.90)</option><option value="39~55 (0.10-1.40)">39~55 (0.10-1.40)</option><option value="59~98 (1.50-2.50)">59~98 (1.50-2.50)</option><option value="39~47 LCBRD (1.00-1.20)">39~47 LCBRD (1.00-1.20)</option></select></div>
-                    <div class="input-box"><label>成品板厚</label><select id="stkThickSel" onchange="runStackQuery()"><option value="9~10">9~10</option><option value="11~13">11~13</option><option value="14~20">14~20</option><option value="21~40">21~40</option></select></div>
+                    <div class="input-box">
+                        <label>最小切刀直徑 mil (mm)</label>
+                        <select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"><option value="15.7 (0.40)">15.7 (0.40)</option><option value="19.7 (0.50)">19.7 (0.50)</option><option value="19.7 LCBRD (0.50)">19.7 LCBRD (0.50)</option><option value="23.6 (0.60)">23.6 (0.60)</option><option value="23.6 LCBRD (0.60)">23.6 LCBRD (0.60)</option><option value="31~35 (0.80-0.90)">31~35 (0.80-0.90)</option><option value="35 LRD (0.90)">35 LRD (0.90)</option><option value="39~55 (0.10-1.40)">39~55 (0.10-1.40)</option><option value="59~98 (1.50-2.50)">59~98 (1.50-2.50)</option><option value="39~47 LCBRD (1.00-1.20)">39~47 LCBRD (1.00-1.20)</option></select>
+                        <button type="button" class="picker-btn mobile-only" id="stkSizeSelBtn" onclick="openPicker('stkSizeSel','選擇最小切刀直徑')">15.7 (0.40)</button>
+                    </div>
+                    <div class="input-box">
+                        <label>成品板厚</label>
+                        <select id="stkThickSel" onchange="runStackQuery()"><option value="9~10">9~10</option><option value="11~13">11~13</option><option value="14~20">14~20</option><option value="21~40">21~40</option></select>
+                        <button type="button" class="picker-btn mobile-only" id="stkThickSelBtn" onclick="openPicker('stkThickSel','選擇成品板厚')">9~10</button>
+                    </div>
                 </div>
                 <div id="adminPanel-stack" class="admin-panel">
                     <div class="admin-hint">
@@ -1039,7 +1045,7 @@
 
     <div id="pickerModal" class="picker-modal hidden" role="dialog"><div class="picker-sheet"><div class="picker-header"><div id="pickerTitle" class="picker-title">選擇</div><button type="button" class="picker-close" onclick="closePicker()">關閉</button></div><div id="pickerList" class="picker-list"></div></div></div>
     
-    <div class="admin-modal-backdrop" id="adminModalBackdrop" role="dialog" style="display: none;"><div class="admin-modal"><header><h4 style="margin:0;font-size:16px;">進階編輯（JSON）</h4><button class="btn btn-ghost" onclick="closeAdminModal()">關閉</button></header><div class="body"><div class="admin-hint">可在此備份或還原所有設定。</div><div class="admin-field"><textarea id="adminJson" spellcheck="false"></textarea></div></div><div class="admin-actions"><button class="btn btn-primary" onclick="applyJsonChanges()">套用</button></div></div></div>
+    <div class="admin-modal-backdrop" id="adminModalBackdrop" role="dialog"><div class="admin-modal"><header><h4 style="margin:0;font-size:16px;">進階編輯（JSON）</h4><button class="btn btn-ghost" onclick="closeAdminModal()">關閉</button></header><div class="body"><div class="admin-hint">可在此備份或還原所有設定。</div><div class="admin-field"><textarea id="adminJson" spellcheck="false"></textarea></div></div><div class="admin-actions"><button class="btn btn-primary" onclick="applyJsonChanges()">套用</button></div></div></div>
 
     <div class="admin-modal-backdrop" id="reorderModal" role="dialog" style="z-index: 5001;">
         <div class="admin-modal" style="width: 450px; max-width: 90%; max-height: 80vh;">
@@ -2064,14 +2070,26 @@ alert('已暫存到本機！');
 
     let _pickerSelectId = null;
     function syncPickerButtons() {
-        const ids = ['typeSelect', 'sizeSelect', 'stkSizeSel', 'stkThickSel', 'fineSizeSel', 'feedSizeSel', 'lifeSizeSel', 'lifeTypeSel'];
+        // 將 select 的目前選項文字同步到對應的手機 picker 按鈕
+        const ids = ['typeSelect', 'sizeSelect', 'fineSizeSel', 'feedSizeSel', 'lifeSizeSel', 'lifeTypeSel', 'stkSizeSel', 'stkThickSel'];
         ids.forEach(id => {
             const sel = document.getElementById(id);
-            const btn = document.getElementById(id + 'Btn') || (id === 'lifeSizeSel' ? document.getElementById('lifeSizeBtn') : document.getElementById('lifeTypeBtn'));
-            
-            if (sel && btn) {
-                btn.textContent = sel.options[sel.selectedIndex]?.textContent || '請選擇';
-            }
+            if (!sel) return;
+
+            // 一般規則：button id = select id + 'Btn'
+            let btn = document.getElementById(id + 'Btn');
+
+            // 壽命頁舊版相容：lifeSizeBtn / lifeTypeBtn
+            if (!btn && id === 'lifeSizeSel') btn = document.getElementById('lifeSizeBtn');
+            if (!btn && id === 'lifeTypeSel') btn = document.getElementById('lifeTypeBtn');
+
+            if (!btn) return;
+
+            const text = sel.options && sel.selectedIndex >= 0
+                ? (sel.options[sel.selectedIndex]?.textContent || '')
+                : '';
+
+            btn.textContent = text || '請選擇';
         });
     }
     
