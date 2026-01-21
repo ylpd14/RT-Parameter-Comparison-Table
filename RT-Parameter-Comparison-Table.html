@@ -133,32 +133,32 @@
         .admin-actions { padding: 15px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px; background: #fff; position: sticky; bottom: 0; z-index: 10; border-radius: 0 0 16px 16px; }
     </style>
 </head>
-<body class="editing">
+<body class="">
 
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             RT 參數對照查詢
-            <div class="version-tag">版本日期: 20260120</div>
+            <div class="version-tag">版本日期: 20260121</div>
         </div>
         <div class="sidebar-menu">
-            <div class="menu-item" onclick="switchTab('tab-query')">🔍 參數中值查詢</div>
+            <div class="menu-item active" onclick="switchTab('tab-query')">🔍 參數中值查詢</div>
             <div class="menu-item" onclick="switchTab('tab-stack')">📊 疊板片數對照表</div>
             <div class="menu-item" onclick="switchTab('tab-fine')">🔧 粗沖後細切-板內槽</div>
             <div class="menu-item" onclick="switchTab('tab-feed')">🚀 鑽孔進刀速對照表</div>
-            <div class="menu-item active" onclick="switchTab('tab-life')">⏳ 切刀壽命規定</div>
+            <div class="menu-item" onclick="switchTab('tab-life')">⏳ 切刀壽命規定</div>
             <div class="menu-item" onclick="switchTab('tab-note')">📝 備註事項</div>
         </div>
         <div class="admin-section">
-            <button style="background: rgb(52, 73, 94); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: none;" id="btnAdmin" onclick="toggleAdmin()">⚙️ 管理模式</button>
-            <button style="background: rgb(231, 76, 60); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: block;" id="btnExit" onclick="toggleAdmin()">🚪 退出管理</button>
+            <button style="background: rgb(52, 73, 94); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: block;" id="btnAdmin" onclick="toggleAdmin()">⚙️ 管理模式</button>
+            <button style="background: rgb(231, 76, 60); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: none;" id="btnExit" onclick="toggleAdmin()">🚪 退出管理</button>
         </div>
     </div>
 
     <div class="main-wrapper">
         <div class="top-bar">
             <span class="hamburger-btn" style="cursor:pointer; font-size:24px; margin-right:15px; color:#2c3e50;" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">☰</span>
-            <h3 id="currentTitle" style="margin:0; color:#2c3e50;">⏳ 切刀壽命規定</h3>
-            <div class="admin-bar" id="adminBar" style="display: none;">
+            <h3 id="currentTitle" style="margin:0; color:#2c3e50;">參數中值查詢</h3>
+            <div class="admin-bar" id="adminBar">
                 <span class="admin-badge">管理模式</span>
                 <div class="admin-date">
                     <label for="verDate">更新版本日期</label>
@@ -170,7 +170,7 @@
             </div>
         </div>
 
-        <section id="tab-query" class="content-section">
+        <section id="tab-query" class="content-section active">
             <div class="card">
                 <div class="query-row">
                     <div class="input-box">
@@ -191,7 +191,7 @@
                     </table>
                 </div>
 
-                <div id="adminPanel-query" class="admin-panel" style="display:none;" style="display:none;">
+                <div id="adminPanel-query" class="admin-panel">
                     <div class="admin-hint">
                         - 拖曳「☰」可調整尺寸順序。<br>
                         - 管理類型：可新增全新類型、修改目前類型名稱或刪除。
@@ -364,7 +364,7 @@
                     <div class="input-box"><label>最小切刀直徑 mil (mm)</label><select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"><option value="15.7 (0.40)">15.7 (0.40)</option><option value="19.7 (0.50)">19.7 (0.50)</option><option value="19.7 LCBRD (0.50)">19.7 LCBRD (0.50)</option><option value="23.6 (0.60)">23.6 (0.60)</option><option value="23.6 LCBRD (0.60)">23.6 LCBRD (0.60)</option><option value="31~35 (0.80-0.90)">31~35 (0.80-0.90)</option><option value="35 LRD (0.90)">35 LRD (0.90)</option><option value="39~55 (0.10-1.40)">39~55 (0.10-1.40)</option><option value="59~98 (1.50-2.50)">59~98 (1.50-2.50)</option><option value="39~47 LCBRD (1.00-1.20)">39~47 LCBRD (1.00-1.20)</option></select></div>
                     <div class="input-box"><label>成品板厚</label><select id="stkThickSel" onchange="runStackQuery()"><option value="9~10">9~10</option><option value="11~13">11~13</option><option value="14~20">14~20</option><option value="21~40">21~40</option></select></div>
                 </div>
-                <div id="adminPanel-stack" class="admin-panel" style="display:none;" style="display:none;">
+                <div id="adminPanel-stack" class="admin-panel">
                     <div class="admin-hint">
                         修改「規則字串」會即時更新下拉選單順序 (依照輸入的先後順序排列)。<br>
                         格式範例：<code>13:9, 9~12:10</code> (前面會在選單上方)
@@ -465,7 +465,7 @@
                     </table>
                 </div>
 
-                <div id="adminPanel-fine" class="admin-panel" style="display:none;" style="display:none;">
+                <div id="adminPanel-fine" class="admin-panel">
                     <div class="admin-hint">修改「尺寸標籤」會即時同步上方選單。</div>
                     <div class="admin-actions-row">
                         <button class="btn btn-primary" onclick="adminFineAdd()">＋ 新增細切規則</button>
@@ -832,8 +832,8 @@
             <div class="card">
                 <div class="input-box" style="margin-bottom:20px;">
                     <label>鑽頭直徑 (inch/mm)</label>
-                    <select id="feedSizeSel" style="width:300px;" onchange="runFeedQuery()"><option value="0">0.0279"(0.709) 以下</option><option value="1">0.0280"~0.0429"(0.710~1.089)</option><option value="2">0.0430"~0.0865"(1.090~2.197)</option><option value="3">0.0866"~0.1014"(2.198~2.580)</option><option value="4">0.1015"~0.1259"(2.581~3.199)</option><option value="5">0.1260"~0.1456"(3.200~3.699)</option><option value="6">0.1457"(3.700) 以上</option></select>
-                    <button type="button" class="picker-btn mobile-only" id="feedSizeSelBtn" onclick="openPicker('feedSizeSel','選擇直徑')">0.0279"(0.709) 以下</button>
+                    <select id="feedSizeSel" style="width:300px;" onchange="runFeedQuery()"><option value="0">0.0279" 以下</option><option value="1">0.0280"~0.0429"</option><option value="2">0.0430"~0.0865"</option><option value="3">0.0866"~0.1014"</option><option value="4">0.1015"~0.1259"</option><option value="5">0.1260"~0.1456"</option><option value="6">0.1457" 以上</option></select>
+                    <button type="button" class="picker-btn mobile-only" id="feedSizeSelBtn" onclick="openPicker('feedSizeSel','選擇直徑')">0.0279" 以下</button>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -844,7 +844,7 @@
                     </table>
                 </div>
 
-                 <div id="adminPanel-feed" class="admin-panel" style="display:none;" style="display:none;">
+                 <div id="adminPanel-feed" class="admin-panel">
                     <div class="admin-hint">修改「直徑標籤」會即時同步上方選單。</div>
                     <div class="admin-actions-row">
                         <button class="btn btn-primary" onclick="adminFeedAdd()">＋ 新增進刀規則</button>
@@ -854,7 +854,7 @@
                             <thead><tr><th style="width:40px;"></th><th>直徑標籤 (inch/mm)</th><th>轉速(參/範)</th><th>導引孔(參/範)</th><th>二次孔(參/範)</th><th>壽命</th><th>操作</th></tr></thead>
                             <tbody id="adminBody-feed" data-sortable-init="1"><tr draggable="true" data-idx="0">
                 <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0279&quot;(0.709) 以下" oninput="adminFeedSetLabel(0,this.value)" onchange="adminFeedSetLabel(0,this.value)" onblur="adminFeedSetLabel(0,this.value)" style="width:120px;"></td>
+                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0279&quot; 以下" oninput="adminFeedSetLabel(0,this.value)" onchange="adminFeedSetLabel(0,this.value)" onblur="adminFeedSetLabel(0,this.value)" style="width:120px;"></td>
                 <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(0,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~40" oninput="adminFeedSet(0,'s',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(0,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(0,'pF',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(0,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(0,'sF',1,this.value)"></td>
@@ -862,7 +862,7 @@
                 <td><button class="btn btn-danger" onclick="adminFeedDel(0)">刪</button></td>
             </tr><tr draggable="true" data-idx="1">
                 <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0280&quot;~0.0429&quot;(0.710~1.089)" oninput="adminFeedSetLabel(1,this.value)" onchange="adminFeedSetLabel(1,this.value)" onblur="adminFeedSetLabel(1,this.value)" style="width:120px;"></td>
+                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0280&quot;~0.0429&quot;" oninput="adminFeedSetLabel(1,this.value)" onchange="adminFeedSetLabel(1,this.value)" onblur="adminFeedSetLabel(1,this.value)" style="width:120px;"></td>
                 <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(1,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~40" oninput="adminFeedSet(1,'s',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(1,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~30" oninput="adminFeedSet(1,'pF',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(1,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(1,'sF',1,this.value)"></td>
@@ -870,7 +870,7 @@
                 <td><button class="btn btn-danger" onclick="adminFeedDel(1)">刪</button></td>
             </tr><tr draggable="true" data-idx="2">
                 <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0430&quot;~0.0865&quot;(1.090~2.197)" oninput="adminFeedSetLabel(2,this.value)" onchange="adminFeedSetLabel(2,this.value)" onblur="adminFeedSetLabel(2,this.value)" style="width:120px;"></td>
+                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0430&quot;~0.0865&quot;" oninput="adminFeedSetLabel(2,this.value)" onchange="adminFeedSetLabel(2,this.value)" onblur="adminFeedSetLabel(2,this.value)" style="width:120px;"></td>
                 <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(2,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~40" oninput="adminFeedSet(2,'s',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="40" oninput="adminFeedSet(2,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~40" oninput="adminFeedSet(2,'pF',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(2,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(2,'sF',1,this.value)"></td>
@@ -878,7 +878,7 @@
                 <td><button class="btn btn-danger" onclick="adminFeedDel(2)">刪</button></td>
             </tr><tr draggable="true" data-idx="3">
                 <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0866&quot;~0.1014&quot;(2.198~2.580)" oninput="adminFeedSetLabel(3,this.value)" onchange="adminFeedSetLabel(3,this.value)" onblur="adminFeedSetLabel(3,this.value)" style="width:120px;"></td>
+                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0866&quot;~0.1014&quot;" oninput="adminFeedSetLabel(3,this.value)" onchange="adminFeedSetLabel(3,this.value)" onblur="adminFeedSetLabel(3,this.value)" style="width:120px;"></td>
                 <td><input class="admin-input" style="width:50px" value="25" oninput="adminFeedSet(3,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~35" oninput="adminFeedSet(3,'s',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="50" oninput="adminFeedSet(3,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~50" oninput="adminFeedSet(3,'pF',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(3,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(3,'sF',1,this.value)"></td>
@@ -886,7 +886,7 @@
                 <td><button class="btn btn-danger" onclick="adminFeedDel(3)">刪</button></td>
             </tr><tr draggable="true" data-idx="4">
                 <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1015&quot;~0.1259&quot;(2.581~3.199)" oninput="adminFeedSetLabel(4,this.value)" onchange="adminFeedSetLabel(4,this.value)" onblur="adminFeedSetLabel(4,this.value)" style="width:120px;"></td>
+                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1015&quot;~0.1259&quot;" oninput="adminFeedSetLabel(4,this.value)" onchange="adminFeedSetLabel(4,this.value)" onblur="adminFeedSetLabel(4,this.value)" style="width:120px;"></td>
                 <td><input class="admin-input" style="width:50px" value="25" oninput="adminFeedSet(4,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~35" oninput="adminFeedSet(4,'s',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="40" oninput="adminFeedSet(4,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~40" oninput="adminFeedSet(4,'pF',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(4,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(4,'sF',1,this.value)"></td>
@@ -894,7 +894,7 @@
                 <td><button class="btn btn-danger" onclick="adminFeedDel(4)">刪</button></td>
             </tr><tr draggable="true" data-idx="5">
                 <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1260&quot;~0.1456&quot;(3.200~3.699)" oninput="adminFeedSetLabel(5,this.value)" onchange="adminFeedSetLabel(5,this.value)" onblur="adminFeedSetLabel(5,this.value)" style="width:120px;"></td>
+                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1260&quot;~0.1456&quot;" oninput="adminFeedSetLabel(5,this.value)" onchange="adminFeedSetLabel(5,this.value)" onblur="adminFeedSetLabel(5,this.value)" style="width:120px;"></td>
                 <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(5,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="15~25" oninput="adminFeedSet(5,'s',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(5,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(5,'pF',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(5,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(5,'sF',1,this.value)"></td>
@@ -902,7 +902,7 @@
                 <td><button class="btn btn-danger" onclick="adminFeedDel(5)">刪</button></td>
             </tr><tr draggable="true" data-idx="6">
                 <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1457&quot;(3.700) 以上" oninput="adminFeedSetLabel(6,this.value)" onchange="adminFeedSetLabel(6,this.value)" onblur="adminFeedSetLabel(6,this.value)" style="width:120px;"></td>
+                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1457&quot; 以上" oninput="adminFeedSetLabel(6,this.value)" onchange="adminFeedSetLabel(6,this.value)" onblur="adminFeedSetLabel(6,this.value)" style="width:120px;"></td>
                 <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(6,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="15~25" oninput="adminFeedSet(6,'s',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(6,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~15" oninput="adminFeedSet(6,'pF',1,this.value)"></td>
                 <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(6,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(6,'sF',1,this.value)"></td>
@@ -915,18 +915,18 @@
             </div>
         </section>
 
-        <section id="tab-life" class="content-section active">
+        <section id="tab-life" class="content-section">
             <div class="card">
                 <div class="query-row">
                     <div class="input-box">
                         <label>1. 選擇直徑 inch (mm)</label>
                         <select id="lifeSizeSel" onchange="updateLifeTypeList()"><option value="0.0197&quot; (0.500mm)">0.0197" (0.500mm)</option><option value="0.0236&quot; (0.600mm)">0.0236" (0.600mm)</option><option value="0.031&quot; (0.800mm)">0.031" (0.800mm)</option><option value="0.031&quot; 逆轉刀 (0.800mm)">0.031" 逆轉刀 (0.800mm)</option><option value="0.035&quot; (0.900mm)">0.035" (0.900mm)</option><option value="0.039&quot; (1.000mm)">0.039" (1.000mm)</option><option value="0.039&quot; 逆轉刀 (1.000mm)">0.039" 逆轉刀 (1.000mm)</option><option value="0.043&quot; (1.100mm)">0.043" (1.100mm)</option><option value="0.047&quot; (1.200mm)">0.047" (1.200mm)</option><option value="0.051&quot;(1.300)">0.051"(1.300)</option><option value="0.055&quot;(1.400)">0.055"(1.400)</option><option value="0.059&quot;(1.500)">0.059"(1.500)</option><option value="0.062&quot;(1.600)">0.062"(1.600)</option><option value="0.067&quot;(1.700)">0.067"(1.700)</option><option value="0.069&quot;(1.750)">0.069"(1.750)</option><option value="0.071&quot;(1.800)">0.071"(1.800)</option><option value="0.075&quot;(1.900)">0.075"(1.900)</option><option value="0.079&quot;(2.000) (內槽)">0.079"(2.000) (內槽)</option><option value="0.079&quot;(2.000) (外型)">0.079"(2.000) (外型)</option><option value="0.093&quot;(2.380) (內槽)">0.093"(2.380) (內槽)</option><option value="0.093&quot;(2.380) (外型)">0.093"(2.380) (外型)</option><option value="0.098&quot;(2.500) (內槽)">0.098"(2.500) (內槽)</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="lifeSizeBtn" onclick="openPicker('lifeSizeSel','選擇直徑')">0.079"(2.000) (內槽)</button>
+                        <button type="button" class="picker-btn mobile-only" id="lifeSizeBtn" onclick="openPicker('lifeSizeSel','選擇直徑')">0.0197" (0.500mm)</button>
                     </div>
                     <div class="input-box">
                         <label>2. 選擇型態</label>
-                        <select id="lifeTypeSel" onchange="runLifeQuery()"><option value="一般刀">一般刀</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="lifeTypeBtn" onclick="openPicker('lifeTypeSel','選擇型態')">一般刀</button>
+                        <select id="lifeTypeSel" onchange="runLifeQuery()"><option value="鍍膜刀">鍍膜刀</option><option value="一般刀">一般刀</option></select>
+                        <button type="button" class="picker-btn mobile-only" id="lifeTypeBtn" onclick="openPicker('lifeTypeSel','選擇型態')">鍍膜刀</button>
                     </div>
                 </div>
                 <div class="table-wrap">
@@ -935,13 +935,13 @@
                             <tr><th style="width:50%;">普通材質</th><th style="background:#fff7ed; color:#c2410c; border-bottom: 2px solid #fdba74;">其他材質</th></tr>
                         </thead>
                         <tbody id="lifeTableBody"><tr>
-            <td><span class="val-mid">700</span><span class="val-range">580~700</span></td>
-            <td style="background:#fff7ed;"><span class="val-mid" style="color:#c2410c;">620</span><span class="val-range">400~620</span></td>
+            <td><span class="val-mid">150</span><span class="val-range">100~150</span></td>
+            <td style="background:#fff7ed;"><span class="val-mid" style="color:#c2410c;">150</span><span class="val-range">100~150</span></td>
         </tr></tbody>
                     </table>
                 </div>
 
-                <div id="adminPanel-life" class="admin-panel" style="display:none;" style="display:none;">
+                <div id="adminPanel-life" class="admin-panel">
                     <div class="admin-hint">點擊「⇅ 調整直徑順序」可直觀調整下拉選單的順序。</div>
                     <div class="admin-actions-row">
                         <button type="button" class="btn btn-primary" onclick="adminLifeAddSize()">＋ 新增直徑</button>
@@ -953,7 +953,7 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:20px;"></th><th>型態</th><th>普通-中值</th><th>普通-範圍</th><th>其他材質-中值</th><th>其他材質-範圍</th><th>操作</th></tr></thead>
-                            <tbody id="adminBody-life" data-sortable-init="1"><tr draggable="true" data-key="一般刀"><td class="drag-handle">☰</td><td style="font-weight: bold;">一般刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr></tbody>
+                            <tbody id="adminBody-life" data-sortable-init="1"><tr draggable="true" data-key="鍍膜刀"><td class="drag-handle">☰</td><td style="font-weight: bold;">鍍膜刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr><tr draggable="true" data-key="一般刀"><td class="drag-handle">☰</td><td style="font-weight: bold;">一般刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -962,7 +962,7 @@
 
         <section id="tab-note" class="content-section">
             <div class="card">
-                <ul class="note-list"><li><b>1.</b> HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。</li><li><b>2.</b> 切內槽為銅面：切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。</li><li><b>3.</b> 藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。</li><li><b>4.</b> 粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。</li><li><b>5.</b> 粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。</li><li><b>6.</b> 清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。</li><li><b>7.</b> 清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。</li><li><b>8.</b> H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。</li><li><b>9.</b> C66料號外型 62 mil 切刀壽命上限設定 300 INCH。</li><li><b>10.</b> 39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。</li><li><b>11.</b> C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。</li></ul> <div id="adminPanel-note" class="admin-panel" style="display:none;" style="display:none;">
+                <ul class="note-list"><li><b>1.</b> HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。</li><li><b>2.</b> 切內槽為銅面：切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。</li><li><b>3.</b> 藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。</li><li><b>4.</b> 粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。</li><li><b>5.</b> 粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。</li><li><b>6.</b> 清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。</li><li><b>7.</b> 清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。</li><li><b>8.</b> H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。</li><li><b>9.</b> C66料號外型 62 mil 切刀壽命上限設定 300 INCH。</li><li><b>10.</b> 39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。</li><li><b>11.</b> C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。</li></ul> <div id="adminPanel-note" class="admin-panel">
                     <div class="admin-hint">備註事項管理，可拖曳排序。</div>
                     <div class="admin-actions-row">
                         <button class="btn btn-primary" onclick="adminNoteAdd()">＋ 新增一行</button>
@@ -1036,9 +1036,9 @@
 
     <div id="pickerModal" class="picker-modal hidden" role="dialog"><div class="picker-sheet"><div class="picker-header"><div id="pickerTitle" class="picker-title">選擇</div><button type="button" class="picker-close" onclick="closePicker()">關閉</button></div><div id="pickerList" class="picker-list"></div></div></div>
     
-    <div class="admin-modal-backdrop" id="adminModalBackdrop" role="dialog" style="display: none;"><div class="admin-modal"><header><h4 style="margin:0;font-size:16px;">進階編輯（JSON）</h4><button class="btn btn-ghost" onclick="closeAdminModal()">關閉</button></header><div class="body"><div class="admin-hint">可在此備份或還原所有設定。</div><div class="admin-field"><textarea id="adminJson" spellcheck="false"></textarea></div></div><div class="admin-actions"><button class="btn btn-primary" onclick="applyJsonChanges()">套用</button></div></div></div>
+    <div class="admin-modal-backdrop" id="adminModalBackdrop" role="dialog"><div class="admin-modal"><header><h4 style="margin:0;font-size:16px;">進階編輯（JSON）</h4><button class="btn btn-ghost" onclick="closeAdminModal()">關閉</button></header><div class="body"><div class="admin-hint">可在此備份或還原所有設定。</div><div class="admin-field"><textarea id="adminJson" spellcheck="false"></textarea></div></div><div class="admin-actions"><button class="btn btn-primary" onclick="applyJsonChanges()">套用</button></div></div></div>
 
-    <div class="admin-modal-backdrop" id="reorderModal" role="dialog" style="z-index: 5001; display: none;">
+    <div class="admin-modal-backdrop" id="reorderModal" role="dialog" style="z-index: 5001;">
         <div class="admin-modal" style="width: 450px; max-width: 90%; max-height: 80vh;">
             <header>
                 <h4 style="margin:0;font-size:16px;">調整直徑順序</h4>
@@ -1048,7 +1048,7 @@
                 <div class="admin-hint">拖曳「☰」即可調整順序，完成後請按「保存順序」。</div>
                 <div class="admin-table-wrap" style="max-height: 50vh; overflow-y: auto;">
                     <table class="admin-table">
-                        <tbody id="reorderTbody" data-sortable-init="1"><tr draggable="true" data-key="0.0197&quot; (0.500mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.0197" (0.500mm)</td></tr><tr draggable="true" data-key="0.0236&quot; (0.600mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.0236" (0.600mm)</td></tr><tr draggable="true" data-key="0.031&quot; (0.800mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.031" (0.800mm)</td></tr><tr draggable="true" data-key="0.031&quot; 逆轉刀 (0.800mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.031" 逆轉刀 (0.800mm)</td></tr><tr draggable="true" data-key="0.035&quot; (0.900mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.035" (0.900mm)</td></tr><tr draggable="true" data-key="0.039&quot; (1.000mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.039" (1.000mm)</td></tr><tr draggable="true" data-key="0.039&quot; 逆轉刀 (1.000mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.039" 逆轉刀 (1.000mm)</td></tr><tr draggable="true" data-key="0.043&quot; (1.100mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.043" (1.100mm)</td></tr><tr draggable="true" data-key="0.047&quot; (1.200mm)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.047" (1.200mm)</td></tr><tr draggable="true" data-key="0.051&quot;(1.300)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.051"(1.300)</td></tr><tr draggable="true" data-key="0.055&quot;(1.400)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.055"(1.400)</td></tr><tr draggable="true" data-key="0.059&quot;(1.500)" class=""><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.059"(1.500)</td></tr><tr draggable="true" data-key="0.062&quot;(1.600)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.062"(1.600)</td></tr><tr draggable="true" data-key="0.067&quot;(1.700)" class=""><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.067"(1.700)</td></tr><tr draggable="true" data-key="0.069&quot;(1.750)" class=""><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.069"(1.750)</td></tr><tr draggable="true" data-key="0.071&quot;(1.800)" class=""><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.071"(1.800)</td></tr><tr draggable="true" data-key="0.075&quot;(1.900)" class=""><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.075"(1.900)</td></tr><tr draggable="true" data-key="0.079&quot; (內槽)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.079" (內槽)</td></tr><tr draggable="true" data-key="0.079&quot; (外型)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.079" (外型)</td></tr><tr draggable="true" data-key="0.093&quot; (內槽)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.093" (內槽)</td></tr><tr draggable="true" data-key="0.093&quot; (外型)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.093" (外型)</td></tr><tr draggable="true" data-key="0.098&quot; (內槽)"><td class="drag-handle">☰</td><td style="font-weight:bold; text-align:left;">0.098" (內槽)</td></tr></tbody>
+                        <tbody id="reorderTbody"></tbody>
                     </table>
                 </div>
             </div>
@@ -1128,9 +1128,12 @@ function escAttr(v){
 
     let fineCutData = [{"label":"0.0197\"(0.500) (土黃色)","s":["40","30~45"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0098","+/-0.003\""],"color":"土黃色"},{"label":"0.0197\" LCBRD(0.500) (蘋果綠)","s":["45","40~55"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0098","+/-0.003\""],"color":"蘋果綠"},{"label":"0.0236\"(0.600) (醬紅色)","s":["40","30~45"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0118","+/-0.003\""],"color":"醬紅色"},{"label":"0.0236\" LCBRD(0.600) (黑色)","s":["40","30~50"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0118","+/-0.003\""],"color":"黑色"},{"label":"0.031\"(0.800) (深藍色)","s":["30","25~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0155","+/-0.003\""],"color":"深藍色"},{"label":"0.031\" CBRD(0.800) (咖啡色)","s":["55","40~55"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0155","+/-0.003\""],"color":"咖啡色"},{"label":"0.031\" (逆)漢台(0.800) (青色)","s":["-30","-30"],"f":["10","5~10"],"t":["10","10~10"],"d":["0.0155","+/-0.003\""],"color":"青色"},{"label":"0.035\"(0.900) (柑紅色)","s":["30","20~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0175","+/-0.003\""],"color":"柑紅色"},{"label":"0.035\" LRD(0.900) (淡紫色)","s":["30","20~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0175","+/-0.003\""],"color":"淡紫色"},{"label":"0.039\"(1.000) (墨綠色)","s":["30","25~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"墨綠色"},{"label":"0.039\" CBRD(1.000) (粉紅色)","s":["35","25~50"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"粉紅色"},{"label":"0.039\" (逆)尖點(1.000) (白色)","s":["-30","-25~-40"],"f":["10","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"白色"},{"label":"0.039\" (逆)旭貿(1.000) (白色)","s":["-30","-25~-40"],"f":["10","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"白色"},{"label":"0.0039\" LCBRD(1.000) (棕紅色)","s":["35","25~50"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"棕紅色"},{"label":"0.043\"(1.100) (淡梨色)","s":["30","25~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0215","+/-0.003\""],"color":"淡梨色"},{"label":"0.047\"(1.200) (深紫色)","s":["30","20~40"],"f":["28","10~30"],"t":["20","10~25"],"d":["0.0235","+/-0.003\""],"color":"深紫色"},{"label":"0.047\"(1.200) (橄欖綠)","s":["30","20~40"],"f":["28","10~30"],"t":["20","10~25"],"d":["0.0235","+/-0.003\""],"color":"橄欖綠"},{"label":"0.047\" LCBRD(1.200)(淡橘色)","s":["35","25~50"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0235\"","+/-0.003\""],"color":"淡橘色"},{"label":"0.051\"(1.300)(卡其色)","s":["30","20~35"],"f":["28","10~30"],"t":["20","10~25"],"d":["0.0255\"","+/-0.003\""],"color":"卡其色"},{"label":"0.055\"(1.400)(淡藍色)","s":["30","20~35"],"f":["30","10~35"],"t":["20","10~27"],"d":["0.0275\"","+/-0.003\""],"color":"淡藍色"},{"label":"0.059\"(1.500)(灰色)","s":["30","20~35"],"f":["30","10~35"],"t":["20","10~27"],"d":["0.0295\"","+/-0.003\""],"color":"灰色"},{"label":"0.062\"(1.600) (凍黃色)","s":["30","18~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0315","+/-0.003\""],"color":"凍黃色"},{"label":"0.067\"(1.700)(胭脂紅)","s":["30","25~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0335\"","+/-0.003\""],"color":"胭脂紅"},{"label":"0.069\"(1.750)(蘋果綠)","s":["30","25~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0345\"","+/-0.003\""],"color":"蘋果綠"},{"label":"0.071\"(1.800)(天藍色)","s":["30","25~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0355\"","+/-0.003\""],"color":"天藍色"},{"label":"0.075\"(1.900)(桃紅色)","s":["30","25~35"],"f":["35","10~40"],"t":["30","10~35"],"d":["0.0375\"","+/-0.003\""],"color":"桃紅色"},{"label":"0.079\"(2.000)(大紅色)","s":["30","20~35"],"f":["35","10~40"],"t":["30","10~35"],"d":["0.0395\"","+/-0.003\""],"color":"大紅色"},{"label":"0.093\"(2.380)(白色)","s":["28","18~30"],"f":["35","10~40"],"t":["40","10~45"],"d":["0.0490\"","+/-0.003\""],"color":"白色"},{"label":"0.098\"(2.500) (松樹綠)","s":["28","18~30"],"f":["35","10~40"],"t":["40","10~45"],"d":["0.0490","+/-0.003\""],"color":"松樹綠"}];
 
-    let feedData = [{"label":"0.0279\"(0.709) 以下","s":["30","20~40"],"pF":["20","10~20"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0280\"~0.0429\"(0.710~1.089)","s":["30","20~40"],"pF":["30","10~30"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0430\"~0.0865\"(1.090~2.197)","s":["30","20~40"],"pF":["40","10~40"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0866\"~0.1014\"(2.198~2.580)","s":["25","20~35"],"pF":["50","10~50"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1015\"~0.1259\"(2.581~3.199)","s":["25","20~35"],"pF":["40","10~40"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1260\"~0.1456\"(3.200~3.699)","s":["20","15~25"],"pF":["20","10~20"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1457\"(3.700) 以上","s":["20","15~25"],"pF":["10","10~15"],"sF":["10","10~20"],"life":"1500"}];
+    let feedData = [{"label":"0.0279\" 以下","s":["30","20~40"],"pF":["20","10~20"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0280\"~0.0429\"","s":["30","20~40"],"pF":["30","10~30"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0430\"~0.0865\"","s":["30","20~40"],"pF":["40","10~40"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0866\"~0.1014\"","s":["25","20~35"],"pF":["50","10~50"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1015\"~0.1259\"","s":["25","20~35"],"pF":["40","10~40"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1260\"~0.1456\"","s":["20","15~25"],"pF":["20","10~20"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1457\" 以上","s":["20","15~25"],"pF":["10","10~15"],"sF":["10","10~20"],"life":"1500"}];
 
-    let toolLifeRules = {"0.0197\" (0.500mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.0236\" (0.600mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.031\" (0.800mm)":{"鍍膜刀":[["450","300~450"],["300","250~300"]],"一般刀":[["300","260~300"],["100","60~100"]]},"0.031\" 逆轉刀 (0.800mm)":{"一般刀":[["90","90"],["90","90"]]},"0.035\" (0.900mm)":{"一般刀":[["300","260~300"],["100","60~100"]],"長刃刀":[["300","260~300"],["100","60~100"]]},"0.039\" (1.000mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["300","260~300"],["200","120~200"]]},"0.039\" 逆轉刀 (1.000mm)":{"一般刀":[["160","160"],["160","160"]]},"0.043\" (1.100mm)":{"一般刀":[["300","260~300"],["100","60~100"]]},"0.047\" (1.200mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["370","330~370"],["200","120~200"]]},"0.051\"(1.300)":{"一般刀":[["370","330~370"],["140","100~140"]]},"0.055\"(1.400)":{"一般刀":[["420","380~420"],["220","180~220"]]},"0.059\"(1.500)":{"一般刀":[["420","380~420"],["250","180~250"]]},"0.062\"(1.600)":{"一般刀":[["520","480~520"],["400","300~400"]]},"0.067\"(1.700)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.069\"(1.750)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.071\"(1.800)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.075\"(1.900)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.079\"(2.000) (內槽)":{"一般刀":[["700","580~700"],["620","400~620"]]},"0.079\"(2.000) (外型)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (內槽)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (外型)":{"一般刀":[["1020","980~1020"],["820","780~820"]]},"0.098\"(2.500) (內槽)":{"一般刀":[["520","480~520"],["320","280~320"]]}};
+    let toolLifeRules = (function(){ 
+        // preserve possible Map-like keys
+        return {"0.0197\" (0.500mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.0236\" (0.600mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.031\" (0.800mm)":{"鍍膜刀":[["450","300~450"],["300","250~300"]],"一般刀":[["300","260~300"],["100","60~100"]]},"0.031\" 逆轉刀 (0.800mm)":{"一般刀":[["90","90"],["90","90"]]},"0.035\" (0.900mm)":{"一般刀":[["300","260~300"],["100","60~100"]],"長刃刀":[["300","260~300"],["100","60~100"]]},"0.039\" (1.000mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["300","260~300"],["200","120~200"]]},"0.039\" 逆轉刀 (1.000mm)":{"一般刀":[["160","160"],["160","160"]]},"0.043\" (1.100mm)":{"一般刀":[["300","260~300"],["100","60~100"]]},"0.047\" (1.200mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["370","330~370"],["200","120~200"]]},"0.051\"(1.300)":{"一般刀":[["370","330~370"],["140","100~140"]]},"0.055\"(1.400)":{"一般刀":[["420","380~420"],["220","180~220"]]},"0.059\"(1.500)":{"一般刀":[["420","380~420"],["250","180~250"]]},"0.062\"(1.600)":{"一般刀":[["520","480~520"],["400","300~400"]]},"0.067\"(1.700)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.069\"(1.750)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.071\"(1.800)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.075\"(1.900)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.079\"(2.000) (內槽)":{"一般刀":[["700","580~700"],["620","400~620"]]},"0.079\"(2.000) (外型)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (內槽)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (外型)":{"一般刀":[["1020","980~1020"],["820","780~820"]]},"0.098\"(2.500) (內槽)":{"一般刀":[["520","480~520"],["320","280~320"]]}}; 
+    })();
 
     let notesData = ["HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。","切內槽為銅面：切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。","藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。","粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。","粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。","清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。","清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。","H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。","C66料號外型 62 mil 切刀壽命上限設定 300 INCH。","39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。","C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。"];
 
@@ -1938,22 +1941,19 @@ function escAttr(v){
     const STORAGE_KEY = 'rt_param_bundle_v12_perfect_sync'; 
     const STORAGE_VERDATE_KEY = 'rt_param_version_date_v12';
 
-    // --- Version Tag Sync ---
-    function _verISOToYMD(iso){
-        if(!iso) return '';
-        // iso: YYYY-MM-DD
-        const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-        if(!m) return '';
-        return m[1]+m[2]+m[3];
+    
+
+    function _formatVerYMD(vd){
+        // vd: 'YYYY-MM-DD' -> 'YYYYMMDD'
+        return (vd||'').toString().trim().replace(/-/g,'');
     }
-    function setVersionTagByISO(iso){
-        const ymd = _verISOToYMD(iso);
-        if(!ymd) return;
-        document.querySelectorAll('.version-tag').forEach(el=>{ el.textContent = '版本日期: ' + ymd; });
+    function syncVersionTag(vd){
+        const ymd = _formatVerYMD(vd);
+        const tag = document.querySelector('.version-tag');
+        if(tag && ymd) tag.textContent = '版本日期: ' + ymd;
     }
 
-
-    function getBundle(){ return { toolData, stackingRules, fineCutData, feedData, toolLifeRules, notesData, typeDefs, colorOverrides }; }
+function getBundle(){ return { toolData, stackingRules, fineCutData, feedData, toolLifeRules, notesData, typeDefs, colorOverrides }; }
     function setBundle(b){
         if(!b) return;
         if(b.toolData) toolData = b.toolData;
@@ -1971,7 +1971,7 @@ function escAttr(v){
             if(raw) setBundle(JSON.parse(raw));
             const vd = localStorage.getItem(STORAGE_VERDATE_KEY);
             if(vd) document.getElementById('verDate').value = vd;
-            if(vd) setVersionTagByISO(vd);
+            if(vd) syncVersionTag(vd);
         }catch(e){ console.warn(e); }
     }
     function saveAllChanges(){
@@ -1979,8 +1979,9 @@ function escAttr(v){
         if(!vd) { alert('請填寫更新版本日期'); return; }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(getBundle()));
         localStorage.setItem(STORAGE_VERDATE_KEY, vd);
-        setVersionTagByISO(vd);
-        alert('已暫存到本機！');
+        
+        syncVersionTag(vd);
+alert('已暫存到本機！');
     }
     function openAdvancedEditor(){
         document.getElementById('adminJson').value = JSON.stringify(getBundle(), null, 2);
@@ -2006,34 +2007,57 @@ function escAttr(v){
     }
 
     function downloadUpdatedHtml() {
-        let html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-        html = html.replace(/let toolData = \{[\s\S]*?\};/, `let toolData = ${JSON.stringify(toolData)};`);
-        html = html.replace(/let typeDefs = \[[\s\S]*?\];/, `let typeDefs = ${JSON.stringify(typeDefs)};`);
-        html = html.replace(/let stackingRules = \{[\s\S]*?\};/, `let stackingRules = ${JSON.stringify(stackingRules)};`);
-        html = html.replace(/let fineCutData = \[[\s\S]*?\];/, `let fineCutData = ${JSON.stringify(fineCutData)};`);
-        html = html.replace(/let feedData = \[[\s\S]*?\];/, `let feedData = ${JSON.stringify(feedData)};`);
-        html = html.replace(/let toolLifeRules = \{[\s\S]*?\};/, `let toolLifeRules = ${JSON.stringify(toolLifeRules)};`);
-        html = html.replace(/let notesData = \[[\s\S]*?\];/, `let notesData = ${JSON.stringify(notesData)};`);
-        html = html.replace(/let colorOverrides = \{[\s\S]*?\};/, `let colorOverrides = ${JSON.stringify(colorOverrides)};`);
-        // update sidebar version tag inside exported HTML
-        const vd = document.getElementById('verDate')?.value;
-        const ymd = _verISOToYMD(vd) || '20241121';
-        html = html.replace(/<div class=\"version-tag\">\s*版本日期:\s*[^<]*<\/div>/g, `<div class=\"version-tag\">版本日期: ${ymd}<\/div>`);
+    const vd = document.getElementById('verDate')?.value || localStorage.getItem(STORAGE_VERDATE_KEY) || '';
+    const ymd = _formatVerYMD(vd) || '20241121';
 
-        
-        html = html.replace(/class="admin-panel\s+active"/g, 'class="admin-panel" style="display:none;"');
-        html = html.replace(/style="display:\s*block;"/g, 'style="display:none;"');
-        html = html.replace(/id="adminBar"\s+style="display:\s*flex;"/, 'id="adminBar" style="display: none;"');
-        html = html.replace(/id="btnAdmin"\s+style="display:\s*none;"/, 'id="btnAdmin" style="display: block;"');
-        html = html.replace(/id="btnExit"\s+style="display:\s*block;"/, 'id="btnExit" style="display: none;"');
-        
-        const blob = new Blob([html], {type: 'text/html'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        const date = new Date().toISOString().split('T')[0];
-        a.download = `RT_Param_Table_v${date}.html`;
-        a.click();
-    }
+    // Clone DOM and reset to "view" default state BEFORE exporting
+    const docEl = document.documentElement.cloneNode(true);
+
+    const body = docEl.querySelector('body');
+    if (body) body.classList.remove('editing');
+
+    // Ensure exported file is still editable: keep admin UI, just reset to non-editing default
+    docEl.querySelectorAll('.admin-panel').forEach(p => {
+        p.classList.remove('active');
+        if (p.hasAttribute('style')) p.removeAttribute('style');
+    });
+
+    const adminBar = docEl.querySelector('#adminBar');
+    if (adminBar && adminBar.hasAttribute('style')) adminBar.removeAttribute('style');
+
+    const btnAdmin = docEl.querySelector('#btnAdmin');
+    if (btnAdmin) btnAdmin.style.display = 'block'; // keep original inline styles, only reset visibility
+    const btnExit = docEl.querySelector('#btnExit');
+    if (btnExit) btnExit.style.display = 'none'; // keep original inline styles, only reset visibility
+
+    // Sync sidebar version tag in exported HTML
+    const tag = docEl.querySelector('.version-tag');
+    if (tag) tag.textContent = '版本日期: ' + ymd;
+
+    let html = "<!DOCTYPE html>\n" + docEl.outerHTML;
+
+    // Replace data blocks with the latest in-memory data
+    html = html.replace(/let toolData = \{[\s\S]*?\};/, `let toolData = ${JSON.stringify(toolData)};`);
+    html = html.replace(/let typeDefs = \[[\s\S]*?\];/, `let typeDefs = ${JSON.stringify(typeDefs)};`);
+    html = html.replace(/let stackingRules = \{[\s\S]*?\};/, `let stackingRules = ${JSON.stringify(stackingRules)};`);
+    html = html.replace(/let fineCutData = \[[\s\S]*?\];/, `let fineCutData = ${JSON.stringify(fineCutData)};`);
+    html = html.replace(/let feedData = \[[\s\S]*?\];/, `let feedData = ${JSON.stringify(feedData)};`);
+    html = html.replace(/let toolLifeRules = \{[\s\S]*?\};/, `let toolLifeRules = (function(){ 
+        // preserve possible Map-like keys
+        return ${JSON.stringify(toolLifeRules)}; 
+    })();`);
+    html = html.replace(/let notesData = \[[\s\S]*?\];/, `let notesData = ${JSON.stringify(notesData)};`);
+    html = html.replace(/let colorOverrides = \{[\s\S]*?\};/, `let colorOverrides = ${JSON.stringify(colorOverrides)};`);
+
+    // Safety net for any hardcoded version tag text
+    html = html.replace(/(<div class="version-tag">版本日期:\s*)\d{8}(\s*<\/div>)/, `$1${ymd}$2`);
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `RT_Param_Table_v${vd ? vd : new Date().toISOString().split('T')[0]}.html`;
+    a.click();
+}
 
     let _pickerSelectId = null;
     function syncPickerButtons() {
@@ -2073,10 +2097,12 @@ function escAttr(v){
 
     window.onload = () => {
         loadFromStorage();
-        // ensure sidebar version tag reflects saved version date (if any)
-        const _vd0 = document.getElementById('verDate')?.value;
-        if(_vd0) setVersionTagByISO(_vd0);
-        renderTypeSelect();
+        
+        const _vd0 = document.getElementById('verDate')?.value || localStorage.getItem(STORAGE_VERDATE_KEY);
+        if(_vd0) syncVersionTag(_vd0);
+        const _vdInput = document.getElementById('verDate');
+        if(_vdInput) _vdInput.addEventListener('input', e=>syncVersionTag(e.target.value));
+renderTypeSelect();
         
         document.getElementById('stkSizeSel').innerHTML = Object.keys(stackingRules).map(s => `<option value="${s}">${s}</option>`).join('');
         updateStackThickList();
@@ -2091,12 +2117,6 @@ function escAttr(v){
         renderNotes();
         
         syncPickerButtons();
-
-        // live update sidebar version tag when date changes
-        const _verEl = document.getElementById('verDate');
-        if(_verEl){
-            _verEl.addEventListener('change', ()=> setVersionTagByISO(_verEl.value));
-        }
     };
 
     document.addEventListener('click', (e) => {
