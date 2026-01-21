@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh-TW"><head>
+<html lang="zh-TW">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RT 參數對照表 (完美同步版)</title>
@@ -70,6 +71,9 @@
           .fine-select-wrapper { width: 100%; }
           .color-badge { width: 100%; min-width: unset; font-size: 18px; padding: 10px 14px; }
           .input-box select, .fine-select-wrapper select { display: none !important; }
+          /* FIX: allow native selects in 疊板片數對照表 on mobile */
+          #tab-stack .input-box select { display: block !important; }
+
           .input-box .mobile-only, .fine-select-wrapper .mobile-only { display: block !important; }
         }
 
@@ -133,12 +137,12 @@
         .admin-actions { padding: 15px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px; background: #fff; position: sticky; bottom: 0; z-index: 10; border-radius: 0 0 16px 16px; }
     </style>
 </head>
-<body class="">
+<body>
 
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             RT 參數對照查詢
-            <div class="version-tag">版本日期: 20260121</div>
+            <div class="version-tag">版本日期: 20241121</div>
         </div>
         <div class="sidebar-menu">
             <div class="menu-item active" onclick="switchTab('tab-query')">🔍 參數中值查詢</div>
@@ -149,8 +153,8 @@
             <div class="menu-item" onclick="switchTab('tab-note')">📝 備註事項</div>
         </div>
         <div class="admin-section">
-            <button style="background: rgb(52, 73, 94); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: block;" id="btnAdmin" onclick="toggleAdmin()">⚙️ 管理模式</button>
-            <button style="background: rgb(231, 76, 60); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: none;" id="btnExit" onclick="toggleAdmin()">🚪 退出管理</button>
+            <button style="background:#34495e; color:white; width:100%; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold;" id="btnAdmin" onclick="toggleAdmin()">⚙️ 管理模式</button>
+            <button style="background:#e74c3c; color:white; width:100%; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; display:none;" id="btnExit" onclick="toggleAdmin()">🚪 退出管理</button>
         </div>
     </div>
 
@@ -162,7 +166,7 @@
                 <span class="admin-badge">管理模式</span>
                 <div class="admin-date">
                     <label for="verDate">更新版本日期</label>
-                    <input id="verDate" type="date">
+                    <input id="verDate" type="date" />
                 </div>
                 <button class="btn btn-ghost" onclick="openAdvancedEditor()">JSON 編輯</button>
                 <button class="btn btn-primary" onclick="saveAllChanges()">暫存(本機)</button>
@@ -175,19 +179,19 @@
                 <div class="query-row">
                     <div class="input-box">
                         <label>類型</label>
-                        <select id="typeSelect" onchange="updateSizeList();"><optgroup label="主要工序"><option value="FF">粗切 (FF)</option><option value="AA">粗切 (AA) 清粉</option><option value="RD">內槽 (RD)、阻抗條 (CP)</option><option value="G42">封閉槽、二次孔、耳朵槽、葫蘆孔、金手指 (G42)</option><option value="OR">外型 (OR)、裁開 (HA)</option></optgroup><optgroup label="特殊工序"><option value="RDL">內槽 (RDL) 逆轉刀</option><option value="DA">導引孔 (DA)</option><option value="DAFF">粗切導引孔 (DA FF)</option></optgroup></select>
-                        <button type="button" class="picker-btn mobile-only" id="typeSelectBtn" onclick="openPicker('typeSelect','選擇類型')">粗切 (FF)</button>
+                        <select id="typeSelect" onchange="updateSizeList();"></select>
+                        <button type="button" class="picker-btn mobile-only" id="typeSelectBtn" onclick="openPicker('typeSelect','選擇類型')"></button>
                     </div>
                     <div class="input-box">
                         <label>尺寸</label>
-                        <select id="sizeSelect" onchange="runQuery()"><option value="0.0197">0.0197</option><option value="0.0197 CB">0.0197 CB</option><option value="0.0236">0.0236</option><option value="0.0236 CB">0.0236 CB</option><option value="0.031">0.031</option><option value="0.035">0.035</option><option value="0.039">0.039</option><option value="0.039 CB">0.039 CB</option><option value="0.039 LCB">0.039 LCB</option><option value="0.047">0.047</option><option value="0.047 LCB">0.047 LCB</option><option value="0.055">0.055</option><option value="0.059">0.059</option><option value="0.062">0.062</option><option value="0.079">0.079</option><option value="0.093">0.093</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="sizeSelectBtn" onclick="openPicker('sizeSelect','選擇尺寸')">0.0197</button>
+                        <select id="sizeSelect" onchange="runQuery()"></select>
+                        <button type="button" class="picker-btn mobile-only" id="sizeSelectBtn" onclick="openPicker('sizeSelect','選擇尺寸')"></button>
                     </div>
                 </div>
                 <div class="table-wrap">
                     <table id="mainTable">
                         <thead><tr><th>轉速 (S)</th><th>進刀 (F)</th><th>壽命 (N)</th><th>補償 (D)</th><th>檯面速度 (F0X)</th></tr></thead>
-                        <tbody id="tableBody"><tr><td>40</td><td>10</td><td>50</td><td>0.0098</td><td>10</td></tr></tbody>
+                        <tbody id="tableBody"></tbody>
                     </table>
                 </div>
 
@@ -207,151 +211,7 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:40px;"></th><th>尺寸 Key (可改名)</th><th>轉速 (S)</th><th>進刀 (F)</th><th>壽命 (N)</th><th>補償 (D)</th><th>F0X</th><th>操作</th></tr></thead>
-                            <tbody id="adminBody-query" data-sortable-init="1"><tr draggable="true" data-key="0.0197">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.0197" oninput="adminParamRename(this, '0.0197')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="40" oninput="adminParamSet('0.0197','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0197','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="50" oninput="adminParamSet('0.0197','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0098" oninput="adminParamSet('0.0197','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0197','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.0197','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.0197 CB">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.0197 CB" oninput="adminParamRename(this, '0.0197 CB')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="40" oninput="adminParamSet('0.0197 CB','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0197 CB','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="150" oninput="adminParamSet('0.0197 CB','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0098" oninput="adminParamSet('0.0197 CB','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0197 CB','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.0197 CB','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.0236">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.0236" oninput="adminParamRename(this, '0.0236')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="40" oninput="adminParamSet('0.0236','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0236','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="50" oninput="adminParamSet('0.0236','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0118" oninput="adminParamSet('0.0236','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0236','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.0236','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.0236 CB">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.0236 CB" oninput="adminParamRename(this, '0.0236 CB')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="40" oninput="adminParamSet('0.0236 CB','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0236 CB','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="150" oninput="adminParamSet('0.0236 CB','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0118" oninput="adminParamSet('0.0236 CB','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="10" oninput="adminParamSet('0.0236 CB','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.0236 CB','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.031">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.031" oninput="adminParamRename(this, '0.031')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="33" oninput="adminParamSet('0.031','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.031','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="100" oninput="adminParamSet('0.031','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0155" oninput="adminParamSet('0.031','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.031','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.031','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.035">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.035" oninput="adminParamRename(this, '0.035')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="33" oninput="adminParamSet('0.035','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.035','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="100" oninput="adminParamSet('0.035','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0175" oninput="adminParamSet('0.035','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.035','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.035','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.039">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.039" oninput="adminParamRename(this, '0.039')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="33" oninput="adminParamSet('0.039','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.039','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="200" oninput="adminParamSet('0.039','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0195" oninput="adminParamSet('0.039','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.039','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.039','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.039 CB">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.039 CB" oninput="adminParamRename(this, '0.039 CB')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="33" oninput="adminParamSet('0.039 CB','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.039 CB','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="700" oninput="adminParamSet('0.039 CB','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0195" oninput="adminParamSet('0.039 CB','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.039 CB','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.039 CB','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.039 LCB">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.039 LCB" oninput="adminParamRename(this, '0.039 LCB')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="33" oninput="adminParamSet('0.039 LCB','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.039 LCB','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="300" oninput="adminParamSet('0.039 LCB','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0195" oninput="adminParamSet('0.039 LCB','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.039 LCB','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.039 LCB','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.047">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.047" oninput="adminParamRename(this, '0.047')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="32" oninput="adminParamSet('0.047','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.047','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="200" oninput="adminParamSet('0.047','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0235" oninput="adminParamSet('0.047','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.047','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.047','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.047 LCB">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.047 LCB" oninput="adminParamRename(this, '0.047 LCB')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="32" oninput="adminParamSet('0.047 LCB','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.047 LCB','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="300" oninput="adminParamSet('0.047 LCB','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0235" oninput="adminParamSet('0.047 LCB','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="12" oninput="adminParamSet('0.047 LCB','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.047 LCB','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.055">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.055" oninput="adminParamRename(this, '0.055')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="32" oninput="adminParamSet('0.055','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="15" oninput="adminParamSet('0.055','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="420" oninput="adminParamSet('0.055','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0275" oninput="adminParamSet('0.055','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="50" oninput="adminParamSet('0.055','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.055','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.059">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.059" oninput="adminParamRename(this, '0.059')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="32" oninput="adminParamSet('0.059','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="20" oninput="adminParamSet('0.059','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="420" oninput="adminParamSet('0.059','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0295" oninput="adminParamSet('0.059','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="50" oninput="adminParamSet('0.059','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.059','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.062">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.062" oninput="adminParamRename(this, '0.062')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="32" oninput="adminParamSet('0.062','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="30" oninput="adminParamSet('0.062','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="520" oninput="adminParamSet('0.062','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0315" oninput="adminParamSet('0.062','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="50" oninput="adminParamSet('0.062','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.062','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.079">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.079" oninput="adminParamRename(this, '0.079')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="32" oninput="adminParamSet('0.079','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="30" oninput="adminParamSet('0.079','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="700" oninput="adminParamSet('0.079','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0395" oninput="adminParamSet('0.079','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="50" oninput="adminParamSet('0.079','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.079','FF')">刪除</button></td>
-            </tr><tr draggable="true" data-key="0.093">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="0.093" oninput="adminParamRename(this, '0.093')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="32" oninput="adminParamSet('0.093','FF',0,this.value)"></td>
-                <td><input class="admin-input" value="30" oninput="adminParamSet('0.093','FF',1,this.value)"></td>
-                <td><input class="admin-input" value="1020" oninput="adminParamSet('0.093','FF',2,this.value)"></td>
-                <td><input class="admin-input" value="0.0465" oninput="adminParamSet('0.093','FF',3,this.value)"></td>
-                <td><input class="admin-input" value="50" oninput="adminParamSet('0.093','FF',4,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminParamDel('0.093','FF')">刪除</button></td>
-            </tr></tbody>
+                            <tbody id="adminBody-query"></tbody>
                         </table>
                     </div>
                 </div>
@@ -361,8 +221,8 @@
         <section id="tab-stack" class="content-section">
             <div class="card">
                 <div class="query-row">
-                    <div class="input-box"><label>最小切刀直徑 mil (mm)</label><select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"><option value="15.7 (0.40)">15.7 (0.40)</option><option value="19.7 (0.50)">19.7 (0.50)</option><option value="19.7 LCBRD (0.50)">19.7 LCBRD (0.50)</option><option value="23.6 (0.60)">23.6 (0.60)</option><option value="23.6 LCBRD (0.60)">23.6 LCBRD (0.60)</option><option value="31~35 (0.80-0.90)">31~35 (0.80-0.90)</option><option value="35 LRD (0.90)">35 LRD (0.90)</option><option value="39~55 (0.10-1.40)">39~55 (0.10-1.40)</option><option value="59~98 (1.50-2.50)">59~98 (1.50-2.50)</option><option value="39~47 LCBRD (1.00-1.20)">39~47 LCBRD (1.00-1.20)</option></select></div>
-                    <div class="input-box"><label>成品板厚</label><select id="stkThickSel" onchange="runStackQuery()"><option value="9~10">9~10</option><option value="11~13">11~13</option><option value="14~20">14~20</option><option value="21~40">21~40</option></select></div>
+                    <div class="input-box"><label>最小切刀直徑 mil (mm)</label><select id="stkSizeSel" onchange="updateStackThickList(); runStackQuery()"></select></div>
+                    <div class="input-box"><label>成品板厚</label><select id="stkThickSel" onchange="runStackQuery()"></select></div>
                 </div>
                 <div id="adminPanel-stack" class="admin-panel">
                     <div class="admin-hint">
@@ -375,74 +235,14 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:40px;"></th><th>尺寸 Key (可改名)</th><th>最大厚度文字</th><th>規則字串 (範圍:片數)</th><th>操作</th></tr></thead>
-                            <tbody id="adminBody-stack" data-sortable-init="1"><tr draggable="true" data-key="15.7 (0.40)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="15.7 (0.40)" oninput="adminStackRename(this, '15.7 (0.40)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="40 (1.02)" oninput="adminStackSetMax('15.7 (0.40)',this.value)"></td>
-                <td><input class="admin-input" value="9~10:4, 11~13:3, 14~20:2, 21~40:1" oninput="adminStackSetOpt('15.7 (0.40)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('15.7 (0.40)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="19.7 (0.50)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="19.7 (0.50)" oninput="adminStackRename(this, '19.7 (0.50)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="66 (1.68)" oninput="adminStackSetMax('19.7 (0.50)',this.value)"></td>
-                <td><input class="admin-input" value="10~16:4, 17~22:3, 23~33:2, 34~66:1" oninput="adminStackSetOpt('19.7 (0.50)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('19.7 (0.50)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="19.7 LCBRD (0.50)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="19.7 LCBRD (0.50)" oninput="adminStackRename(this, '19.7 LCBRD (0.50)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="86 (2.18)" oninput="adminStackSetMax('19.7 LCBRD (0.50)',this.value)"></td>
-                <td><input class="admin-input" value="10~17:5, 18~21:4, 22~28:3, 29~43:2, 44~86:1" oninput="adminStackSetOpt('19.7 LCBRD (0.50)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('19.7 LCBRD (0.50)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="23.6 (0.60)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="23.6 (0.60)" oninput="adminStackRename(this, '23.6 (0.60)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="88 (2.24)" oninput="adminStackSetMax('23.6 (0.60)',this.value)"></td>
-                <td><input class="admin-input" value="15~22:4, 23~29:3, 30~44:2, 45~88:1" oninput="adminStackSetOpt('23.6 (0.60)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('23.6 (0.60)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="23.6 LCBRD (0.60)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="23.6 LCBRD (0.60)" oninput="adminStackRename(this, '23.6 LCBRD (0.60)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="108 (2.74)" oninput="adminStackSetMax('23.6 LCBRD (0.60)',this.value)"></td>
-                <td><input class="admin-input" value="15~21:5, 22~27:4, 28~36:3, 37~54:2, 55~108:1" oninput="adminStackSetOpt('23.6 LCBRD (0.60)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('23.6 LCBRD (0.60)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="31~35 (0.80-0.90)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="31~35 (0.80-0.90)" oninput="adminStackRename(this, '31~35 (0.80-0.90)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="122 (2.74)" oninput="adminStackSetMax('31~35 (0.80-0.90)',this.value)"></td>
-                <td><input class="admin-input" value="9~12:10, 13:9, 14~15:8, 16~17:7, 18~20:6, 21~24:5, 25~30:4, 31~40:3, 41~61:2, 62~122:1" oninput="adminStackSetOpt('31~35 (0.80-0.90)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('31~35 (0.80-0.90)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="35 LRD (0.90)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="35 LRD (0.90)" oninput="adminStackRename(this, '35 LRD (0.90)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="170 (4.32)" oninput="adminStackSetMax('35 LRD (0.90)',this.value)"></td>
-                <td><input class="admin-input" value="15~21:8, 22~24:7, 25~28:6, 29~34:5, 35~42:4, 43~56:3, 57~85:2" oninput="adminStackSetOpt('35 LRD (0.90)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('35 LRD (0.90)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="39~55 (0.10-1.40)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="39~55 (0.10-1.40)" oninput="adminStackRename(this, '39~55 (0.10-1.40)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="205 (5.21)" oninput="adminStackSetMax('39~55 (0.10-1.40)',this.value)"></td>
-                <td><input class="admin-input" value="15~22:8, 23~25:7, 26~30:6, 31~37:5, 38~47:4, 48~64:3, 65~99:2" oninput="adminStackSetOpt('39~55 (0.10-1.40)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('39~55 (0.10-1.40)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="59~98 (1.50-2.50)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="59~98 (1.50-2.50)" oninput="adminStackRename(this, '59~98 (1.50-2.50)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="259 (6.6)" oninput="adminStackSetMax('59~98 (1.50-2.50)',this.value)"></td>
-                <td><input class="admin-input" value="15~18:12, 19~22:10, 23~28:8, 29~33:7, 34~39:6, 40~47:5, 48~60:4, 61~81:3" oninput="adminStackSetOpt('59~98 (1.50-2.50)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('59~98 (1.50-2.50)')">刪除</button></td>
-            </tr><tr draggable="true" data-key="39~47 LCBRD (1.00-1.20)">
-                <td class="drag-handle">☰</td>
-                <td><input class="admin-input" value="39~47 LCBRD (1.00-1.20)" oninput="adminStackRename(this, '39~47 LCBRD (1.00-1.20)')" style="font-weight:bold;"></td>
-                <td><input class="admin-input" value="263 (6.7)" oninput="adminStackSetMax('39~47 LCBRD (1.00-1.20)',this.value)"></td>
-                <td><input class="admin-input" value="15~18:12, 19~22:10, 23~28:8, 29~33:7, 34~39:6, 40~47:5, 48~60:4, 61~68:3" oninput="adminStackSetOpt('39~47 LCBRD (1.00-1.20)',this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminStackDel('39~47 LCBRD (1.00-1.20)')">刪除</button></td>
-            </tr></tbody>
+                            <tbody id="adminBody-stack"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                <div style="background:#f8fafc; padding:25px; border-radius:12px; text-align:center; border:1px solid #edf2f7;"><span style="font-size:13px; color:#64748b; display:block; margin-bottom:10px; font-weight:bold;">建議疊板片數</span><span id="stkResCount" style="font-size:36px; font-weight:800; color:#2b6cb0;">4 片</span></div>
-                <div style="background:#f8fafc; padding:25px; border-radius:12px; text-align:center; border:1px solid #edf2f7;"><span style="font-size:13px; color:#64748b; display:block; margin-bottom:10px; font-weight:bold;">最大疊板厚度 mil (mm)</span><span id="stkResMax" style="font-size:22px; font-weight:800; color:#1a202c;">40 (1.02)</span></div>
+                <div style="background:#f8fafc; padding:25px; border-radius:12px; text-align:center; border:1px solid #edf2f7;"><span style="font-size:13px; color:#64748b; display:block; margin-bottom:10px; font-weight:bold;">建議疊板片數</span><span id="stkResCount" style="font-size:36px; font-weight:800; color:#2b6cb0;">--</span></div>
+                <div style="background:#f8fafc; padding:25px; border-radius:12px; text-align:center; border:1px solid #edf2f7;"><span style="font-size:13px; color:#64748b; display:block; margin-bottom:10px; font-weight:bold;">最大疊板厚度 mil (mm)</span><span id="stkResMax" style="font-size:22px; font-weight:800; color:#1a202c;">--</span></div>
             </div>
         </section>
 
@@ -452,16 +252,16 @@
                     <label>尺寸 (mil/mm)</label>
                     <div class="fine-box">
                         <div class="fine-select-wrapper">
-                            <select id="fineSizeSel" onchange="runFineQuery()"><option value="0">0.0197"(0.500) (土黃色)</option><option value="1">0.0197" LCBRD(0.500) (蘋果綠)</option><option value="2">0.0236"(0.600) (醬紅色)</option><option value="3">0.0236" LCBRD(0.600) (黑色)</option><option value="4">0.031"(0.800) (深藍色)</option><option value="5">0.031" CBRD(0.800) (咖啡色)</option><option value="6">0.031" (逆)漢台(0.800) (青色)</option><option value="7">0.035"(0.900) (柑紅色)</option><option value="8">0.035" LRD(0.900) (淡紫色)</option><option value="9">0.039"(1.000) (墨綠色)</option><option value="10">0.039" CBRD(1.000) (粉紅色)</option><option value="11">0.039" (逆)尖點(1.000) (白色)</option><option value="12">0.039" (逆)旭貿(1.000) (白色)</option><option value="13">0.0039" LCBRD(1.000) (棕紅色)</option><option value="14">0.043"(1.100) (淡梨色)</option><option value="15">0.047"(1.200) (深紫色)</option><option value="16">0.047"(1.200) (橄欖綠)</option><option value="17">0.047" LCBRD(1.200)(淡橘色)</option><option value="18">0.051"(1.300)(卡其色)</option><option value="19">0.055"(1.400)(淡藍色)</option><option value="20">0.059"(1.500)(灰色)</option><option value="21">0.062"(1.600) (凍黃色)</option><option value="22">0.067"(1.700)(胭脂紅)</option><option value="23">0.069"(1.750)(蘋果綠)</option><option value="24">0.071"(1.800)(天藍色)</option><option value="25">0.075"(1.900)(桃紅色)</option><option value="26">0.079"(2.000)(大紅色)</option><option value="27">0.093"(2.380)(白色)</option><option value="28">0.098"(2.500) (松樹綠)</option></select>
-                            <button type="button" class="picker-btn mobile-only" id="fineSizeSelBtn" onclick="openPicker('fineSizeSel','選擇尺寸')">0.0197"(0.500) (土黃色)</button>
+                            <select id="fineSizeSel" onchange="runFineQuery()"></select>
+                            <button type="button" class="picker-btn mobile-only" id="fineSizeSelBtn" onclick="openPicker('fineSizeSel','選擇尺寸')"></button>
                         </div>
-                        <div id="fineBadge" class="color-badge" style="background-color: rgb(212, 160, 23);">土黃色</div>
+                        <div id="fineBadge" class="color-badge">--</div>
                     </div>
                 </div>
                 <div class="table-wrap">
                     <table>
                         <thead><tr><th>轉速 (S)<br><small>中值 (範圍)</small></th><th>進刀速 (F)<br><small>中值 (範圍)</small></th><th>檯面速度 (F)<br><small>中值 (範圍)</small></th><th>補償值 (D)<br><small>可調整範圍</small></th></tr></thead>
-                        <tbody id="fineTableBody"><tr><td><span class="val-mid">40</span><span class="val-range">30~45</span></td><td><span class="val-mid">8</span><span class="val-range">5~10</span></td><td><span class="val-mid">8</span><span class="val-range">5~10</span></td><td><span class="val-mid">0.0098</span><span class="val-range">+/-0.003"</span></td></tr></tbody>
+                        <tbody id="fineTableBody"></tbody>
                     </table>
                 </div>
 
@@ -473,355 +273,7 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:40px;"></th><th>尺寸標籤 (mil/mm)</th><th>顏色</th><th>轉速(中/範)</th><th>進刀(中/範)</th><th>檯面(中/範)</th><th>補償(中/範)</th><th>操作</th></tr></thead>
-                            <tbody id="adminBody-fine" data-sortable-init="1"><tr draggable="true" data-idx="0">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0197&quot;(0.500) (土黃色)" oninput="adminFineSetLabel(0,this.value)" onchange="adminFineSetLabel(0,this.value)" onblur="adminFineSetLabel(0,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-0" class="admin-input" value="土黃色" oninput="adminFineSetColor(0,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-0" type="color" value="#D4A017" onchange="adminFineSetColorHex(0,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="40" oninput="adminFineSet(0,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="30~45" oninput="adminFineSet(0,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(0,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(0,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(0,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(0,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0098" oninput="adminFineSet(0,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(0,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(0)">刪</button></td>
-            </tr><tr draggable="true" data-idx="1">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0197&quot; LCBRD(0.500) (蘋果綠)" oninput="adminFineSetLabel(1,this.value)" onchange="adminFineSetLabel(1,this.value)" onblur="adminFineSetLabel(1,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-1" class="admin-input" value="蘋果綠" oninput="adminFineSetColor(1,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-1" type="color" value="#8DB600" onchange="adminFineSetColorHex(1,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="45" oninput="adminFineSet(1,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="40~55" oninput="adminFineSet(1,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(1,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(1,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(1,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(1,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0098" oninput="adminFineSet(1,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(1,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(1)">刪</button></td>
-            </tr><tr draggable="true" data-idx="2">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0236&quot;(0.600) (醬紅色)" oninput="adminFineSetLabel(2,this.value)" onchange="adminFineSetLabel(2,this.value)" onblur="adminFineSetLabel(2,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-2" class="admin-input" value="醬紅色" oninput="adminFineSetColor(2,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-2" type="color" value="#800000" onchange="adminFineSetColorHex(2,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="40" oninput="adminFineSet(2,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="30~45" oninput="adminFineSet(2,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(2,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(2,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(2,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(2,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0118" oninput="adminFineSet(2,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(2,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(2)">刪</button></td>
-            </tr><tr draggable="true" data-idx="3">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0236&quot; LCBRD(0.600) (黑色)" oninput="adminFineSetLabel(3,this.value)" onchange="adminFineSetLabel(3,this.value)" onblur="adminFineSetLabel(3,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-3" class="admin-input" value="黑色" oninput="adminFineSetColor(3,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-3" type="color" value="#000000" onchange="adminFineSetColorHex(3,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="40" oninput="adminFineSet(3,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="30~50" oninput="adminFineSet(3,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(3,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(3,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="8" oninput="adminFineSet(3,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(3,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0118" oninput="adminFineSet(3,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(3,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(3)">刪</button></td>
-            </tr><tr draggable="true" data-idx="4">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.031&quot;(0.800) (深藍色)" oninput="adminFineSetLabel(4,this.value)" onchange="adminFineSetLabel(4,this.value)" onblur="adminFineSetLabel(4,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-4" class="admin-input" value="深藍色" oninput="adminFineSetColor(4,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-4" type="color" value="#00008B" onchange="adminFineSetColorHex(4,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(4,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~40" oninput="adminFineSet(4,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(4,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(4,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(4,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(4,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0155" oninput="adminFineSet(4,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(4,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(4)">刪</button></td>
-            </tr><tr draggable="true" data-idx="5">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.031&quot; CBRD(0.800) (咖啡色)" oninput="adminFineSetLabel(5,this.value)" onchange="adminFineSetLabel(5,this.value)" onblur="adminFineSetLabel(5,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-5" class="admin-input" value="咖啡色" oninput="adminFineSetColor(5,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-5" type="color" value="#6F4E37" onchange="adminFineSetColorHex(5,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="55" oninput="adminFineSet(5,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="40~55" oninput="adminFineSet(5,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(5,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(5,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(5,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(5,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0155" oninput="adminFineSet(5,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(5,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(5)">刪</button></td>
-            </tr><tr draggable="true" data-idx="6">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.031&quot; (逆)漢台(0.800) (青色)" oninput="adminFineSetLabel(6,this.value)" onchange="adminFineSetLabel(6,this.value)" onblur="adminFineSetLabel(6,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-6" class="admin-input" value="青色" oninput="adminFineSetColor(6,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-6" type="color" value="#00CED1" onchange="adminFineSetColorHex(6,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="-30" oninput="adminFineSet(6,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="-30" oninput="adminFineSet(6,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(6,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="5~10" oninput="adminFineSet(6,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(6,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~10" oninput="adminFineSet(6,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0155" oninput="adminFineSet(6,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(6,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(6)">刪</button></td>
-            </tr><tr draggable="true" data-idx="7">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.035&quot;(0.900) (柑紅色)" oninput="adminFineSetLabel(7,this.value)" onchange="adminFineSetLabel(7,this.value)" onblur="adminFineSetLabel(7,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-7" class="admin-input" value="柑紅色" oninput="adminFineSetColor(7,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-7" type="color" value="#FF4500" onchange="adminFineSetColorHex(7,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(7,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~40" oninput="adminFineSet(7,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(7,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(7,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(7,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(7,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0175" oninput="adminFineSet(7,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(7,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(7)">刪</button></td>
-            </tr><tr draggable="true" data-idx="8">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.035&quot; LRD(0.900) (淡紫色)" oninput="adminFineSetLabel(8,this.value)" onchange="adminFineSetLabel(8,this.value)" onblur="adminFineSetLabel(8,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-8" class="admin-input" value="淡紫色" oninput="adminFineSetColor(8,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-8" type="color" value="#E6E6FA" onchange="adminFineSetColorHex(8,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(8,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~40" oninput="adminFineSet(8,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(8,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(8,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(8,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(8,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0175" oninput="adminFineSet(8,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(8,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(8)">刪</button></td>
-            </tr><tr draggable="true" data-idx="9">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.039&quot;(1.000) (墨綠色)" oninput="adminFineSetLabel(9,this.value)" onchange="adminFineSetLabel(9,this.value)" onblur="adminFineSetLabel(9,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-9" class="admin-input" value="墨綠色" oninput="adminFineSetColor(9,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-9" type="color" value="#006400" onchange="adminFineSetColorHex(9,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(9,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~40" oninput="adminFineSet(9,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(9,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(9,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(9,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(9,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0195" oninput="adminFineSet(9,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(9,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(9)">刪</button></td>
-            </tr><tr draggable="true" data-idx="10">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.039&quot; CBRD(1.000) (粉紅色)" oninput="adminFineSetLabel(10,this.value)" onchange="adminFineSetLabel(10,this.value)" onblur="adminFineSetLabel(10,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-10" class="admin-input" value="粉紅色" oninput="adminFineSetColor(10,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-10" type="color" value="#FF69B4" onchange="adminFineSetColorHex(10,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(10,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~50" oninput="adminFineSet(10,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(10,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(10,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(10,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(10,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0195" oninput="adminFineSet(10,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(10,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(10)">刪</button></td>
-            </tr><tr draggable="true" data-idx="11">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.039&quot; (逆)尖點(1.000) (白色)" oninput="adminFineSetLabel(11,this.value)" onchange="adminFineSetLabel(11,this.value)" onblur="adminFineSetLabel(11,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-11" class="admin-input" value="白色" oninput="adminFineSetColor(11,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-11" type="color" value="#FFFFFF" onchange="adminFineSetColorHex(11,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="-30" oninput="adminFineSet(11,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="-25~-40" oninput="adminFineSet(11,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(11,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(11,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(11,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(11,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0195" oninput="adminFineSet(11,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(11,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(11)">刪</button></td>
-            </tr><tr draggable="true" data-idx="12">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.039&quot; (逆)旭貿(1.000) (白色)" oninput="adminFineSetLabel(12,this.value)" onchange="adminFineSetLabel(12,this.value)" onblur="adminFineSetLabel(12,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-12" class="admin-input" value="白色" oninput="adminFineSetColor(12,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-12" type="color" value="#FFFFFF" onchange="adminFineSetColorHex(12,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="-30" oninput="adminFineSet(12,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="-25~-40" oninput="adminFineSet(12,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(12,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(12,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(12,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(12,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0195" oninput="adminFineSet(12,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(12,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(12)">刪</button></td>
-            </tr><tr draggable="true" data-idx="13">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0039&quot; LCBRD(1.000) (棕紅色)" oninput="adminFineSetLabel(13,this.value)" onchange="adminFineSetLabel(13,this.value)" onblur="adminFineSetLabel(13,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-13" class="admin-input" value="棕紅色" oninput="adminFineSetColor(13,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-13" type="color" value="#A52A2A" onchange="adminFineSetColorHex(13,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(13,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~50" oninput="adminFineSet(13,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(13,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(13,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(13,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(13,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0195" oninput="adminFineSet(13,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(13,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(13)">刪</button></td>
-            </tr><tr draggable="true" data-idx="14">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.043&quot;(1.100) (淡梨色)" oninput="adminFineSetLabel(14,this.value)" onchange="adminFineSetLabel(14,this.value)" onblur="adminFineSetLabel(14,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-14" class="admin-input" value="淡梨色" oninput="adminFineSetColor(14,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-14" type="color" value="#F0EAD6" onchange="adminFineSetColorHex(14,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(14,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~40" oninput="adminFineSet(14,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(14,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(14,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(14,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(14,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0215" oninput="adminFineSet(14,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(14,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(14)">刪</button></td>
-            </tr><tr draggable="true" data-idx="15">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.047&quot;(1.200) (深紫色)" oninput="adminFineSetLabel(15,this.value)" onchange="adminFineSetLabel(15,this.value)" onblur="adminFineSetLabel(15,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-15" class="admin-input" value="深紫色" oninput="adminFineSetColor(15,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-15" type="color" value="#800080" onchange="adminFineSetColorHex(15,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(15,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~40" oninput="adminFineSet(15,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="28" oninput="adminFineSet(15,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~30" oninput="adminFineSet(15,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="20" oninput="adminFineSet(15,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~25" oninput="adminFineSet(15,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0235" oninput="adminFineSet(15,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(15,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(15)">刪</button></td>
-            </tr><tr draggable="true" data-idx="16">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.047&quot;(1.200) (橄欖綠)" oninput="adminFineSetLabel(16,this.value)" onchange="adminFineSetLabel(16,this.value)" onblur="adminFineSetLabel(16,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-16" class="admin-input" value="橄欖綠" oninput="adminFineSetColor(16,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-16" type="color" value="#6B8E23" onchange="adminFineSetColorHex(16,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(16,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~40" oninput="adminFineSet(16,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="28" oninput="adminFineSet(16,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~30" oninput="adminFineSet(16,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="20" oninput="adminFineSet(16,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~25" oninput="adminFineSet(16,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0235" oninput="adminFineSet(16,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(16,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(16)">刪</button></td>
-            </tr><tr draggable="true" data-idx="17">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.047&quot; LCBRD(1.200)(淡橘色)" oninput="adminFineSetLabel(17,this.value)" onchange="adminFineSetLabel(17,this.value)" onblur="adminFineSetLabel(17,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-17" class="admin-input" value="淡橘色" oninput="adminFineSetColor(17,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-17" type="color" value="#FFB84D" onchange="adminFineSetColorHex(17,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(17,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~50" oninput="adminFineSet(17,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="15" oninput="adminFineSet(17,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(17,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="10" oninput="adminFineSet(17,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~20" oninput="adminFineSet(17,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0235&quot;" oninput="adminFineSet(17,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(17,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(17)">刪</button></td>
-            </tr><tr draggable="true" data-idx="18">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.051&quot;(1.300)(卡其色)" oninput="adminFineSetLabel(18,this.value)" onchange="adminFineSetLabel(18,this.value)" onblur="adminFineSetLabel(18,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-18" class="admin-input" value="卡其色" oninput="adminFineSetColor(18,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-18" type="color" value="#F0E68C" onchange="adminFineSetColorHex(18,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(18,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~35" oninput="adminFineSet(18,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="28" oninput="adminFineSet(18,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~30" oninput="adminFineSet(18,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="20" oninput="adminFineSet(18,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~25" oninput="adminFineSet(18,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0255&quot;" oninput="adminFineSet(18,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(18,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(18)">刪</button></td>
-            </tr><tr draggable="true" data-idx="19">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.055&quot;(1.400)(淡藍色)" oninput="adminFineSetLabel(19,this.value)" onchange="adminFineSetLabel(19,this.value)" onblur="adminFineSetLabel(19,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-19" class="admin-input" value="淡藍色" oninput="adminFineSetColor(19,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-19" type="color" value="#ADD8E6" onchange="adminFineSetColorHex(19,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(19,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~35" oninput="adminFineSet(19,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(19,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~35" oninput="adminFineSet(19,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="20" oninput="adminFineSet(19,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~27" oninput="adminFineSet(19,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0275&quot;" oninput="adminFineSet(19,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(19,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(19)">刪</button></td>
-            </tr><tr draggable="true" data-idx="20">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.059&quot;(1.500)(灰色)" oninput="adminFineSetLabel(20,this.value)" onchange="adminFineSetLabel(20,this.value)" onblur="adminFineSetLabel(20,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-20" class="admin-input" value="灰色" oninput="adminFineSetColor(20,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-20" type="color" value="#808080" onchange="adminFineSetColorHex(20,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(20,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~35" oninput="adminFineSet(20,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(20,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~35" oninput="adminFineSet(20,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="20" oninput="adminFineSet(20,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~27" oninput="adminFineSet(20,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0295&quot;" oninput="adminFineSet(20,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(20,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(20)">刪</button></td>
-            </tr><tr draggable="true" data-idx="21">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.062&quot;(1.600) (凍黃色)" oninput="adminFineSetLabel(21,this.value)" onchange="adminFineSetLabel(21,this.value)" onblur="adminFineSetLabel(21,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-21" class="admin-input" value="凍黃色" oninput="adminFineSetColor(21,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-21" type="color" value="#F0E68C" onchange="adminFineSetColorHex(21,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(21,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="18~35" oninput="adminFineSet(21,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(21,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(21,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="25" oninput="adminFineSet(21,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~30" oninput="adminFineSet(21,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0315" oninput="adminFineSet(21,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(21,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(21)">刪</button></td>
-            </tr><tr draggable="true" data-idx="22">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.067&quot;(1.700)(胭脂紅)" oninput="adminFineSetLabel(22,this.value)" onchange="adminFineSetLabel(22,this.value)" onblur="adminFineSetLabel(22,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-22" class="admin-input" value="胭脂紅" oninput="adminFineSetColor(22,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-22" type="color" value="#C71585" onchange="adminFineSetColorHex(22,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(22,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~35" oninput="adminFineSet(22,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(22,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(22,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="25" oninput="adminFineSet(22,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~30" oninput="adminFineSet(22,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0335&quot;" oninput="adminFineSet(22,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(22,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(22)">刪</button></td>
-            </tr><tr draggable="true" data-idx="23">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.069&quot;(1.750)(蘋果綠)" oninput="adminFineSetLabel(23,this.value)" onchange="adminFineSetLabel(23,this.value)" onblur="adminFineSetLabel(23,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-23" class="admin-input" value="蘋果綠" oninput="adminFineSetColor(23,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-23" type="color" value="#8DB600" onchange="adminFineSetColorHex(23,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(23,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~35" oninput="adminFineSet(23,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(23,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(23,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="25" oninput="adminFineSet(23,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~30" oninput="adminFineSet(23,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0345&quot;" oninput="adminFineSet(23,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(23,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(23)">刪</button></td>
-            </tr><tr draggable="true" data-idx="24">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.071&quot;(1.800)(天藍色)" oninput="adminFineSetLabel(24,this.value)" onchange="adminFineSetLabel(24,this.value)" onblur="adminFineSetLabel(24,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-24" class="admin-input" value="天藍色" oninput="adminFineSetColor(24,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-24" type="color" value="#87CEEB" onchange="adminFineSetColorHex(24,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(24,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~35" oninput="adminFineSet(24,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(24,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(24,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="25" oninput="adminFineSet(24,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~30" oninput="adminFineSet(24,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0355&quot;" oninput="adminFineSet(24,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(24,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(24)">刪</button></td>
-            </tr><tr draggable="true" data-idx="25">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.075&quot;(1.900)(桃紅色)" oninput="adminFineSetLabel(25,this.value)" onchange="adminFineSetLabel(25,this.value)" onblur="adminFineSetLabel(25,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-25" class="admin-input" value="桃紅色" oninput="adminFineSetColor(25,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-25" type="color" value="#FF69B4" onchange="adminFineSetColorHex(25,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(25,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="25~35" oninput="adminFineSet(25,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(25,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(25,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(25,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~35" oninput="adminFineSet(25,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0375&quot;" oninput="adminFineSet(25,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(25,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(25)">刪</button></td>
-            </tr><tr draggable="true" data-idx="26">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.079&quot;(2.000)(大紅色)" oninput="adminFineSetLabel(26,this.value)" onchange="adminFineSetLabel(26,this.value)" onblur="adminFineSetLabel(26,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-26" class="admin-input" value="大紅色" oninput="adminFineSetColor(26,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-26" type="color" value="#FF0000" onchange="adminFineSetColorHex(26,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(26,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="20~35" oninput="adminFineSet(26,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(26,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(26,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="30" oninput="adminFineSet(26,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~35" oninput="adminFineSet(26,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0395&quot;" oninput="adminFineSet(26,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(26,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(26)">刪</button></td>
-            </tr><tr draggable="true" data-idx="27">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.093&quot;(2.380)(白色)" oninput="adminFineSetLabel(27,this.value)" onchange="adminFineSetLabel(27,this.value)" onblur="adminFineSetLabel(27,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-27" class="admin-input" value="白色" oninput="adminFineSetColor(27,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-27" type="color" value="#FFFFFF" onchange="adminFineSetColorHex(27,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="28" oninput="adminFineSet(27,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="18~30" oninput="adminFineSet(27,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(27,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(27,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="40" oninput="adminFineSet(27,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~45" oninput="adminFineSet(27,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0490&quot;" oninput="adminFineSet(27,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(27,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(27)">刪</button></td>
-            </tr><tr draggable="true" data-idx="28">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.098&quot;(2.500) (松樹綠)" oninput="adminFineSetLabel(28,this.value)" onchange="adminFineSetLabel(28,this.value)" onblur="adminFineSetLabel(28,this.value)" style="width:120px;"></td>
-                <td style="white-space:nowrap;">
-                    <input id="fineColorName-28" class="admin-input" value="松樹綠" oninput="adminFineSetColor(28,this.value)" style="width:80px; display:inline-block; vertical-align:middle;">
-                    <input id="fineColorHex-28" type="color" value="#01796F" onchange="adminFineSetColorHex(28,this.value)" style="width:44px; height:32px; padding:0; border:none; background:transparent; vertical-align:middle; margin-left:6px;" title="調整色碼">
-                </td>
-                <td><input class="admin-input" style="width:60px" value="28" oninput="adminFineSet(28,'s',0,this.value)"> / <input class="admin-input" style="width:60px" value="18~30" oninput="adminFineSet(28,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="35" oninput="adminFineSet(28,'f',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~40" oninput="adminFineSet(28,'f',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="40" oninput="adminFineSet(28,'t',0,this.value)"> / <input class="admin-input" style="width:60px" value="10~45" oninput="adminFineSet(28,'t',1,this.value)"></td>
-                <td><input class="admin-input" style="width:60px" value="0.0490" oninput="adminFineSet(28,'d',0,this.value)"> / <input class="admin-input" style="width:60px" value="+/-0.003&quot;" oninput="adminFineSet(28,'d',1,this.value)"></td>
-                <td><button class="btn btn-danger" onclick="adminFineDel(28)">刪</button></td>
-            </tr></tbody>
+                            <tbody id="adminBody-fine"></tbody>
                         </table>
                     </div>
                 </div>
@@ -832,15 +284,15 @@
             <div class="card">
                 <div class="input-box" style="margin-bottom:20px;">
                     <label>鑽頭直徑 (inch/mm)</label>
-                    <select id="feedSizeSel" style="width:300px;" onchange="runFeedQuery()"><option value="0">0.0279" 以下</option><option value="1">0.0280"~0.0429"</option><option value="2">0.0430"~0.0865"</option><option value="3">0.0866"~0.1014"</option><option value="4">0.1015"~0.1259"</option><option value="5">0.1260"~0.1456"</option><option value="6">0.1457" 以上</option></select>
-                    <button type="button" class="picker-btn mobile-only" id="feedSizeSelBtn" onclick="openPicker('feedSizeSel','選擇直徑')">0.0279" 以下</button>
+                    <select id="feedSizeSel" style="width:300px;" onchange="runFeedQuery()"></select>
+                    <button type="button" class="picker-btn mobile-only" id="feedSizeSelBtn" onclick="openPicker('feedSizeSel','選擇直徑')"></button>
                 </div>
                 <div class="table-wrap">
                     <table>
                         <thead>
                             <tr><th>轉速 (S)<br><small>參考值 (範圍)</small></th><th style="background:#ebf8ff; color:#2b6cb0;">導引孔 (F)<br><small>參考值 (範圍)</small></th><th style="background:#f0fff4; color:#2f855a;">二次孔 (F)<br><small>參考值 (範圍)</small></th><th>壽命 (N)</th></tr>
                         </thead>
-                        <tbody id="feedTableBody"><tr><td><span class="val-mid">30</span><span class="val-range">20~40</span></td><td style="background:#ebf8ff;"><span class="val-mid" style="color:#2b6cb0;">20</span><span class="val-range">10~20</span></td><td style="background:#f0fff4;"><span class="val-mid" style="color:#2f855a;">10</span><span class="val-range">10~20</span></td><td><span class="val-mid">1500</span></td></tr></tbody>
+                        <tbody id="feedTableBody"></tbody>
                     </table>
                 </div>
 
@@ -852,63 +304,7 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:40px;"></th><th>直徑標籤 (inch/mm)</th><th>轉速(參/範)</th><th>導引孔(參/範)</th><th>二次孔(參/範)</th><th>壽命</th><th>操作</th></tr></thead>
-                            <tbody id="adminBody-feed" data-sortable-init="1"><tr draggable="true" data-idx="0">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0279&quot; 以下" oninput="adminFeedSetLabel(0,this.value)" onchange="adminFeedSetLabel(0,this.value)" onblur="adminFeedSetLabel(0,this.value)" style="width:120px;"></td>
-                <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(0,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~40" oninput="adminFeedSet(0,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(0,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(0,'pF',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(0,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(0,'sF',1,this.value)"></td>
-                <td><input class="admin-input" value="1500" oninput="adminFeedSetLife(0,this.value)" style="width:50px;"></td>
-                <td><button class="btn btn-danger" onclick="adminFeedDel(0)">刪</button></td>
-            </tr><tr draggable="true" data-idx="1">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0280&quot;~0.0429&quot;" oninput="adminFeedSetLabel(1,this.value)" onchange="adminFeedSetLabel(1,this.value)" onblur="adminFeedSetLabel(1,this.value)" style="width:120px;"></td>
-                <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(1,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~40" oninput="adminFeedSet(1,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(1,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~30" oninput="adminFeedSet(1,'pF',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(1,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(1,'sF',1,this.value)"></td>
-                <td><input class="admin-input" value="1500" oninput="adminFeedSetLife(1,this.value)" style="width:50px;"></td>
-                <td><button class="btn btn-danger" onclick="adminFeedDel(1)">刪</button></td>
-            </tr><tr draggable="true" data-idx="2">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0430&quot;~0.0865&quot;" oninput="adminFeedSetLabel(2,this.value)" onchange="adminFeedSetLabel(2,this.value)" onblur="adminFeedSetLabel(2,this.value)" style="width:120px;"></td>
-                <td><input class="admin-input" style="width:50px" value="30" oninput="adminFeedSet(2,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~40" oninput="adminFeedSet(2,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="40" oninput="adminFeedSet(2,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~40" oninput="adminFeedSet(2,'pF',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(2,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(2,'sF',1,this.value)"></td>
-                <td><input class="admin-input" value="1500" oninput="adminFeedSetLife(2,this.value)" style="width:50px;"></td>
-                <td><button class="btn btn-danger" onclick="adminFeedDel(2)">刪</button></td>
-            </tr><tr draggable="true" data-idx="3">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.0866&quot;~0.1014&quot;" oninput="adminFeedSetLabel(3,this.value)" onchange="adminFeedSetLabel(3,this.value)" onblur="adminFeedSetLabel(3,this.value)" style="width:120px;"></td>
-                <td><input class="admin-input" style="width:50px" value="25" oninput="adminFeedSet(3,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~35" oninput="adminFeedSet(3,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="50" oninput="adminFeedSet(3,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~50" oninput="adminFeedSet(3,'pF',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(3,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(3,'sF',1,this.value)"></td>
-                <td><input class="admin-input" value="1500" oninput="adminFeedSetLife(3,this.value)" style="width:50px;"></td>
-                <td><button class="btn btn-danger" onclick="adminFeedDel(3)">刪</button></td>
-            </tr><tr draggable="true" data-idx="4">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1015&quot;~0.1259&quot;" oninput="adminFeedSetLabel(4,this.value)" onchange="adminFeedSetLabel(4,this.value)" onblur="adminFeedSetLabel(4,this.value)" style="width:120px;"></td>
-                <td><input class="admin-input" style="width:50px" value="25" oninput="adminFeedSet(4,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="20~35" oninput="adminFeedSet(4,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="40" oninput="adminFeedSet(4,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~40" oninput="adminFeedSet(4,'pF',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(4,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(4,'sF',1,this.value)"></td>
-                <td><input class="admin-input" value="1500" oninput="adminFeedSetLife(4,this.value)" style="width:50px;"></td>
-                <td><button class="btn btn-danger" onclick="adminFeedDel(4)">刪</button></td>
-            </tr><tr draggable="true" data-idx="5">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1260&quot;~0.1456&quot;" oninput="adminFeedSetLabel(5,this.value)" onchange="adminFeedSetLabel(5,this.value)" onblur="adminFeedSetLabel(5,this.value)" style="width:120px;"></td>
-                <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(5,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="15~25" oninput="adminFeedSet(5,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(5,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(5,'pF',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(5,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(5,'sF',1,this.value)"></td>
-                <td><input class="admin-input" value="1500" oninput="adminFeedSetLife(5,this.value)" style="width:50px;"></td>
-                <td><button class="btn btn-danger" onclick="adminFeedDel(5)">刪</button></td>
-            </tr><tr draggable="true" data-idx="6">
-                <td class="drag-handle">☰</td>
-                <td><input type="text" inputmode="text" autocomplete="off" spellcheck="false" class="admin-input" value="0.1457&quot; 以上" oninput="adminFeedSetLabel(6,this.value)" onchange="adminFeedSetLabel(6,this.value)" onblur="adminFeedSetLabel(6,this.value)" style="width:120px;"></td>
-                <td><input class="admin-input" style="width:50px" value="20" oninput="adminFeedSet(6,'s',0,this.value)"> / <input class="admin-input" style="width:50px" value="15~25" oninput="adminFeedSet(6,'s',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(6,'pF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~15" oninput="adminFeedSet(6,'pF',1,this.value)"></td>
-                <td><input class="admin-input" style="width:50px" value="10" oninput="adminFeedSet(6,'sF',0,this.value)"> / <input class="admin-input" style="width:50px" value="10~20" oninput="adminFeedSet(6,'sF',1,this.value)"></td>
-                <td><input class="admin-input" value="1500" oninput="adminFeedSetLife(6,this.value)" style="width:50px;"></td>
-                <td><button class="btn btn-danger" onclick="adminFeedDel(6)">刪</button></td>
-            </tr></tbody>
+                            <tbody id="adminBody-feed"></tbody>
                         </table>
                     </div>
                 </div>
@@ -920,13 +316,13 @@
                 <div class="query-row">
                     <div class="input-box">
                         <label>1. 選擇直徑 inch (mm)</label>
-                        <select id="lifeSizeSel" onchange="updateLifeTypeList()"><option value="0.0197&quot; (0.500mm)">0.0197" (0.500mm)</option><option value="0.0236&quot; (0.600mm)">0.0236" (0.600mm)</option><option value="0.031&quot; (0.800mm)">0.031" (0.800mm)</option><option value="0.031&quot; 逆轉刀 (0.800mm)">0.031" 逆轉刀 (0.800mm)</option><option value="0.035&quot; (0.900mm)">0.035" (0.900mm)</option><option value="0.039&quot; (1.000mm)">0.039" (1.000mm)</option><option value="0.039&quot; 逆轉刀 (1.000mm)">0.039" 逆轉刀 (1.000mm)</option><option value="0.043&quot; (1.100mm)">0.043" (1.100mm)</option><option value="0.047&quot; (1.200mm)">0.047" (1.200mm)</option><option value="0.051&quot;(1.300)">0.051"(1.300)</option><option value="0.055&quot;(1.400)">0.055"(1.400)</option><option value="0.059&quot;(1.500)">0.059"(1.500)</option><option value="0.062&quot;(1.600)">0.062"(1.600)</option><option value="0.067&quot;(1.700)">0.067"(1.700)</option><option value="0.069&quot;(1.750)">0.069"(1.750)</option><option value="0.071&quot;(1.800)">0.071"(1.800)</option><option value="0.075&quot;(1.900)">0.075"(1.900)</option><option value="0.079&quot;(2.000) (內槽)">0.079"(2.000) (內槽)</option><option value="0.079&quot;(2.000) (外型)">0.079"(2.000) (外型)</option><option value="0.093&quot;(2.380) (內槽)">0.093"(2.380) (內槽)</option><option value="0.093&quot;(2.380) (外型)">0.093"(2.380) (外型)</option><option value="0.098&quot;(2.500) (內槽)">0.098"(2.500) (內槽)</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="lifeSizeBtn" onclick="openPicker('lifeSizeSel','選擇直徑')">0.0197" (0.500mm)</button>
+                        <select id="lifeSizeSel" onchange="updateLifeTypeList()"></select>
+                        <button type="button" class="picker-btn mobile-only" id="lifeSizeBtn" onclick="openPicker('lifeSizeSel','選擇直徑')"></button>
                     </div>
                     <div class="input-box">
                         <label>2. 選擇型態</label>
-                        <select id="lifeTypeSel" onchange="runLifeQuery()"><option value="鍍膜刀">鍍膜刀</option><option value="一般刀">一般刀</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="lifeTypeBtn" onclick="openPicker('lifeTypeSel','選擇型態')">鍍膜刀</button>
+                        <select id="lifeTypeSel" onchange="runLifeQuery()"></select>
+                        <button type="button" class="picker-btn mobile-only" id="lifeTypeBtn" onclick="openPicker('lifeTypeSel','選擇型態')"></button>
                     </div>
                 </div>
                 <div class="table-wrap">
@@ -934,10 +330,7 @@
                         <thead>
                             <tr><th style="width:50%;">普通材質</th><th style="background:#fff7ed; color:#c2410c; border-bottom: 2px solid #fdba74;">其他材質</th></tr>
                         </thead>
-                        <tbody id="lifeTableBody"><tr>
-            <td><span class="val-mid">150</span><span class="val-range">100~150</span></td>
-            <td style="background:#fff7ed;"><span class="val-mid" style="color:#c2410c;">150</span><span class="val-range">100~150</span></td>
-        </tr></tbody>
+                        <tbody id="lifeTableBody"></tbody>
                     </table>
                 </div>
 
@@ -953,7 +346,7 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:20px;"></th><th>型態</th><th>普通-中值</th><th>普通-範圍</th><th>其他材質-中值</th><th>其他材質-範圍</th><th>操作</th></tr></thead>
-                            <tbody id="adminBody-life" data-sortable-init="1"><tr draggable="true" data-key="鍍膜刀"><td class="drag-handle">☰</td><td style="font-weight: bold;">鍍膜刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr><tr draggable="true" data-key="一般刀"><td class="drag-handle">☰</td><td style="font-weight: bold;">一般刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr></tbody>
+                            <tbody id="adminBody-life"></tbody>
                         </table>
                     </div>
                 </div>
@@ -962,7 +355,7 @@
 
         <section id="tab-note" class="content-section">
             <div class="card">
-                <ul class="note-list"><li><b>1.</b> HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。</li><li><b>2.</b> 切內槽為銅面：切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。</li><li><b>3.</b> 藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。</li><li><b>4.</b> 粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。</li><li><b>5.</b> 粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。</li><li><b>6.</b> 清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。</li><li><b>7.</b> 清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。</li><li><b>8.</b> H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。</li><li><b>9.</b> C66料號外型 62 mil 切刀壽命上限設定 300 INCH。</li><li><b>10.</b> 39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。</li><li><b>11.</b> C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。</li></ul> <div id="adminPanel-note" class="admin-panel">
+                <ul class="note-list"></ul> <div id="adminPanel-note" class="admin-panel">
                     <div class="admin-hint">備註事項管理，可拖曳排序。</div>
                     <div class="admin-actions-row">
                         <button class="btn btn-primary" onclick="adminNoteAdd()">＋ 新增一行</button>
@@ -970,62 +363,7 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:40px;"></th><th style="width:50px;">序號</th><th>內容</th><th style="width:60px;">操作</th></tr></thead>
-                            <tbody id="adminBody-note" data-sortable-init="1"><tr draggable="true" data-idx="0">
-                <td class="drag-handle">☰</td>
-                <td>1</td>
-                <td><input class="admin-input" value="HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。" oninput="adminNoteSet(0,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(0)">刪</button></td>
-            </tr><tr draggable="true" data-idx="1">
-                <td class="drag-handle">☰</td>
-                <td>2</td>
-                <td><input class="admin-input" value="切內槽為銅面：切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。" oninput="adminNoteSet(1,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(1)">刪</button></td>
-            </tr><tr draggable="true" data-idx="2">
-                <td class="drag-handle">☰</td>
-                <td>3</td>
-                <td><input class="admin-input" value="藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。" oninput="adminNoteSet(2,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(2)">刪</button></td>
-            </tr><tr draggable="true" data-idx="3">
-                <td class="drag-handle">☰</td>
-                <td>4</td>
-                <td><input class="admin-input" value="粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。" oninput="adminNoteSet(3,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(3)">刪</button></td>
-            </tr><tr draggable="true" data-idx="4">
-                <td class="drag-handle">☰</td>
-                <td>5</td>
-                <td><input class="admin-input" value="粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。" oninput="adminNoteSet(4,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(4)">刪</button></td>
-            </tr><tr draggable="true" data-idx="5">
-                <td class="drag-handle">☰</td>
-                <td>6</td>
-                <td><input class="admin-input" value="清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。" oninput="adminNoteSet(5,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(5)">刪</button></td>
-            </tr><tr draggable="true" data-idx="6">
-                <td class="drag-handle">☰</td>
-                <td>7</td>
-                <td><input class="admin-input" value="清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。" oninput="adminNoteSet(6,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(6)">刪</button></td>
-            </tr><tr draggable="true" data-idx="7">
-                <td class="drag-handle">☰</td>
-                <td>8</td>
-                <td><input class="admin-input" value="H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。" oninput="adminNoteSet(7,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(7)">刪</button></td>
-            </tr><tr draggable="true" data-idx="8">
-                <td class="drag-handle">☰</td>
-                <td>9</td>
-                <td><input class="admin-input" value="C66料號外型 62 mil 切刀壽命上限設定 300 INCH。" oninput="adminNoteSet(8,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(8)">刪</button></td>
-            </tr><tr draggable="true" data-idx="9">
-                <td class="drag-handle">☰</td>
-                <td>10</td>
-                <td><input class="admin-input" value="39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。" oninput="adminNoteSet(9,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(9)">刪</button></td>
-            </tr><tr draggable="true" data-idx="10">
-                <td class="drag-handle">☰</td>
-                <td>11</td>
-                <td><input class="admin-input" value="C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。" oninput="adminNoteSet(10,this.value)" style="width:100%;"></td>
-                <td><button class="btn btn-danger" onclick="adminNoteDel(10)">刪</button></td>
-            </tr></tbody>
+                            <tbody id="adminBody-note"></tbody>
                         </table>
                     </div>
                 </div>
@@ -1119,23 +457,46 @@ function escAttr(v){
         try{ adminFineRefresh(); }catch(e){}
     }
 
-    let typeDefs = [{"group":"主要工序","options":[{"v":"FF","t":"粗切 (FF)"},{"v":"AA","t":"粗切 (AA) 清粉"},{"v":"RD","t":"內槽 (RD)、阻抗條 (CP)"},{"v":"G42","t":"封閉槽、二次孔、耳朵槽、葫蘆孔、金手指 (G42)"},{"v":"OR","t":"外型 (OR)、裁開 (HA)"}]},{"group":"特殊工序","options":[{"v":"RDL","t":"內槽 (RDL) 逆轉刀"},{"v":"DA","t":"導引孔 (DA)"},{"v":"DAFF","t":"粗切導引孔 (DA FF)"}]}];
+    let typeDefs = [
+        { group: "主要工序", options: [{ v: "FF", t: "粗切 (FF)" }, { v: "AA", t: "粗切 (AA) 清粉" }, { v: "RD", t: "內槽 (RD)、阻抗條 (CP)" }, { v: "G42", t: "封閉槽、二次孔、耳朵槽、葫蘆孔、金手指 (G42)" }, { v: "OR", t: "外型 (OR)、裁開 (HA)" }]},
+        { group: "特殊工序", options: [{ v: "RDL", t: "內槽 (RDL) 逆轉刀" }, { v: "DA", t: "導引孔 (DA)" }, { v: "DAFF", t: "粗切導引孔 (DA FF)" }]}
+    ];
 
     let toolData = {"小於0.0280(不含)":{"DAFF":["30","20","1500","--","--"]},"小於0.1260(不含)":{"DA":["30","10","1500","--","--"],"DAFF":["30","30","1500","--","--"]},"大於0.1260(含)":{"DA":["20","10","1500","--","--"],"DAFF":["20","10","1500","--","--"]},"0.0197":{"FF":["40","10","50","0.0098","10"],"AA":["40","10","50","0.0098","10"],"RD":["40","10","50","0.0098","8"],"G42":["40","7","30","0.0098","8"],"OR":["40","10","50","0.0103","10"]},"0.0197 CB":{"FF":["40","10","150","0.0098","10"],"AA":["40","10","150","0.0098","10"],"RD":["40","10","150","0.0098","8"],"G42":["40","7","75","0.0098","8"],"OR":["40","10","150","0.0103","10"]},"0.0236":{"FF":["40","10","50","0.0118","10"],"AA":["40","10","50","0.0118","10"],"RD":["40","10","50","0.0118","8"],"G42":["40","7","30","0.0118","8"],"OR":["40","10","50","0.0123","10"]},"0.0236 CB":{"FF":["40","10","150","0.0118","10"],"AA":["40","10","150","0.0118","10"],"RD":["40","10","150","0.0118","8"],"G42":["40","7","75","0.0118","8"],"OR":["40","10","150","0.0123","10"]},"0.031":{"FF":["33","12","100","0.0155","12"],"AA":["30","20","300","0.0155","30"],"RD":["30","10","90","0.0155","10"],"G42":["33","10","50","0.0155","10"],"OR":["30","12","90","0.0160","10"],"RDL":["-30","10","90","0.0155","10"]},"0.035":{"FF":["33","12","100","0.0175","12"],"AA":["30","20","300","0.0175","30"],"RD":["30","10","90","0.0175","10"],"G42":["33","10","50","0.0175","10"],"OR":["30","12","90","0.0180","10"]},"0.039":{"FF":["33","12","200","0.0195","12"],"AA":["30","20","300","0.0195","30"],"RD":["30","10","200","0.0195","10"],"G42":["32","10","50","0.0195","10"],"OR":["30","12","200","0.0200","10"],"RDL":["-30","10","160","0.0195","10"]},"0.039 CB":{"FF":["33","12","700","0.0195","12"],"AA":["30","20","700","0.0195","30"],"RD":["30","10","700","0.0195","10"],"G42":["32","10","150","0.0195","10"],"OR":["30","12","700","0.0200","10"]},"0.039 LCB":{"FF":["33","12","300","0.0195","12"],"AA":["30","20","300","0.0195","30"],"RD":["30","10","300","0.0195","10"],"G42":["32","10","300","0.0195","10"],"OR":["30","12","300","0.0200","10"]},"0.047":{"FF":["32","12","200","0.0235","12"],"AA":["30","30","370","0.0235","30"],"RD":["30","10","200","0.0235","10"],"G42":["32","10","80","0.0235","10"],"OR":["30","15","200","0.0240","10"]},"0.047 LCB":{"FF":["32","12","300","0.0235","12"],"AA":["30","30","300","0.0235","30"],"RD":["30","10","300","0.0235","10"],"G42":["32","10","300","0.0235","10"],"OR":["30","15","300","0.0240","10"]},"0.055":{"FF":["32","15","420","0.0275","50"],"AA":["30","35","420","0.0275","50"],"RD":["30","10","200","0.0275","10"],"G42":["30","10","80","0.0275","10"],"OR":["30","15","200","0.0280","10"]},"0.059":{"FF":["32","20","420","0.0295","50"],"AA":["30","35","420","0.0295","50"],"RD":["28","10","250","0.0295","10"],"G42":["30","10","80","0.0295","10"],"OR":["30","20","250","0.0302","10"]},"0.062":{"FF":["32","30","520","0.0315","50"],"AA":["28","40","520","0.0315","50"],"RD":["23","5","350","0.0315","10"],"G42":["28","5","100","0.0315","10"],"OR":["28","30","350","0.0322","10"]},"0.079":{"FF":["32","30","700","0.0395","50"],"AA":["28","40","700","0.0395","50"],"RD":["22","5","400","0.0395","10"],"G42":["28","5","100","0.0395","10"],"OR":["28","30","400","0.0405","10"]},"0.093":{"FF":["32","30","1020","0.0465","50"],"AA":["28","40","1020","0.0465","50"],"RD":["22","5","400","0.0465","10"],"G42":["25","5","100","0.0465","10"],"OR":["28","30","800","0.0485","10"]}};
 
     // Modified structure: options is now an Array of objects to preserve order
-    let stackingRules = {"15.7 (0.40)":{"max":"40 (1.02)","options":[{"r":"9~10","v":4},{"r":"11~13","v":3},{"r":"14~20","v":2},{"r":"21~40","v":1}]},"19.7 (0.50)":{"max":"66 (1.68)","options":[{"r":"10~16","v":4},{"r":"17~22","v":3},{"r":"23~33","v":2},{"r":"34~66","v":1}]},"19.7 LCBRD (0.50)":{"max":"86 (2.18)","options":[{"r":"10~17","v":5},{"r":"18~21","v":4},{"r":"22~28","v":3},{"r":"29~43","v":2},{"r":"44~86","v":1}]},"23.6 (0.60)":{"max":"88 (2.24)","options":[{"r":"15~22","v":4},{"r":"23~29","v":3},{"r":"30~44","v":2},{"r":"45~88","v":1}]},"23.6 LCBRD (0.60)":{"max":"108 (2.74)","options":[{"r":"15~21","v":5},{"r":"22~27","v":4},{"r":"28~36","v":3},{"r":"37~54","v":2},{"r":"55~108","v":1}]},"31~35 (0.80-0.90)":{"max":"122 (2.74)","options":[{"r":"9~12","v":10},{"r":"13","v":9},{"r":"14~15","v":8},{"r":"16~17","v":7},{"r":"18~20","v":6},{"r":"21~24","v":5},{"r":"25~30","v":4},{"r":"31~40","v":3},{"r":"41~61","v":2},{"r":"62~122","v":1}]},"35 LRD (0.90)":{"max":"170 (4.32)","options":[{"r":"15~21","v":8},{"r":"22~24","v":7},{"r":"25~28","v":6},{"r":"29~34","v":5},{"r":"35~42","v":4},{"r":"43~56","v":3},{"r":"57~85","v":2}]},"39~55 (0.10-1.40)":{"max":"205 (5.21)","options":[{"r":"15~22","v":8},{"r":"23~25","v":7},{"r":"26~30","v":6},{"r":"31~37","v":5},{"r":"38~47","v":4},{"r":"48~64","v":3},{"r":"65~99","v":2}]},"59~98 (1.50-2.50)":{"max":"259 (6.6)","options":[{"r":"15~18","v":12},{"r":"19~22","v":10},{"r":"23~28","v":8},{"r":"29~33","v":7},{"r":"34~39","v":6},{"r":"40~47","v":5},{"r":"48~60","v":4},{"r":"61~81","v":3}]},"39~47 LCBRD (1.00-1.20)":{"max":"263 (6.7)","options":[{"r":"15~18","v":12},{"r":"19~22","v":10},{"r":"23~28","v":8},{"r":"29~33","v":7},{"r":"34~39","v":6},{"r":"40~47","v":5},{"r":"48~60","v":4},{"r":"61~68","v":3}]}};
+    let stackingRules = {
+        "15.7 (0.40)": { max: "40 (1.02)", options: [{r:"9~10",v:4}, {r:"11~13",v:3}, {r:"14~20",v:2}, {r:"21~40",v:1}] },
+        "19.7 (0.50)": { max: "66 (1.68)", options: [{r:"10~16",v:4}, {r:"17~22",v:3}, {r:"23~33",v:2}, {r:"34~66",v:1}] },
+        "19.7 LCBRD (0.50)": { max: "86 (2.18)", options: [{r:"10~17",v:5}, {r:"18~21",v:4}, {r:"22~28",v:3}, {r:"29~43",v:2}, {r:"44~86",v:1}] },
+        "23.6 (0.60)": { max: "88 (2.24)", options: [{r:"15~22",v:4}, {r:"23~29",v:3}, {r:"30~44",v:2}, {r:"45~88",v:1}] },
+        "23.6 LCBRD (0.60)": { max: "108 (2.74)", options: [{r:"15~21",v:5}, {r:"22~27",v:4}, {r:"28~36",v:3}, {r:"37~54",v:2}, {r:"55~108",v:1}] },
+        "31~35 (0.80-0.90)": { max: "122 (2.74)", options: [{r:"9~12",v:10}, {r:"13",v:9}, {r:"14~15",v:8}, {r:"16~17",v:7}, {r:"18~20",v:6}, {r:"21~24",v:5}, {r:"25~30",v:4}, {r:"31~40",v:3}, {r:"41~61",v:2}, {r:"62~122",v:1}] },
+        "35 LRD (0.90)": { max: "170 (4.32)", options: [{r:"15~21",v:8}, {r:"22~24",v:7}, {r:"25~28",v:6}, {r:"29~34",v:5}, {r:"35~42",v:4}, {r:"43~56",v:3}, {r:"57~85",v:2}] },
+        "39~55 (0.10-1.40)": { max: "205 (5.21)", options: [{r:"15~22",v:8}, {r:"23~25",v:7}, {r:"26~30",v:6}, {r:"31~37",v:5}, {r:"38~47",v:4}, {r:"48~64",v:3}, {r:"65~99",v:2}] },
+        "59~98 (1.50-2.50)": { max: "259 (6.6)", options: [{r:"15~18",v:12}, {r:"19~22",v:10}, {r:"23~28",v:8}, {r:"29~33",v:7}, {r:"34~39",v:6}, {r:"40~47",v:5}, {r:"48~60",v:4}, {r:"61~81",v:3}] },
+        "39~47 LCBRD (1.00-1.20)": { max: "263 (6.7)", options: [{r:"15~18",v:12}, {r:"19~22",v:10}, {r:"23~28",v:8}, {r:"29~33",v:7}, {r:"34~39",v:6}, {r:"40~47",v:5}, {r:"48~60",v:4}, {r:"61~68",v:3}] }
+    };
 
     let fineCutData = [{"label":"0.0197\"(0.500) (土黃色)","s":["40","30~45"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0098","+/-0.003\""],"color":"土黃色"},{"label":"0.0197\" LCBRD(0.500) (蘋果綠)","s":["45","40~55"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0098","+/-0.003\""],"color":"蘋果綠"},{"label":"0.0236\"(0.600) (醬紅色)","s":["40","30~45"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0118","+/-0.003\""],"color":"醬紅色"},{"label":"0.0236\" LCBRD(0.600) (黑色)","s":["40","30~50"],"f":["8","5~10"],"t":["8","5~10"],"d":["0.0118","+/-0.003\""],"color":"黑色"},{"label":"0.031\"(0.800) (深藍色)","s":["30","25~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0155","+/-0.003\""],"color":"深藍色"},{"label":"0.031\" CBRD(0.800) (咖啡色)","s":["55","40~55"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0155","+/-0.003\""],"color":"咖啡色"},{"label":"0.031\" (逆)漢台(0.800) (青色)","s":["-30","-30"],"f":["10","5~10"],"t":["10","10~10"],"d":["0.0155","+/-0.003\""],"color":"青色"},{"label":"0.035\"(0.900) (柑紅色)","s":["30","20~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0175","+/-0.003\""],"color":"柑紅色"},{"label":"0.035\" LRD(0.900) (淡紫色)","s":["30","20~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0175","+/-0.003\""],"color":"淡紫色"},{"label":"0.039\"(1.000) (墨綠色)","s":["30","25~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"墨綠色"},{"label":"0.039\" CBRD(1.000) (粉紅色)","s":["35","25~50"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"粉紅色"},{"label":"0.039\" (逆)尖點(1.000) (白色)","s":["-30","-25~-40"],"f":["10","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"白色"},{"label":"0.039\" (逆)旭貿(1.000) (白色)","s":["-30","-25~-40"],"f":["10","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"白色"},{"label":"0.0039\" LCBRD(1.000) (棕紅色)","s":["35","25~50"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0195","+/-0.003\""],"color":"棕紅色"},{"label":"0.043\"(1.100) (淡梨色)","s":["30","25~40"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0215","+/-0.003\""],"color":"淡梨色"},{"label":"0.047\"(1.200) (深紫色)","s":["30","20~40"],"f":["28","10~30"],"t":["20","10~25"],"d":["0.0235","+/-0.003\""],"color":"深紫色"},{"label":"0.047\"(1.200) (橄欖綠)","s":["30","20~40"],"f":["28","10~30"],"t":["20","10~25"],"d":["0.0235","+/-0.003\""],"color":"橄欖綠"},{"label":"0.047\" LCBRD(1.200)(淡橘色)","s":["35","25~50"],"f":["15","10~20"],"t":["10","10~20"],"d":["0.0235\"","+/-0.003\""],"color":"淡橘色"},{"label":"0.051\"(1.300)(卡其色)","s":["30","20~35"],"f":["28","10~30"],"t":["20","10~25"],"d":["0.0255\"","+/-0.003\""],"color":"卡其色"},{"label":"0.055\"(1.400)(淡藍色)","s":["30","20~35"],"f":["30","10~35"],"t":["20","10~27"],"d":["0.0275\"","+/-0.003\""],"color":"淡藍色"},{"label":"0.059\"(1.500)(灰色)","s":["30","20~35"],"f":["30","10~35"],"t":["20","10~27"],"d":["0.0295\"","+/-0.003\""],"color":"灰色"},{"label":"0.062\"(1.600) (凍黃色)","s":["30","18~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0315","+/-0.003\""],"color":"凍黃色"},{"label":"0.067\"(1.700)(胭脂紅)","s":["30","25~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0335\"","+/-0.003\""],"color":"胭脂紅"},{"label":"0.069\"(1.750)(蘋果綠)","s":["30","25~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0345\"","+/-0.003\""],"color":"蘋果綠"},{"label":"0.071\"(1.800)(天藍色)","s":["30","25~35"],"f":["35","10~40"],"t":["25","10~30"],"d":["0.0355\"","+/-0.003\""],"color":"天藍色"},{"label":"0.075\"(1.900)(桃紅色)","s":["30","25~35"],"f":["35","10~40"],"t":["30","10~35"],"d":["0.0375\"","+/-0.003\""],"color":"桃紅色"},{"label":"0.079\"(2.000)(大紅色)","s":["30","20~35"],"f":["35","10~40"],"t":["30","10~35"],"d":["0.0395\"","+/-0.003\""],"color":"大紅色"},{"label":"0.093\"(2.380)(白色)","s":["28","18~30"],"f":["35","10~40"],"t":["40","10~45"],"d":["0.0490\"","+/-0.003\""],"color":"白色"},{"label":"0.098\"(2.500) (松樹綠)","s":["28","18~30"],"f":["35","10~40"],"t":["40","10~45"],"d":["0.0490","+/-0.003\""],"color":"松樹綠"}];
 
-    let feedData = [{"label":"0.0279\" 以下","s":["30","20~40"],"pF":["20","10~20"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0280\"~0.0429\"","s":["30","20~40"],"pF":["30","10~30"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0430\"~0.0865\"","s":["30","20~40"],"pF":["40","10~40"],"sF":["10","10~20"],"life":"1500"},{"label":"0.0866\"~0.1014\"","s":["25","20~35"],"pF":["50","10~50"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1015\"~0.1259\"","s":["25","20~35"],"pF":["40","10~40"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1260\"~0.1456\"","s":["20","15~25"],"pF":["20","10~20"],"sF":["10","10~20"],"life":"1500"},{"label":"0.1457\" 以上","s":["20","15~25"],"pF":["10","10~15"],"sF":["10","10~20"],"life":"1500"}];
+    let feedData = [ { label: "0.0279\" 以下", s:["30","20~40"], pF:["20","10~20"], sF:["10","10~20"], life: "1500" }, { label: "0.0280\"~0.0429\"", s:["30","20~40"], pF:["30","10~30"], sF:["10","10~20"], life: "1500" }, { label: "0.0430\"~0.0865\"", s:["30","20~40"], pF:["40","10~40"], sF:["10","10~20"], life: "1500" }, { label: "0.0866\"~0.1014\"", s:["25","20~35"], pF:["50","10~50"], sF:["10","10~20"], life: "1500" }, { label: "0.1015\"~0.1259\"", s:["25","20~35"], pF:["40","10~40"], sF:["10","10~20"], life: "1500" }, { label: "0.1260\"~0.1456\"", s:["20","15~25"], pF:["20","10~20"], sF:["10","10~20"], life: "1500" }, { label: "0.1457\" 以上", s:["20","15~25"], pF:["10","10~15"], sF:["10","10~20"], life: "1500" } ];
 
-    let toolLifeRules = (function(){ 
-        // preserve possible Map-like keys
-        return {"0.0197\" (0.500mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.0236\" (0.600mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.031\" (0.800mm)":{"鍍膜刀":[["450","300~450"],["300","250~300"]],"一般刀":[["300","260~300"],["100","60~100"]]},"0.031\" 逆轉刀 (0.800mm)":{"一般刀":[["90","90"],["90","90"]]},"0.035\" (0.900mm)":{"一般刀":[["300","260~300"],["100","60~100"]],"長刃刀":[["300","260~300"],["100","60~100"]]},"0.039\" (1.000mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["300","260~300"],["200","120~200"]]},"0.039\" 逆轉刀 (1.000mm)":{"一般刀":[["160","160"],["160","160"]]},"0.043\" (1.100mm)":{"一般刀":[["300","260~300"],["100","60~100"]]},"0.047\" (1.200mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["370","330~370"],["200","120~200"]]},"0.051\"(1.300)":{"一般刀":[["370","330~370"],["140","100~140"]]},"0.055\"(1.400)":{"一般刀":[["420","380~420"],["220","180~220"]]},"0.059\"(1.500)":{"一般刀":[["420","380~420"],["250","180~250"]]},"0.062\"(1.600)":{"一般刀":[["520","480~520"],["400","300~400"]]},"0.067\"(1.700)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.069\"(1.750)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.071\"(1.800)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.075\"(1.900)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.079\"(2.000) (內槽)":{"一般刀":[["700","580~700"],["620","400~620"]]},"0.079\"(2.000) (外型)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (內槽)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (外型)":{"一般刀":[["1020","980~1020"],["820","780~820"]]},"0.098\"(2.500) (內槽)":{"一般刀":[["520","480~520"],["320","280~320"]]}}; 
-    })();
+    let toolLifeRules = {"0.0197\" (0.500mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.0236\" (0.600mm)":{"鍍膜刀":[["150","100~150"],["150","100~150"]],"一般刀":[["50","10~50"],["30","10~50"]]},"0.031\" (0.800mm)":{"鍍膜刀":[["450","300~450"],["300","250~300"]],"一般刀":[["300","260~300"],["100","60~100"]]},"0.031\" 逆轉刀 (0.800mm)":{"一般刀":[["90","90"],["90","90"]]},"0.035\" (0.900mm)":{"一般刀":[["300","260~300"],["100","60~100"]],"長刃刀":[["300","260~300"],["100","60~100"]]},"0.039\" (1.000mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["300","260~300"],["200","120~200"]]},"0.039\" 逆轉刀 (1.000mm)":{"一般刀":[["160","160"],["160","160"]]},"0.043\" (1.100mm)":{"一般刀":[["300","260~300"],["100","60~100"]]},"0.047\" (1.200mm)":{"鍍膜刀":[["1000","700~1000"],["700","600~700"]],"一般刀":[["370","330~370"],["200","120~200"]]},"0.051\"(1.300)":{"一般刀":[["370","330~370"],["140","100~140"]]},"0.055\"(1.400)":{"一般刀":[["420","380~420"],["220","180~220"]]},"0.059\"(1.500)":{"一般刀":[["420","380~420"],["250","180~250"]]},"0.062\"(1.600)":{"一般刀":[["520","480~520"],["400","300~400"]]},"0.067\"(1.700)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.069\"(1.750)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.071\"(1.800)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.075\"(1.900)":{"一般刀":[["520","480~520"],["320","280~320"]]},"0.079\"(2.000) (內槽)":{"一般刀":[["700","580~700"],["620","400~620"]]},"0.079\"(2.000) (外型)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (內槽)":{"一般刀":[["620","580~620"],["420","380~420"]]},"0.093\"(2.380) (外型)":{"一般刀":[["1020","980~1020"],["820","780~820"]]},"0.098\"(2.500) (內槽)":{"一般刀":[["520","480~520"],["320","280~320"]]}};
 
-    let notesData = ["HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。","切內槽為銅面：切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。","藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。","粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。","粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。","清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。","清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。","H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。","C66料號外型 62 mil 切刀壽命上限設定 300 INCH。","39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。","C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。"];
+    let notesData = [
+        "HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度 5~10 (粗切、粗切導引孔及外型除外)。",
+        "切內槽為銅面：切刀 31~59 mil 壽命用 50 INCH；62~93 mil 壽命用 100 INCH。",
+        "藍圖標示 ◎、△、切葫蘆孔、金手指、二次孔或程式有走 G42，切刀規格壽命規定請依列表對照。",
+        "粗、裁切切刀 31~51 mil 壽命規定：普通材質設定上限 ~50 INCH，台面速度 10~30。",
+        "粗、裁切切刀 55~93 mil 壽命規定：普通材質設定上限 ~180 INCH，台面速度 10~50 (M57薄板為20)。",
+        "清粉切刀 31~51 mil 壽命規定：普通材質設定上限，台面速度 30。",
+        "清粉切刀 55~93 mil 壽命規定：普通材質設定上限，台面速度 50 (M57薄板為20)。",
+        "H30料號、R01料號切內槽切刀：62 mil 壽命設 200 INCH；79 mil 壽命設 200 INCH。",
+        "C66料號外型 62 mil 切刀壽命上限設定 300 INCH。",
+        "39~47 mil 裁開刀可改使用盲切過的 35 mil 切刀 (需改為 35 mil 參數)。",
+        "C81、C91料號 39 mil、47 mil 長刃鍍膜切刀壽命上限設定 300 INCH。"
+    ];
 
     let isEditing = false;
 
@@ -2128,6 +1489,5 @@ renderTypeSelect();
     });
 
 </script>
-
-
-</body></html>
+</body>
+</html>
