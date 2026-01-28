@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RT 參數對照表_電子版</title>
+    <title>對照表_電子版</title>
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --sidebar-width: 280px; --edit-bg: #fff4e5; }
         * { box-sizing: border-box; } 
@@ -166,16 +166,16 @@
 
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            RT 參數對照查詢
+            對照查詢
             <div class="version-tag">版本日期: 20260121</div>
         </div>
         <div class="sidebar-menu">
-            <div class="menu-item" onclick="switchTab('tab-query')">🔍 參數中值查詢</div>
-            <div class="menu-item" onclick="switchTab('tab-stack')">📊 疊板片數對照表</div>
-            <div class="menu-item" onclick="switchTab('tab-fine')">🔧 粗沖後細切-板內槽</div>
-            <div class="menu-item" onclick="switchTab('tab-feed')">🚀 鑽孔進刀速對照表</div>
-            <div class="menu-item" onclick="switchTab('tab-life')">⏳ 切刀壽命規定</div>
-            <div class="menu-item active" onclick="switchTab('tab-note')">📝 備註事項</div>
+            <div class="menu-item active" onclick="switchTab('tab-query')">🔍 參數中值查詢</div>
+            <div class="menu-item" onclick="switchTab('tab-stack')">📊 ST</div>
+            <div class="menu-item" onclick="switchTab('tab-fine')">🔧 FF</div>
+            <div class="menu-item" onclick="switchTab('tab-feed')">🚀 DR</div>
+            <div class="menu-item" onclick="switchTab('tab-life')">⏳ RD</div>
+            <div class="menu-item" onclick="switchTab('tab-note')">📝 備註事項</div>
         </div>
         <div class="admin-section">
             <button style="background: rgb(52, 73, 94); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: block;" id="btnAdmin" onclick="toggleAdmin()">⚙️ 管理模式</button>
@@ -186,7 +186,7 @@
     <div class="main-wrapper">
         <div class="top-bar">
             <span class="hamburger-btn" style="cursor:pointer; font-size:24px; margin-right:15px; color:#2c3e50;" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">☰</span>
-            <h3 id="currentTitle" style="margin:0; color:#2c3e50;">📝 備註事項</h3>
+            <h3 id="currentTitle" style="margin:0; color:#2c3e50;">🔍 參數中值查詢</h3>
             <div class="admin-bar" id="adminBar">
                 <span class="admin-badge">管理模式</span>
                 <div class="admin-date">
@@ -199,7 +199,7 @@
             </div>
         </div>
 
-        <section id="tab-query" class="content-section">
+        <section id="tab-query" class="content-section active">
             <div class="card">
                 <div class="query-row">
                     <div class="input-box">
@@ -210,13 +210,13 @@
                     <div class="input-box">
                         <label>尺寸</label>
                         <select id="sizeSelect" onchange="runQuery()"><option value="0.0197">0.0197</option><option value="0.0197 CB">0.0197 CB</option><option value="0.0236">0.0236</option><option value="0.0236 CB">0.0236 CB</option><option value="0.031">0.031</option><option value="0.035">0.035</option><option value="0.039">0.039</option><option value="0.039 CB">0.039 CB</option><option value="0.039 LCB">0.039 LCB</option><option value="0.047">0.047</option><option value="0.047 LCB">0.047 LCB</option><option value="0.055">0.055</option><option value="0.059">0.059</option><option value="0.062">0.062</option><option value="0.079">0.079</option><option value="0.093">0.093</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="sizeSelectBtn" onclick="openPicker('sizeSelect','選擇尺寸')">0.035</button>
+                        <button type="button" class="picker-btn mobile-only" id="sizeSelectBtn" onclick="openPicker('sizeSelect','選擇尺寸')">0.0197</button>
                     </div>
                 </div>
                 <div class="table-wrap">
                     <table id="mainTable">
                         <thead><tr><th>轉速 (S)</th><th>進刀 (F)</th><th>壽命 (N)</th><th>補償 (D)</th><th>檯面速度 (F0X)</th></tr></thead>
-                        <tbody id="tableBody"><tr><td>33</td><td>12</td><td>100</td><td>0.0175</td><td>12</td></tr></tbody>
+                        <tbody id="tableBody"><tr><td>40</td><td>10</td><td>50</td><td>0.0098</td><td>10</td></tr></tbody>
                     </table>
                 </div>
 
@@ -466,11 +466,7 @@
                     </table>
                 </div>
 
-                <div class="context-note-area"><div class="context-notes-box">
-            <div class="context-notes-header">⚠️ 注意事項</div>
-            <ul class="context-note-list"><li><b>1.</b> 切內槽為銅面:
-切刀31～59mil[0.80~1.50mm]壽命用50INCH，
-         62～93mil[1.60~2.38mm]壽命用100INCH。</li><li><b>2.</b> 粗、裁切切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限  ~180INCH設定，台面速度10~50 (M57薄板為20)。</li><li><b>3.</b> 清粉切刀31～51mil[0.80~1.30mm]壽命規定；普通材質設定範圍上限，台面速度30。</li><li><b>4.</b> 清粉切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限，台面速度50 (M57薄板為20)。</li></ul></div></div>
+                <div class="context-note-area"></div>
 
                 <div id="adminPanel-fine" class="admin-panel">
                     <div class="admin-hint">修改「尺寸標籤」會即時同步上方選單。</div>
@@ -619,9 +615,7 @@
                     </table>
                 </div>
 
-                 <div class="context-note-area"><div class="context-notes-box">
-            <div class="context-notes-header">⚠️ 注意事項</div>
-            <ul class="context-note-list"><li><b>1.</b> HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度5~10(粗切、粗切導引孔及外型除外)。</li></ul></div></div>
+                 <div class="context-note-area"></div>
 
                  <div id="adminPanel-feed" class="admin-panel">
                     <div class="admin-hint">修改「直徑標籤」會即時同步上方選單。</div>
@@ -665,12 +659,12 @@
                     <div class="input-box">
                         <label>1. 選擇直徑 inch (mm)</label>
                         <select id="lifeSizeSel" onchange="updateLifeTypeList()"><option value="0.0197&quot; (0.500mm)">0.0197" (0.500mm)</option><option value="0.0236&quot; (0.600mm)">0.0236" (0.600mm)</option><option value="0.031&quot; (0.800mm)">0.031" (0.800mm)</option><option value="0.031&quot; 逆轉刀 (0.800mm)">0.031" 逆轉刀 (0.800mm)</option><option value="0.035&quot; (0.900mm)">0.035" (0.900mm)</option><option value="0.039&quot; (1.000mm)">0.039" (1.000mm)</option><option value="0.039&quot; 逆轉刀 (1.000mm)">0.039" 逆轉刀 (1.000mm)</option><option value="0.043&quot; (1.100mm)">0.043" (1.100mm)</option><option value="0.047&quot; (1.200mm)">0.047" (1.200mm)</option><option value="0.051&quot;(1.300)">0.051"(1.300)</option><option value="0.055&quot;(1.400)">0.055"(1.400)</option><option value="0.059&quot;(1.500)">0.059"(1.500)</option><option value="0.062&quot;(1.600)">0.062"(1.600)</option><option value="0.067&quot;(1.700)">0.067"(1.700)</option><option value="0.069&quot;(1.750)">0.069"(1.750)</option><option value="0.071&quot;(1.800)">0.071"(1.800)</option><option value="0.075&quot;(1.900)">0.075"(1.900)</option><option value="0.079&quot;(2.000) (內槽)">0.079"(2.000) (內槽)</option><option value="0.079&quot;(2.000) (外型)">0.079"(2.000) (外型)</option><option value="0.093&quot;(2.380) (內槽)">0.093"(2.380) (內槽)</option><option value="0.093&quot;(2.380) (外型)">0.093"(2.380) (外型)</option><option value="0.098&quot;(2.500) (內槽)">0.098"(2.500) (內槽)</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="lifeSizeBtn" onclick="openPicker('lifeSizeSel','選擇直徑')">0.059"(1.500)</button>
+                        <button type="button" class="picker-btn mobile-only" id="lifeSizeBtn" onclick="openPicker('lifeSizeSel','選擇直徑')">0.0197" (0.500mm)</button>
                     </div>
                     <div class="input-box">
                         <label>2. 選擇型態</label>
-                        <select id="lifeTypeSel" onchange="runLifeQuery()"><option value="一般刀">一般刀</option></select>
-                        <button type="button" class="picker-btn mobile-only" id="lifeTypeBtn" onclick="openPicker('lifeTypeSel','選擇型態')">一般刀</button>
+                        <select id="lifeTypeSel" onchange="runLifeQuery()"><option value="鍍膜刀">鍍膜刀</option><option value="一般刀">一般刀</option></select>
+                        <button type="button" class="picker-btn mobile-only" id="lifeTypeBtn" onclick="openPicker('lifeTypeSel','選擇型態')">鍍膜刀</button>
                     </div>
                 </div>
                 <div class="table-wrap">
@@ -679,8 +673,8 @@
                             <tr><th style="width:50%;">普通材質</th><th style="background:#fff7ed; color:#c2410c; border-bottom: 2px solid #fdba74;">其他材質</th></tr>
                         </thead>
                         <tbody id="lifeTableBody"><tr>
-            <td><span class="val-mid">420</span><span class="val-range">380~420</span></td>
-            <td style="background:#fff7ed;"><span class="val-mid" style="color:#c2410c;">250</span><span class="val-range">180~250</span></td>
+            <td><span class="val-mid">150</span><span class="val-range">100~150</span></td>
+            <td style="background:#fff7ed;"><span class="val-mid" style="color:#c2410c;">150</span><span class="val-range">100~150</span></td>
         </tr></tbody>
                     </table>
                 </div>
@@ -711,24 +705,24 @@
                     <div class="admin-table-wrap">
                         <table class="admin-table">
                             <thead><tr><th style="width:20px;"></th><th>型態</th><th>普通-中值</th><th>普通-範圍</th><th>其他材質-中值</th><th>其他材質-範圍</th><th>操作</th></tr></thead>
-                            <tbody id="adminBody-life"><tr data-key="一般刀"><td class="drag-handle" draggable="true">☰</td><td style="font-weight: bold;">一般刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr></tbody>
+                            <tbody id="adminBody-life"><tr data-key="鍍膜刀"><td class="drag-handle" draggable="true">☰</td><td style="font-weight: bold;">鍍膜刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr><tr data-key="一般刀"><td class="drag-handle" draggable="true">☰</td><td style="font-weight: bold;">一般刀</td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><input class="admin-input"></td><td><button class="btn btn-danger">刪除</button></td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="tab-note" class="content-section active">
+        <section id="tab-note" class="content-section">
             <div class="card">
                 <ul class="note-list"><li><b>1.</b> HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度5~10(粗切、粗切導引孔及外型除外)。</li><li><b>2.</b> 切內槽為銅面:
 切刀31～59mil[0.80~1.50mm]壽命用50INCH，
-         62～93mil[1.60~2.38mm]壽命用100INCH。</li><li><b>3.</b> 藍圖有標示◎、△、切葫蘆孔、金手指、二次孔或程式有T Code有走G42(外型、阻抗條外) ，
+62～93mil[1.60~2.38mm]壽命用100INCH。</li><li><b>3.</b> 藍圖有標示◎、△、切葫蘆孔、金手指、二次孔或程式有T Code有走G42(外型、阻抗條外) ，
 切刀 19.7～23.6 mil[0.50~0.60mm]壽命用30 INCH，
-         19.7～23.6 mil鍍膜刀[0.50~0.60mm]壽命用75 INCH，
-         31～43 mil[0.80~1.10mm]壽命用50 INCH，
-         47～59 mil[1.20~1.50mm]壽命用80 INCH，
-         62～93 mil[1.60~2.38mm]壽命用100 INCH，
-         39～47mil鍍膜刀[1.00~1.20mm]壽命用150 INCH。</li><li><b>4.</b> 粗、裁切切刀31～51mil[0.79~1.30mm]壽命規定；普通材質設定範圍上限~50INCH設定,台面速度10~30。</li><li><b>5.</b> 粗、裁切切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限  ~180INCH設定，台面速度10~50 (M57薄板為20)。</li><li><b>6.</b> 清粉切刀31～51mil[0.80~1.30mm]壽命規定；普通材質設定範圍上限，台面速度30。</li><li><b>7.</b> 清粉切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限，台面速度50 (M57薄板為20)。</li><li><b>8.</b> H30料號（非軟硬板）、R01料號切內槽切刀
+    19.7～23.6 mil鍍膜刀[0.50~0.60mm]壽命用75 INCH，
+    31～43 mil[0.80~1.10mm]壽命用50 INCH，
+    47～59 mil[1.20~1.50mm]壽命用80 INCH，
+    62～93 mil[1.60~2.38mm]壽命用100 INCH，
+    39～47mil鍍膜刀[1.00~1.20mm]壽命用150 INCH。</li><li><b>4.</b> 粗、裁切切刀31～51mil[0.79~1.30mm]壽命規定；普通材質設定範圍上限~50INCH設定,台面速度10~30。</li><li><b>5.</b> 粗、裁切切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限  ~180INCH設定，台面速度10~50 (M57薄板為20)。</li><li><b>6.</b> 清粉切刀31～51mil[0.80~1.30mm]壽命規定；普通材質設定範圍上限，台面速度30。</li><li><b>7.</b> 清粉切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限，台面速度50 (M57薄板為20)。</li><li><b>8.</b> H30料號（非軟硬板）、R01料號切內槽切刀
 62 mil[1.60mm]切刀壽命設200INCH。
 79 mil[2.00mm]切刀壽命設200INCH。</li><li><b>9.</b> C66料號外型62mil[1.60mm]切刀壽命上限設定300INCH。</li><li><b>10.</b> 39~47mil[1.00~1.20mm]裁開刀可改使用盲切過的35mil[0.90mm]切刀(需改為35mil[0.90mm]切刀參數)。</li><li><b>11.</b> C81、C91料號39mil[1.00mm]、47mil[1.20mm]長刃鍍膜切刀壽命上限設定300INCH</li></ul> 
                 <div id="adminPanel-note" class="admin-panel">
@@ -785,7 +779,7 @@
                 <td>
                     <textarea class="admin-textarea" oninput="adminNoteSetText(1,this.value)" placeholder="請輸入備註內容..." style="width:100%; margin-bottom:0;">切內槽為銅面:
 切刀31～59mil[0.80~1.50mm]壽命用50INCH，
-         62～93mil[1.60~2.38mm]壽命用100INCH。</textarea>
+62～93mil[1.60~2.38mm]壽命用100INCH。</textarea>
                     <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
                         <span style="font-size:11px; color:#94a3b8; white-space:nowrap;">顯示於:</span>
                         <div class="tab-selector-group">
@@ -801,7 +795,7 @@
                     </div>
                 
                     <div style="position:relative;">
-                        <input type="checkbox" id="nchk-1-tab-fine" class="tab-chk" value="tab-fine" checked="" onchange="adminNoteSetTab(1, 'tab-fine', this.checked)">
+                        <input type="checkbox" id="nchk-1-tab-fine" class="tab-chk" value="tab-fine" onchange="adminNoteSetTab(1, 'tab-fine', this.checked)">
                         <label for="nchk-1-tab-fine" class="tab-chk-label">細切</label>
                     </div>
                 
@@ -827,11 +821,11 @@
                 <td>
                     <textarea class="admin-textarea" oninput="adminNoteSetText(2,this.value)" placeholder="請輸入備註內容..." style="width:100%; margin-bottom:0;">藍圖有標示◎、△、切葫蘆孔、金手指、二次孔或程式有T Code有走G42(外型、阻抗條外) ，
 切刀 19.7～23.6 mil[0.50~0.60mm]壽命用30 INCH，
-         19.7～23.6 mil鍍膜刀[0.50~0.60mm]壽命用75 INCH，
-         31～43 mil[0.80~1.10mm]壽命用50 INCH，
-         47～59 mil[1.20~1.50mm]壽命用80 INCH，
-         62～93 mil[1.60~2.38mm]壽命用100 INCH，
-         39～47mil鍍膜刀[1.00~1.20mm]壽命用150 INCH。</textarea>
+    19.7～23.6 mil鍍膜刀[0.50~0.60mm]壽命用75 INCH，
+    31～43 mil[0.80~1.10mm]壽命用50 INCH，
+    47～59 mil[1.20~1.50mm]壽命用80 INCH，
+    62～93 mil[1.60~2.38mm]壽命用100 INCH，
+    39～47mil鍍膜刀[1.00~1.20mm]壽命用150 INCH。</textarea>
                     <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
                         <span style="font-size:11px; color:#94a3b8; white-space:nowrap;">顯示於:</span>
                         <div class="tab-selector-group">
@@ -927,7 +921,7 @@
                     </div>
                 
                     <div style="position:relative;">
-                        <input type="checkbox" id="nchk-4-tab-fine" class="tab-chk" value="tab-fine" checked="" onchange="adminNoteSetTab(4, 'tab-fine', this.checked)">
+                        <input type="checkbox" id="nchk-4-tab-fine" class="tab-chk" value="tab-fine" onchange="adminNoteSetTab(4, 'tab-fine', this.checked)">
                         <label for="nchk-4-tab-fine" class="tab-chk-label">細切</label>
                     </div>
                 
@@ -967,7 +961,7 @@
                     </div>
                 
                     <div style="position:relative;">
-                        <input type="checkbox" id="nchk-5-tab-fine" class="tab-chk" value="tab-fine" checked="" onchange="adminNoteSetTab(5, 'tab-fine', this.checked)">
+                        <input type="checkbox" id="nchk-5-tab-fine" class="tab-chk" value="tab-fine" onchange="adminNoteSetTab(5, 'tab-fine', this.checked)">
                         <label for="nchk-5-tab-fine" class="tab-chk-label">細切</label>
                     </div>
                 
@@ -977,7 +971,7 @@
                     </div>
                 
                     <div style="position:relative;">
-                        <input type="checkbox" id="nchk-5-tab-life" class="tab-chk" value="tab-life" checked="" onchange="adminNoteSetTab(5, 'tab-life', this.checked)">
+                        <input type="checkbox" id="nchk-5-tab-life" class="tab-chk" value="tab-life" onchange="adminNoteSetTab(5, 'tab-life', this.checked)">
                         <label for="nchk-5-tab-life" class="tab-chk-label">壽命</label>
                     </div>
                 
@@ -1007,7 +1001,7 @@
                     </div>
                 
                     <div style="position:relative;">
-                        <input type="checkbox" id="nchk-6-tab-fine" class="tab-chk" value="tab-fine" checked="" onchange="adminNoteSetTab(6, 'tab-fine', this.checked)">
+                        <input type="checkbox" id="nchk-6-tab-fine" class="tab-chk" value="tab-fine" onchange="adminNoteSetTab(6, 'tab-fine', this.checked)">
                         <label for="nchk-6-tab-fine" class="tab-chk-label">細切</label>
                     </div>
                 
@@ -1159,7 +1153,7 @@
                         <div class="tab-selector-group">
                             
                     <div style="position:relative;">
-                        <input type="checkbox" id="nchk-10-tab-query" class="tab-chk" value="tab-query" checked="" onchange="adminNoteSetTab(10, 'tab-query', this.checked)">
+                        <input type="checkbox" id="nchk-10-tab-query" class="tab-chk" value="tab-query" onchange="adminNoteSetTab(10, 'tab-query', this.checked)">
                         <label for="nchk-10-tab-query" class="tab-chk-label">參數</label>
                     </div>
                 
@@ -1202,7 +1196,7 @@
     
     <div class="admin-modal-backdrop" id="adminModalBackdrop" role="dialog"><div class="admin-modal"><header><h4 style="margin:0;font-size:16px;">進階編輯（JSON）</h4><button class="btn btn-ghost" onclick="closeAdminModal()">關閉</button></header><div class="body"><div class="admin-hint">可在此備份或還原所有設定。</div><div class="admin-field"><textarea id="adminJson" spellcheck="false"></textarea></div></div><div class="admin-actions"><button class="btn btn-primary" onclick="applyJsonChanges()">套用</button></div></div></div>
 
-    <div class="admin-modal-backdrop" id="reorderModal" role="dialog" style="z-index: 5001; display: none;">
+    <div class="admin-modal-backdrop" id="reorderModal" role="dialog" style="z-index: 5001;">
         <div class="admin-modal" style="width: 450px; max-width: 90%; max-height: 80vh;">
             <header>
                 <h4 style="margin:0;font-size:16px;">調整直徑順序</h4>
@@ -1212,7 +1206,7 @@
                 <div class="admin-hint">拖曳「☰」即可調整順序，完成後請按「保存順序」。</div>
                 <div class="admin-table-wrap" style="max-height: 50vh; overflow-y: auto;">
                     <table class="admin-table">
-                        <tbody id="reorderTbody"><tr data-key="0.0197&quot; (0.500mm)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.0197" (0.500mm)</td></tr><tr data-key="0.0236&quot; (0.600mm)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.0236" (0.600mm)</td></tr><tr data-key="0.031&quot; (0.800mm)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.031" (0.800mm)</td></tr><tr data-key="0.031&quot; 逆轉刀 (0.800mm)" class=""><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.031" 逆轉刀 (0.800mm)</td></tr><tr data-key="0.035&quot; (0.900mm)" class=""><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.035" (0.900mm)</td></tr><tr data-key="0.039&quot; (1.000mm)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.039" (1.000mm)</td></tr><tr data-key="0.039&quot; 逆轉刀 (1.000mm)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.039" 逆轉刀 (1.000mm)</td></tr><tr data-key="0.043&quot; (1.100mm)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.043" (1.100mm)</td></tr><tr data-key="0.047&quot; (1.200mm)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.047" (1.200mm)</td></tr><tr data-key="0.051&quot;(1.300)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.051"(1.300)</td></tr><tr data-key="0.055&quot;(1.400)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.055"(1.400)</td></tr><tr data-key="0.059&quot;(1.500)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.059"(1.500)</td></tr><tr data-key="0.062&quot;(1.600)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.062"(1.600)</td></tr><tr data-key="0.067&quot;(1.700)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.067"(1.700)</td></tr><tr data-key="0.069&quot;(1.750)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.069"(1.750)</td></tr><tr data-key="0.071&quot;(1.800)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.071"(1.800)</td></tr><tr data-key="0.075&quot;(1.900)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.075"(1.900)</td></tr><tr data-key="0.079&quot;(2.000) (內槽)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.079"(2.000) (內槽)</td></tr><tr data-key="0.079&quot;(2.000) (外型)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.079"(2.000) (外型)</td></tr><tr data-key="0.093&quot;(2.380) (內槽)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.093"(2.380) (內槽)</td></tr><tr data-key="0.093&quot;(2.380) (外型)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.093"(2.380) (外型)</td></tr><tr data-key="0.098&quot;(2.500) (內槽)"><td class="drag-handle" draggable="true">☰</td><td style="font-weight:bold; text-align:left;">0.098"(2.500) (內槽)</td></tr></tbody>
+                        <tbody id="reorderTbody"></tbody>
                     </table>
                 </div>
             </div>
@@ -1235,7 +1229,7 @@ function escAttr(v){
 
     const colorMap = { "土黃色":"#D4A017", "蘋果綠":"#8DB600", "醬紅色":"#800000", "黑色":"#000000", "深藍色":"#00008B", "咖啡色":"#6F4E37", "青色":"#00CED1", "柑紅色":"#FF4500", "淡紫色":"#E6E6FA", "墨綠色":"#006400", "粉紅色":"#FF69B4", "白色":"#C0C0C0", "棕紅色":"#A52A2A", "淡梨色":"#F0EAD6", "深紫色":"#800080", "淡橘色":"#FFB84D", "卡其色":"#F0E68C", "淡藍色":"#ADD8E6", "灰色":"#808080", "凍黃色":"#F0E68C", "胭脂紅":"#C71585", "天藍色":"#87CEEB", "桃紅色":"#FF69B4", "大紅色":"#FF0000", "松樹綠":"#01796F" , "橄欖綠":"#6B8E23", "橄欖色":"#6B8E23"};
 
-    let colorOverrides = {"白色":"#FFFFFF","橘色":"#D8D231"};
+    let colorOverrides = {"白色":"#FFFFFF"};
 
     function _hslToHex(h, s, l){
         s/=100; l/=100;
@@ -1293,7 +1287,7 @@ function escAttr(v){
     })();
 
     // Updated Notes Data Structure: Objects with 'text' and 'tabs' array
-    let notesData = [{"text":"HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度5~10(粗切、粗切導引孔及外型除外)。","tabs":["tab-query","tab-feed"]},{"text":"切內槽為銅面:\n切刀31～59mil[0.80~1.50mm]壽命用50INCH，\n62～93mil[1.60~2.38mm]壽命用100INCH。","tabs":["tab-query","tab-life","tab-fine"]},{"text":"藍圖有標示◎、△、切葫蘆孔、金手指、二次孔或程式有T Code有走G42(外型、阻抗條外) ，\n切刀 19.7～23.6 mil[0.50~0.60mm]壽命用30 INCH，\n19.7～23.6 mil鍍膜刀[0.50~0.60mm]壽命用75 INCH，\n31～43 mil[0.80~1.10mm]壽命用50 INCH，\n47～59 mil[1.20~1.50mm]壽命用80 INCH，\n62～93 mil[1.60~2.38mm]壽命用100 INCH，\n39～47mil鍍膜刀[1.00~1.20mm]壽命用150 INCH。","tabs":["tab-query","tab-life"]},{"text":"粗、裁切切刀31～51mil[0.79~1.30mm]壽命規定；普通材質設定範圍上限~50INCH設定,台面速度10~30。","tabs":["tab-query","tab-life"]},{"text":"粗、裁切切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限  ~180INCH設定，台面速度10~50 (M57薄板為20)。","tabs":["tab-query","tab-life","tab-fine"]},{"text":"清粉切刀31～51mil[0.80~1.30mm]壽命規定；普通材質設定範圍上限，台面速度30。","tabs":["tab-query","tab-fine","tab-life"]},{"text":"清粉切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限，台面速度50 (M57薄板為20)。","tabs":["tab-query","tab-fine"]},{"text":"H30料號（非軟硬板）、R01料號切內槽切刀\n62 mil[1.60mm]切刀壽命設200INCH。\n79 mil[2.00mm]切刀壽命設200INCH。","tabs":["tab-query","tab-life"]},{"text":"C66料號外型62mil[1.60mm]切刀壽命上限設定300INCH。","tabs":["tab-query","tab-life"]},{"text":"39~47mil[1.00~1.20mm]裁開刀可改使用盲切過的35mil[0.90mm]切刀(需改為35mil[0.90mm]切刀參數)。","tabs":["tab-query","tab-life"]},{"text":"C81、C91料號39mil[1.00mm]、47mil[1.20mm]長刃鍍膜切刀壽命上限設定300INCH","tabs":["tab-life","tab-query"]}];
+    let notesData = [{"text":"HITG、LK、RF、HF、EM390及EM526材質的各切刀及導引孔下鑽速度5~10(粗切、粗切導引孔及外型除外)。","tabs":["tab-query","tab-feed"]},{"text":"切內槽為銅面:\n切刀31～59mil[0.80~1.50mm]壽命用50INCH，\n         62～93mil[1.60~2.38mm]壽命用100INCH。","tabs":["tab-query","tab-life","tab-fine"]},{"text":"藍圖有標示◎、△、切葫蘆孔、金手指、二次孔或程式有T Code有走G42(外型、阻抗條外) ，\n切刀 19.7～23.6 mil[0.50~0.60mm]壽命用30 INCH，\n         19.7～23.6 mil鍍膜刀[0.50~0.60mm]壽命用75 INCH，\n         31～43 mil[0.80~1.10mm]壽命用50 INCH，\n         47～59 mil[1.20~1.50mm]壽命用80 INCH，\n         62～93 mil[1.60~2.38mm]壽命用100 INCH，\n         39～47mil鍍膜刀[1.00~1.20mm]壽命用150 INCH。","tabs":["tab-query","tab-life"]},{"text":"粗、裁切切刀31～51mil[0.79~1.30mm]壽命規定；普通材質設定範圍上限~50INCH設定,台面速度10~30。","tabs":["tab-query","tab-life"]},{"text":"粗、裁切切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限  ~180INCH設定，台面速度10~50 (M57薄板為20)。","tabs":["tab-query","tab-life","tab-fine"]},{"text":"清粉切刀31～51mil[0.80~1.30mm]壽命規定；普通材質設定範圍上限，台面速度30。","tabs":["tab-query","tab-fine","tab-life"]},{"text":"清粉切刀55～93mil[1.40~2.38mm]壽命規定；普通材質設定範圍上限，台面速度50 (M57薄板為20)。","tabs":["tab-query","tab-fine"]},{"text":"H30料號（非軟硬板）、R01料號切內槽切刀\n62 mil[1.60mm]切刀壽命設200INCH。\n79 mil[2.00mm]切刀壽命設200INCH。","tabs":["tab-query","tab-life"]},{"text":"C66料號外型62mil[1.60mm]切刀壽命上限設定300INCH。","tabs":["tab-query","tab-life"]},{"text":"39~47mil[1.00~1.20mm]裁開刀可改使用盲切過的35mil[0.90mm]切刀(需改為35mil[0.90mm]切刀參數)。","tabs":["tab-query","tab-life"]},{"text":"C81、C91料號39mil[1.00mm]、47mil[1.20mm]長刃鍍膜切刀壽命上限設定300INCH","tabs":["tab-life","tab-query"]}];
 
     let isEditing = false;
     let _tabMap = {
@@ -2155,7 +2149,6 @@ tr.dataset.idx = idx;
     });
 
 </script>
-
 
 
 </body></html>
